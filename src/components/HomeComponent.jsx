@@ -6,12 +6,11 @@ import {
   FaRegTrashCan,
 } from "react-icons/fa6";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import "react-datepicker/dist/react-datepicker-cssmodules.css";
+
 const HomeComponent = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [deliveryDate, setDeliveryDate] = useState(new Date());
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(1);
   const [invoiceItems, setInvoiceItems] = useState([]);
   const [discount, setDiscount] = useState(0);
 

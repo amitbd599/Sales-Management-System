@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { FaCaretRight } from "react-icons/fa6";
 const MasterLayout = (props) => {
   return (
@@ -14,24 +14,44 @@ const MasterLayout = (props) => {
         <nav className="px-[12px]">
           <ul className="py-[30px] grid gap-[10px]">
             <li>
-              <Link to="/" className="flex items-center gap-1 font-medium p-2">
+              <NavLink
+                to="/"
+                className={(navData) =>
+                  navData.isActive ? "navActive" : "navNotActive"
+                }
+              >
                 <FaCaretRight /> Create invoice
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to="/" className="flex items-center gap-1 font-medium p-2">
+              <NavLink
+                to="/all-invoice"
+                className={(navData) =>
+                  navData.isActive ? "navActive" : "navNotActive"
+                }
+              >
                 <FaCaretRight /> All invoice
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to="/" className="flex items-center gap-1 font-medium p-2">
+              <NavLink
+                to="/"
+                className={(navData) =>
+                  navData.isActive ? "navActive" : "navNotActive"
+                }
+              >
                 <FaCaretRight /> Image to pdf
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to="/" className="flex items-center gap-1 font-medium p-2">
+              <NavLink
+                to="/"
+                className={(navData) =>
+                  navData.isActive ? "navActive" : "navNotActive"
+                }
+              >
                 <FaCaretRight /> Setting
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </nav>

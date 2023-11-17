@@ -29,6 +29,12 @@
   .input_box {
     @apply p-2 border border-gray-200 focus:outline-none rounded-md w-full;
   }
+  .navActive {
+    @apply flex items-center rounded-md gap-1 font-medium p-2 bg-purple-50 text-purple-600;
+  }
+  .navNotActive {
+    @apply flex items-center rounded-md gap-1 font-medium p-2;
+  }
 }
 
 .react-datepicker-wrapper {
