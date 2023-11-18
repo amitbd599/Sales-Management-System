@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Select, Option } from "@material-tailwind/react";
-import { data } from "../script/currency";
+import { currency } from "../script/currency";
 import { ChromePicker } from "react-color";
+import { page_size } from "../script/page_size";
+
 const SettingComponent = () => {
   const [selectedLogoFile, setSelectedLogoFile] = useState(null);
   const [selectedBGFile, setSelectedBGFile] = useState(null);
@@ -39,6 +41,63 @@ const SettingComponent = () => {
     setColor(newColor.hex);
   };
 
+  let company_nameRef,
+    company_addressRef,
+    mobileRef,
+    phoneRef,
+    faxRef,
+    emailRef,
+    websiteRef,
+    currencyRef,
+    txtRef,
+    vatRef,
+    discountRef,
+    shippingRef,
+    invoiceNumberTypeRef,
+    qrCodeRef,
+    pageOrientationRef = useRef();
+
+  const saveData = () => {
+    console.log(company_addressRef.current.value);
+    // let company_name = company_nameRef.value;
+    // let company_address = company_addressRef.value;
+    let mobile = mobileRef.value;
+    let phone = phoneRef.value;
+    let fax = faxRef.value;
+    let email = emailRef.value;
+    let website = websiteRef.value;
+    let currency = currencyRef.value;
+    let txt = txtRef.value;
+    let vat = vatRef.value;
+    let discount = discountRef.value;
+    let shipping = shippingRef.value;
+    let invoiceNumberType = invoiceNumberTypeRef.value;
+    let qrCode = qrCodeRef.value;
+    let pageOrientation = pageOrientationRef.value;
+
+    debugger;
+
+    let setting = {
+      // company_name,
+      // company_address,
+      mobile,
+      phone,
+      fax,
+      email,
+      website,
+      currency,
+      txt,
+      vat,
+      discount,
+      shipping,
+      invoiceNumberType,
+      qrCode,
+      pageOrientation,
+    };
+
+    localStorage.setItem("setting", JSON.stringify(setting));
+  };
+
   return (
     <section className="p-[16px]">
       <div>
@@ -49,51 +108,79 @@ const SettingComponent = () => {
               <div className="w-full col-span-4">
                 <div className="grid gap-1">
                   <label>Company name:</label>
-                  <input type="text" className="input_box" />
+                  <input
+                    type="text"
+                    className="input_box"
+                    ref={(input) => (input = company_nameRef)}
+                  />
                 </div>
               </div>
               <div className="w-full col-span-8">
                 <div className="grid gap-1">
                   <label>Address:</label>
-                  <input type="text" className="input_box" />
+                  <input
+                    type="text"
+                    className="input_box"
+                    ref={company_addressRef}
+                  />
                 </div>
               </div>
               <div className="w-full col-span-4">
                 <div className="grid gap-1">
                   <label>Mobile no:</label>
-                  <input type="text" className="input_box" />
+                  <input
+                    type="text"
+                    className="input_box"
+                    ref={(input) => (mobileRef = input)}
+                  />
                 </div>
               </div>
               <div className="w-full col-span-4">
                 <div className="grid gap-1">
                   <label>Phone no:</label>
-                  <input type="text" className="input_box" />
+                  <input
+                    type="text"
+                    className="input_box"
+                    ref={(input) => (phoneRef = input)}
+                  />
                 </div>
               </div>
               <div className="w-full col-span-4">
                 <div className="grid gap-1">
                   <label>Fax no:</label>
-                  <input type="text" className="input_box" />
+                  <input
+                    type="text"
+                    className="input_box"
+                    ref={(input) => (faxRef = input)}
+                  />
                 </div>
               </div>
               <div className="w-full col-span-4">
                 <div className="grid gap-1">
                   <label>Email:</label>
-                  <input type="text" className="input_box" />
+                  <input
+                    type="text"
+                    className="input_box"
+                    ref={(input) => (emailRef = input)}
+                  />
                 </div>
               </div>
               <div className="w-full col-span-4">
                 <div className="grid gap-1">
                   <label>Website:</label>
-                  <input type="text" className="input_box" />
+                  <input
+                    type="text"
+                    className="input_box"
+                    ref={(input) => (websiteRef = input)}
+                  />
                 </div>
               </div>
-
               <div className="w-full col-span-4">
                 <div className="grid gap-1">
                   <label>Currency:</label>
                   <div>
                     <Select
+                      ref={(input) => (currencyRef = input)}
                       defaultValue={"AED"}
                       label="Select item"
                       animate={{
@@ -101,7 +188,7 @@ const SettingComponent = () => {
                         unmount: { y: 25 },
                       }}
                     >
-                      {data.map((item, index) => (
+                      {currency.map((item, index) => (
                         <Option key={index} value={item?.currency}>
                           {item?.country} ({item?.currency} - {item?.symbol})
                         </Option>
@@ -110,13 +197,18 @@ const SettingComponent = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-full col-span-2">
+              <div className="w-full col-span-1">
                 <div className="grid gap-1">
                   <label>Tax (%):</label>
-                  <input type="number" className="input_box" placeholder="0" />
+                  <input
+                    type="number"
+                    className="input_box"
+                    placeholder="0"
+                    ref={(input) => (txtRef = input)}
+                  />
                 </div>
               </div>
-              <div className="w-full col-span-2">
+              <div className="w-full col-span-1">
                 <div className="grid gap-1">
                   <label>Vat:</label>
                   <span className="flex gap-2 justify-center items-center">
@@ -124,11 +216,12 @@ const SettingComponent = () => {
                       type="number"
                       className="input_box"
                       placeholder="0"
+                      ref={(input) => (vatRef = input)}
                     />
                   </span>
                 </div>
               </div>
-              <div className="w-full col-span-2">
+              <div className="w-full col-span-1">
                 <div className="grid gap-1">
                   <label>Discounts:</label>
                   <span className="flex gap-2 justify-center items-center">
@@ -136,11 +229,12 @@ const SettingComponent = () => {
                       type="number"
                       className="input_box"
                       placeholder="0"
+                      ref={(input) => (discountRef = input)}
                     />
                   </span>
                 </div>
               </div>
-              <div className="w-full col-span-2">
+              <div className="w-full col-span-1">
                 <div className="grid gap-1">
                   <label>Shipping:</label>
                   <span className="flex gap-2 justify-center items-center">
@@ -148,6 +242,7 @@ const SettingComponent = () => {
                       type="number"
                       className="input_box"
                       placeholder="0"
+                      ref={(input) => (shippingRef = input)}
                     />
                   </span>
                 </div>
@@ -158,6 +253,7 @@ const SettingComponent = () => {
                   <div>
                     <Select
                       label="Select item"
+                      ref={(input) => (invoiceNumberTypeRef = input)}
                       animate={{
                         mount: { y: 0 },
                         unmount: { y: 25 },
@@ -170,6 +266,24 @@ const SettingComponent = () => {
                 </div>
               </div>
               <div className="w-full col-span-4">
+                <div className="grid gap-1">
+                  <label>QRCode:</label>
+                  <div>
+                    <Select
+                      ref={(input) => (qrCodeRef = input)}
+                      label="Select item"
+                      animate={{
+                        mount: { y: 0 },
+                        unmount: { y: 25 },
+                      }}
+                    >
+                      <Option>Yes</Option>
+                      <Option>No</Option>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+              <div className="w-full col-span-4">
                 <div className="grid gap-1 ">
                   <label>Change paper background color:</label>
                   <div className="pt-2">
@@ -177,7 +291,11 @@ const SettingComponent = () => {
                       color={color}
                       onChange={handleColorChange}
                       className="w-full"
+                      circleSize={40}
+                      circleSpacing={24}
+                      disableAlpha={true}
                     />
+
                     <p className="font-semibold mt-[20px]">Selected color</p>
                     <div
                       className=" h-[30px] mt-[10px]"
@@ -186,116 +304,159 @@ const SettingComponent = () => {
                   </div>
                 </div>
               </div>
+              <div className="w-full col-span-3">
+                <div className="grid gap-[20px]">
+                  <div className="grid gap-1">
+                    <label>Page Orientation:</label>
+                    <div>
+                      <Select
+                        ref={(input) => (pageOrientationRef = input)}
+                        label="Select item"
+                        animate={{
+                          mount: { y: 0 },
+                          unmount: { y: 25 },
+                        }}
+                      >
+                        <Option>Landscape</Option>
+                        <Option>Portrait</Option>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="grid gap-1">
+                    <label>Page Size :</label>
+                    <div>
+                      <Select
+                        label="Select item"
+                        animate={{
+                          mount: { y: 0 },
+                          unmount: { y: 25 },
+                        }}
+                      >
+                        {page_size.map((item, index) => (
+                          <Option key={index}>
+                            {item?.page_name} ({item?.with} * {item?.height})
+                          </Option>
+                        ))}
+                      </Select>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="col-span-3  p-[20px] bg-white rounded-md">
-            <div className="flex gap-[30px]">
-              <div className="w-[300px]">
-                <h2 className="font-semibold pb-2">Upload your company logo</h2>
-                <label
-                  htmlFor="logo"
-                  className=" cursor-pointer flex w-full  max-w-lg flex-col items-center rounded-xl border-2 border-dashed border-blue-400 bg-white p-6 text-center"
-                >
-                  <div>
-                    {selectedLogoFile ? (
-                      <div>
-                        <img
-                          src={URL.createObjectURL(selectedLogoFile)}
-                          alt="Selected"
-                          className="w-[100px] rounded-xl"
-                        />
-                      </div>
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-10 w-10 text-blue-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                        />
-                      </svg>
-                    )}
-                  </div>
-                  <h2 className="mt-4 text-xl font-medium text-gray-700 tracking-wide">
-                    Change logo
+          <div className="col-span-3  ">
+            <div className="p-[20px] bg-white rounded-md">
+              <div className="flex gap-[30px]">
+                <div className="w-[300px]">
+                  <h2 className="font-semibold pb-2">
+                    Upload your company logo
                   </h2>
-                  <p className="mt-2 text-gray-500 tracking-wide">
-                    Upload file PNG, JPG.
-                  </p>
-                  <input
-                    id="logo"
-                    type="file"
-                    className="hidden"
-                    onChange={(event) => {
-                      setSelectedLogoFile(event.target.files[0]);
-                    }}
-                  />
-                </label>
+                  <label
+                    htmlFor="logo"
+                    className=" cursor-pointer flex w-full  max-w-lg flex-col items-center rounded-xl border-2 border-dashed border-blue-400 bg-white p-6 text-center"
+                  >
+                    <div>
+                      {selectedLogoFile ? (
+                        <div>
+                          <img
+                            src={URL.createObjectURL(selectedLogoFile)}
+                            alt="Selected"
+                            className="w-[100px] rounded-xl"
+                          />
+                        </div>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-10 w-10 text-blue-500"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                          />
+                        </svg>
+                      )}
+                    </div>
+                    <h2 className="mt-4 text-xl font-medium text-gray-700 tracking-wide">
+                      Change logo
+                    </h2>
+                    <p className="mt-2 text-gray-500 tracking-wide">
+                      Upload file PNG, JPG.
+                    </p>
+                    <input
+                      id="logo"
+                      type="file"
+                      className="hidden"
+                      onChange={(event) => {
+                        setSelectedLogoFile(event.target.files[0]);
+                      }}
+                    />
+                  </label>
+                </div>
+              </div>
+              <div className="flex gap-[30px] mt-[40px]">
+                <div className="w-[300px]">
+                  <h2 className="font-semibold pb-2">Add background image</h2>
+                  <label
+                    htmlFor="bg"
+                    className=" cursor-pointer flex w-full  max-w-lg flex-col items-center rounded-xl border-2 border-dashed border-blue-400 bg-white p-6 text-center"
+                  >
+                    <div>
+                      {selectedBGFile ? (
+                        <div>
+                          <img
+                            src={URL.createObjectURL(selectedBGFile)}
+                            alt="Selected"
+                            className="w-[100px] rounded-xl"
+                          />
+                        </div>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-10 w-10 text-blue-500"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                          />
+                        </svg>
+                      )}
+                    </div>
+                    <h2 className="mt-4 text-xl font-medium text-gray-700 tracking-wide">
+                      Change image
+                    </h2>
+                    <p className="mt-2 text-gray-500 tracking-wide">
+                      Upload file PNG, JPG.
+                    </p>
+                    <input
+                      id="bg"
+                      type="file"
+                      className="hidden"
+                      onChange={(event) => {
+                        setSelectedBGFile(event.target.files[0]);
+                      }}
+                    />
+                  </label>
+                </div>
+              </div>
+              <div className="mt-5">
+                <button
+                  className="px-[20px] py-[8px] w-full rounded-md bg-purple-500 text-white"
+                  onClick={saveData}
+                >
+                  Save global setting
+                </button>
               </div>
             </div>
-            <div className="flex gap-[30px] mt-[40px]">
-              <div className="w-[300px]">
-                <h2 className="font-semibold pb-2">Add background image</h2>
-                <label
-                  htmlFor="bg"
-                  className=" cursor-pointer flex w-full  max-w-lg flex-col items-center rounded-xl border-2 border-dashed border-blue-400 bg-white p-6 text-center"
-                >
-                  <div>
-                    {selectedBGFile ? (
-                      <div>
-                        <img
-                          src={URL.createObjectURL(selectedBGFile)}
-                          alt="Selected"
-                          className="w-[100px] rounded-xl"
-                        />
-                      </div>
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-10 w-10 text-blue-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                        />
-                      </svg>
-                    )}
-                  </div>
-                  <h2 className="mt-4 text-xl font-medium text-gray-700 tracking-wide">
-                    Change image
-                  </h2>
-                  <p className="mt-2 text-gray-500 tracking-wide">
-                    Upload file PNG, JPG.
-                  </p>
-                  <input
-                    id="bg"
-                    type="file"
-                    className="hidden"
-                    onChange={(event) => {
-                      setSelectedBGFile(event.target.files[0]);
-                    }}
-                  />
-                </label>
-              </div>
-            </div>
-            <div className="mt-5">
-              <button className="px-[20px] py-[8px] w-full rounded-md bg-purple-500 text-white">
-                Save global setting
-              </button>
-            </div>
-
-            {/* <button onClick={handleFileUpload}>Upload File</button> */}
           </div>
         </div>
         <div className=" pt-[30px]">

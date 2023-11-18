@@ -1,4 +1,4 @@
-export const data = [
+export const currency = [
   {
     currency: "AED",
     symbol: "د.إ",
