@@ -1,6 +1,13 @@
 import React from "react";
 import DataTable from "react-data-table-component";
-import { FaRegPenToSquare, FaRegTrashCan } from "react-icons/fa6";
+import {
+  FaExpand,
+  FaFilePdf,
+  FaPrint,
+  FaRegPenToSquare,
+  FaRegTrashCan,
+} from "react-icons/fa6";
+
 const AllInvoiceComponent = () => {
   const columns = [
     {
@@ -78,12 +85,18 @@ const AllInvoiceComponent = () => {
 
   function AllInvoiceComponent() {
     return (
-      <div className="flex gap-3 justify-center">
+      <div className="flex gap-4 justify-center">
         <button className="p-1">
-          <FaRegPenToSquare />
+          <FaExpand className="text-[18px]" />
         </button>
         <button className="p-1">
-          <FaRegTrashCan />
+          <FaPrint className="text-[18px]" />
+        </button>
+        <button className="p-1">
+          <FaRegPenToSquare className="text-[18px]" />
+        </button>
+        <button className="p-1">
+          <FaRegTrashCan className="text-[18px]" />
         </button>
       </div>
     );

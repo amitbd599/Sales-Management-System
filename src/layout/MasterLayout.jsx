@@ -35,7 +35,7 @@ const MasterLayout = (props) => {
             </li>
             <li>
               <NavLink
-                to="/"
+                to="/image-to-pdf"
                 className={(navData) =>
                   navData.isActive ? "navActive" : "navNotActive"
                 }
@@ -45,7 +45,7 @@ const MasterLayout = (props) => {
             </li>
             <li>
               <NavLink
-                to="/"
+                to="/setting"
                 className={(navData) =>
                   navData.isActive ? "navActive" : "navNotActive"
                 }

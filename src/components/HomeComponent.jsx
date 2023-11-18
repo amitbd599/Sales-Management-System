@@ -10,13 +10,9 @@ import DatePicker from "react-datepicker";
 const HomeComponent = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [deliveryDate, setDeliveryDate] = useState(new Date());
-  const [selectedImage, setSelectedImage] = useState(1);
+
   const [invoiceItems, setInvoiceItems] = useState([]);
   const [discount, setDiscount] = useState(0);
-
-  const handleImageClick = (imageId) => {
-    setSelectedImage(imageId);
-  };
 
   const handleAddItem = () => {
     setInvoiceItems([...invoiceItems, { item: "", quantity: 0, rate: 0 }]);
@@ -45,21 +41,6 @@ const HomeComponent = () => {
     const subtotal = calculateSubtotal();
     return subtotal - discount;
   };
-
-  const images = [
-    { id: 1, src: "/image/1.jpg" },
-    { id: 2, src: "/image/2.jpg" },
-    { id: 3, src: "/image/3.jpg" },
-    { id: 4, src: "/image/4.jpg" },
-    { id: 5, src: "/image/5.jpg" },
-    { id: 6, src: "/image/6.jpg" },
-    { id: 7, src: "/image/7.jpg" },
-    { id: 8, src: "/image/8.jpg" },
-    { id: 9, src: "/image/9.jpg" },
-    { id: 10, src: "/image/10.jpg" },
-    { id: 11, src: "/image/11.jpg" },
-    { id: 12, src: "/image/12.jpg" },
-  ];
 
   return (
     <section className="p-[16px]">
@@ -296,36 +277,6 @@ const HomeComponent = () => {
                     <FaPrint className="text-[20px] hover:text-purple-500 transition-all duration-200" />
                   </button>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className=" pt-[30px]">
-          <div className="grid grid-cols-12 gap-[20px]">
-            <div className="col-span-9 bg-white p-[20px] rounded-md">
-              <h2 className="font-semibold">Choose a template</h2>
-              <div className="grid grid-cols-12 gap-4">
-                {images.map((item, index) => (
-                  <div key={index} className="col-span-2">
-                    <img
-                      src={item?.src}
-                      alt=""
-                      className={`w-full border p-[10px] shadow-xl rounded-md  ${
-                        selectedImage === item.id
-                          ? "border-2 border-red-500"
-                          : " border-gray-200"
-                      }`}
-                      onClick={() => handleImageClick(item.id)}
-                      style={{
-                        border:
-                          selectedImage === item.id ? "2px solid red" : "none",
-                        cursor: "pointer",
-                        marginRight: "10px",
-                      }}
-                    />
-                  </div>
-                ))}
               </div>
             </div>
           </div>
