@@ -1,22 +1,38 @@
 import React, { useRef, useState } from "react";
 import { Select, Option } from "@material-tailwind/react";
-import { currency } from "../script/currency";
+import { currencyData } from "../script/currency";
 import { ChromePicker } from "react-color";
 import { page_size } from "../script/page_size";
+import { getBase64 } from "../helper/helper";
 
 const SettingComponent = () => {
-  const [selectedLogoFile, setSelectedLogoFile] = useState(null);
-  const [selectedBGFile, setSelectedBGFile] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(1);
-  // State to store the selected color code
-  const [selectedColor, setSelectedColor] = useState(null);
+  const [logo, setLogo] = useState(null);
+  const [bgImg, setBgImg] = useState(null);
+  const [currency, setCurrency] = useState(null);
+  const [invoiceType, setInvoiceType] = useState(null);
+  const [qrCode, setQrCode] = useState(null);
+  const [pageSize, setPageSize] = useState(null);
+  const [pageOrientation, setPageOrientation] = useState(null);
 
-  // Function to handle color plate click
-  const handleColorPlateClick = (colorCode) => {
-    setSelectedColor(colorCode);
+  const [selectedTemplate, setTemplateImage] = useState(1);
+  const [bgColor, setBgColor] = useState("#ffffff");
+
+  const handleColorChange = (newColor) => {
+    setBgColor(newColor.hex);
   };
 
-  const images = [
+  const logoHandel = (event) => {
+    getBase64(event.target.files[0]).then((base64Img) => {
+      setLogo(base64Img);
+    });
+  };
+  const bgHandel = (event) => {
+    getBase64(event.target.files[0]).then((base64Img) => {
+      setBgImg(base64Img);
+    });
+  };
+
+  const templates = [
     { id: 1, src: "/image/1.jpg" },
     { id: 2, src: "/image/2.jpg" },
     { id: 3, src: "/image/3.jpg" },
@@ -32,13 +48,7 @@ const SettingComponent = () => {
   ];
 
   const handleImageClick = (imageId) => {
-    setSelectedImage(imageId);
-  };
-
-  const [color, setColor] = useState("#ffffff");
-
-  const handleColorChange = (newColor) => {
-    setColor(newColor.hex);
+    setTemplateImage(imageId);
   };
 
   let company_nameRef,
@@ -48,51 +58,45 @@ const SettingComponent = () => {
     faxRef,
     emailRef,
     websiteRef,
-    currencyRef,
     txtRef,
     vatRef,
     discountRef,
-    shippingRef,
-    invoiceNumberTypeRef,
-    qrCodeRef,
-    pageOrientationRef = useRef();
+    shippingRef = useRef();
 
   const saveData = () => {
-    console.log(company_addressRef.current.value);
-    // let company_name = company_nameRef.value;
-    // let company_address = company_addressRef.value;
+    let company_name = company_nameRef.value;
+    let company_address = company_addressRef.value;
     let mobile = mobileRef.value;
     let phone = phoneRef.value;
     let fax = faxRef.value;
     let email = emailRef.value;
     let website = websiteRef.value;
-    let currency = currencyRef.value;
     let txt = txtRef.value;
     let vat = vatRef.value;
     let discount = discountRef.value;
     let shipping = shippingRef.value;
-    let invoiceNumberType = invoiceNumberTypeRef.value;
-    let qrCode = qrCodeRef.value;
-    let pageOrientation = pageOrientationRef.value;
-
-    debugger;
 
     let setting = {
-      // company_name,
-      // company_address,
-      mobile,
-      phone,
-      fax,
-      email,
-      website,
+      bgColor,
+      bgImg,
+      company_address,
+      company_name,
       currency,
+      discount,
+      email,
+      fax,
+      invoiceType,
+      logo,
+      mobile,
+      pageOrientation,
+      pageSize,
+      phone,
+      qrCode,
+      shipping,
+      selectedTemplate,
       txt,
       vat,
-      discount,
-      shipping,
-      invoiceNumberType,
-      qrCode,
-      pageOrientation,
+      website,
     };
 
     localStorage.setItem("setting", JSON.stringify(setting));
@@ -111,7 +115,7 @@ const SettingComponent = () => {
                   <input
                     type="text"
                     className="input_box"
-                    ref={(input) => (input = company_nameRef)}
+                    ref={(input) => (company_nameRef = input)}
                   />
                 </div>
               </div>
@@ -121,7 +125,7 @@ const SettingComponent = () => {
                   <input
                     type="text"
                     className="input_box"
-                    ref={company_addressRef}
+                    ref={(input) => (company_addressRef = input)}
                   />
                 </div>
               </div>
@@ -180,15 +184,15 @@ const SettingComponent = () => {
                   <label>Currency:</label>
                   <div>
                     <Select
-                      ref={(input) => (currencyRef = input)}
-                      defaultValue={"AED"}
+                      onChange={(event) => setCurrency(event)}
+                      value={currency}
                       label="Select item"
                       animate={{
                         mount: { y: 0 },
                         unmount: { y: 25 },
                       }}
                     >
-                      {currency.map((item, index) => (
+                      {currencyData.map((item, index) => (
                         <Option key={index} value={item?.currency}>
                           {item?.country} ({item?.currency} - {item?.symbol})
                         </Option>
@@ -253,14 +257,15 @@ const SettingComponent = () => {
                   <div>
                     <Select
                       label="Select item"
-                      ref={(input) => (invoiceNumberTypeRef = input)}
+                      onChange={(event) => setInvoiceType(event)}
+                      value={invoiceType}
                       animate={{
                         mount: { y: 0 },
                         unmount: { y: 25 },
                       }}
                     >
-                      <Option>Custom number</Option>
-                      <Option>Random input</Option>
+                      <Option value="number">Custom number</Option>
+                      <Option value="random">Random input</Option>
                     </Select>
                   </div>
                 </div>
@@ -270,15 +275,15 @@ const SettingComponent = () => {
                   <label>QRCode:</label>
                   <div>
                     <Select
-                      ref={(input) => (qrCodeRef = input)}
+                      onChange={(event) => setQrCode(event)}
                       label="Select item"
                       animate={{
                         mount: { y: 0 },
                         unmount: { y: 25 },
                       }}
                     >
-                      <Option>Yes</Option>
-                      <Option>No</Option>
+                      <Option value="yes">Yes</Option>
+                      <Option value="yes">No</Option>
                     </Select>
                   </div>
                 </div>
@@ -288,7 +293,7 @@ const SettingComponent = () => {
                   <label>Change paper background color:</label>
                   <div className="pt-2">
                     <ChromePicker
-                      color={color}
+                      color={bgColor}
                       onChange={handleColorChange}
                       className="w-full"
                       circleSize={40}
@@ -299,7 +304,7 @@ const SettingComponent = () => {
                     <p className="font-semibold mt-[20px]">Selected color</p>
                     <div
                       className=" h-[30px] mt-[10px]"
-                      style={{ backgroundColor: color }}
+                      style={{ backgroundColor: bgColor }}
                     ></div>
                   </div>
                 </div>
@@ -310,15 +315,16 @@ const SettingComponent = () => {
                     <label>Page Orientation:</label>
                     <div>
                       <Select
-                        ref={(input) => (pageOrientationRef = input)}
+                        onChange={(event) => setPageOrientation(event)}
+                        value={pageOrientation}
                         label="Select item"
                         animate={{
                           mount: { y: 0 },
                           unmount: { y: 25 },
                         }}
                       >
-                        <Option>Landscape</Option>
-                        <Option>Portrait</Option>
+                        <Option value="Landscape">Landscape</Option>
+                        <Option value="Portrait">Portrait</Option>
                       </Select>
                     </div>
                   </div>
@@ -326,6 +332,8 @@ const SettingComponent = () => {
                     <label>Page Size :</label>
                     <div>
                       <Select
+                        onChange={(event) => setPageSize(event)}
+                        value={pageSize}
                         label="Select item"
                         animate={{
                           mount: { y: 0 },
@@ -333,7 +341,7 @@ const SettingComponent = () => {
                         }}
                       >
                         {page_size.map((item, index) => (
-                          <Option key={index}>
+                          <Option key={index} value={item?.page_name}>
                             {item?.page_name} ({item?.with} * {item?.height})
                           </Option>
                         ))}
@@ -356,10 +364,10 @@ const SettingComponent = () => {
                     className=" cursor-pointer flex w-full  max-w-lg flex-col items-center rounded-xl border-2 border-dashed border-blue-400 bg-white p-6 text-center"
                   >
                     <div>
-                      {selectedLogoFile ? (
+                      {logo ? (
                         <div>
                           <img
-                            src={URL.createObjectURL(selectedLogoFile)}
+                            src={logo}
                             alt="Selected"
                             className="w-[100px] rounded-xl"
                           />
@@ -391,9 +399,7 @@ const SettingComponent = () => {
                       id="logo"
                       type="file"
                       className="hidden"
-                      onChange={(event) => {
-                        setSelectedLogoFile(event.target.files[0]);
-                      }}
+                      onChange={(event) => logoHandel(event)}
                     />
                   </label>
                 </div>
@@ -406,10 +412,10 @@ const SettingComponent = () => {
                     className=" cursor-pointer flex w-full  max-w-lg flex-col items-center rounded-xl border-2 border-dashed border-blue-400 bg-white p-6 text-center"
                   >
                     <div>
-                      {selectedBGFile ? (
+                      {bgImg ? (
                         <div>
                           <img
-                            src={URL.createObjectURL(selectedBGFile)}
+                            src={bgImg}
                             alt="Selected"
                             className="w-[100px] rounded-xl"
                           />
@@ -441,9 +447,7 @@ const SettingComponent = () => {
                       id="bg"
                       type="file"
                       className="hidden"
-                      onChange={(event) => {
-                        setSelectedBGFile(event.target.files[0]);
-                      }}
+                      onChange={(event) => bgHandel(event)}
                     />
                   </label>
                 </div>
@@ -464,20 +468,22 @@ const SettingComponent = () => {
             <div className="col-span-9 bg-white p-[20px] rounded-md">
               <h2 className="font-semibold">Choose a template</h2>
               <div className="grid grid-cols-12 gap-4">
-                {images.map((item, index) => (
+                {templates.map((item, index) => (
                   <div key={index} className="col-span-3">
                     <img
                       src={item?.src}
                       alt=""
                       className={`w-full border p-[10px] shadow-xl rounded-md  ${
-                        selectedImage === item.id
+                        selectedTemplate === item.id
                           ? "border-2 border-red-500"
                           : " border-gray-200"
                       }`}
                       onClick={() => handleImageClick(item.id)}
                       style={{
                         border:
-                          selectedImage === item.id ? "2px solid red" : "none",
+                          selectedTemplate === item.id
+                            ? "2px solid red"
+                            : "none",
                         cursor: "pointer",
                         marginRight: "10px",
                       }}
