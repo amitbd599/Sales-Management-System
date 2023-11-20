@@ -15,6 +15,7 @@ const InitLoadingData = () => {
       fax: "",
       footerText: "",
       invoiceType: "",
+      invoiceWriter: "",
       logo: "",
       mobile: "",
       pageOrientation: "",

@@ -68,7 +68,8 @@ const SettingComponent = () => {
     vatRef,
     discountRef,
     shippingRef,
-    footerTextRef = useRef();
+    footerTextRef,
+    invoiceWriterRef = useRef();
 
   const saveData = () => {
     let company_name = company_nameRef.value;
@@ -80,6 +81,7 @@ const SettingComponent = () => {
     let email = emailRef.value;
     let website = websiteRef.value;
     let waterMark = waterMarkRef.value;
+    let invoiceWriter = invoiceWriterRef.value;
     let tax = toNumber(taxRef.value);
     let vat = toNumber(vatRef.value);
     let discount = toNumber(discountRef.value);
@@ -96,6 +98,7 @@ const SettingComponent = () => {
       fax,
       footerText,
       invoiceType,
+      invoiceWriter,
       logo,
       mobile,
       pageOrientation,
@@ -372,6 +375,17 @@ const SettingComponent = () => {
                           </Option>
                         ))}
                       </Select>
+                    </div>
+                  </div>
+                  <div className="grid gap-1">
+                    <label>Invoice writer name:</label>
+                    <div>
+                      <input
+                        type="text"
+                        className="input_box"
+                        defaultValue={getSetting?.invoiceWriter}
+                        ref={(input) => (invoiceWriterRef = input)}
+                      />
                     </div>
                   </div>
                 </div>

@@ -67,7 +67,9 @@ const HomeComponent = () => {
 
   let customerNameRef,
     addressRef,
-    invoiceWriterRef = useRef();
+    invoiceWriterRef,
+    phoneRef,
+    emailRef = useRef();
 
   const saveInvoice = () => {
     let invoice = invoiceID;
@@ -103,8 +105,8 @@ const HomeComponent = () => {
         <div className="grid grid-cols-12 gap-[20px]">
           <div className="col-span-9 bg-white rounded-md p-[20px]">
             <div className="grid gap-[20px]">
-              <div className="flex gap-[20px]">
-                <div className="w-full">
+              <div className="grid grid-cols-12 gap-[20px]">
+                <div className="col-span-3">
                   <div className="grid gap-1">
                     <label htmlFor="invoice">Invoice no:</label>
                     <input
@@ -115,7 +117,7 @@ const HomeComponent = () => {
                     />
                   </div>
                 </div>
-                <div className="w-full">
+                <div className="col-span-3">
                   <div className="grid gap-1">
                     <label htmlFor="invoice_date">Invoice date:</label>
 
@@ -128,7 +130,7 @@ const HomeComponent = () => {
                     </span>
                   </div>
                 </div>
-                <div className="w-full">
+                <div className="col-span-3">
                   <div className="grid gap-1">
                     <label htmlFor="delivery_date">Delivery date:</label>
                     <span className="input_box">
@@ -140,10 +142,18 @@ const HomeComponent = () => {
                     </span>
                   </div>
                 </div>
-              </div>
-
-              <div className="flex gap-[20px]">
-                <div className="w-full">
+                <div className="col-span-3">
+                  <div className="grid gap-1">
+                    <label htmlFor="invoice">Invoice writer name:</label>
+                    <input
+                      defaultValue={getSetting?.invoiceWriter}
+                      ref={(input) => (invoiceWriterRef = input)}
+                      type="text"
+                      className="input_box"
+                    />
+                  </div>
+                </div>
+                <div className="col-span-3">
                   <div className="grid gap-1">
                     <label htmlFor="invoice">Customer name:</label>
                     <input
@@ -153,9 +163,9 @@ const HomeComponent = () => {
                     />
                   </div>
                 </div>
-                <div className="w-full">
+                <div className="col-span-3">
                   <div className="grid gap-1">
-                    <label htmlFor="invoice">Address:</label>
+                    <label htmlFor="invoice">Customer Address:</label>
                     <input
                       ref={(input) => (addressRef = input)}
                       type="text"
@@ -163,11 +173,21 @@ const HomeComponent = () => {
                     />
                   </div>
                 </div>
-                <div className="w-full">
+                <div className="col-span-3">
                   <div className="grid gap-1">
-                    <label htmlFor="invoice">Invoice writer name:</label>
+                    <label htmlFor="invoice">Customer Phone no:</label>
                     <input
-                      ref={(input) => (invoiceWriterRef = input)}
+                      ref={(input) => (phoneRef = input)}
+                      type="text"
+                      className="input_box"
+                    />
+                  </div>
+                </div>
+                <div className="col-span-3">
+                  <div className="grid gap-1">
+                    <label htmlFor="invoice">Customer email:</label>
+                    <input
+                      ref={(input) => (emailRef = input)}
                       type="text"
                       className="input_box"
                     />
@@ -199,7 +219,7 @@ const HomeComponent = () => {
                               </th>
                               <th className="p-2 ">
                                 <div className="font-semibold text-left">
-                                  Rate (USD)
+                                  Rate ({getSetting?.currency})
                                 </div>
                               </th>
                               <th className="p-2 ">
@@ -324,24 +344,31 @@ const HomeComponent = () => {
                   Vat: <span className="pl-3">+ {getSetting?.vat}</span>
                 </p>
 
-                <p className=" flex gap-2 items-center justify-between">
+                <div className=" flex gap-2 items-center justify-between ">
                   <p>Discount:</p>
-                  <input
-                    className="input_box inline w-[60px] text-right"
-                    defaultValue={discount}
-                    type="number"
-                    onChange={(e) => setDiscount(parseFloat(e.target.value))}
-                  />
-                </p>
-                <p className="border-b border-gray-200 pb-3 flex gap-2 items-center justify-between">
+                  <span>
+                    -
+                    <input
+                      className="input_box inline w-[60px] text-right ml-2"
+                      defaultValue={discount}
+                      type="number"
+                      onChange={(e) => setDiscount(parseFloat(e.target.value))}
+                    />
+                  </span>
+                </div>
+                <div className="border-b border-gray-200 pb-3 flex gap-2 items-center justify-between">
                   <p>Shipping:</p>
-                  <input
-                    className="input_box inline w-[60px] text-right"
-                    defaultValue={shipping}
-                    type="number"
-                    onChange={(e) => setShipping(parseFloat(e.target.value))}
-                  />
-                </p>
+                  <span>
+                    {" "}
+                    -
+                    <input
+                      className="input_box inline w-[60px] text-right ml-2"
+                      defaultValue={shipping}
+                      type="number"
+                      onChange={(e) => setShipping(parseFloat(e.target.value))}
+                    />
+                  </span>
+                </div>
                 <p className="font-semibold flex justify-between">
                   Total: <span className="pl-8">{calculateTotal()}</span>
                 </p>
