@@ -1,21 +1,26 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Select, Option } from "@material-tailwind/react";
 import { currencyData } from "../script/currency";
 import { ChromePicker } from "react-color";
 import { page_size } from "../script/page_size";
-import { getBase64 } from "../helper/helper";
+import { SuccessToast, getBase64, toNumber } from "../helper/helper";
 
 const SettingComponent = () => {
-  const [logo, setLogo] = useState(null);
-  const [bgImg, setBgImg] = useState(null);
-  const [currency, setCurrency] = useState(null);
-  const [invoiceType, setInvoiceType] = useState(null);
-  const [qrCode, setQrCode] = useState(null);
-  const [pageSize, setPageSize] = useState(null);
-  const [pageOrientation, setPageOrientation] = useState(null);
+  let getSetting = JSON.parse(localStorage.getItem("setting"));
+  const [logo, setLogo] = useState(getSetting?.logo);
+  const [bgImg, setBgImg] = useState(getSetting?.bgImg);
+  const [currency, setCurrency] = useState(getSetting?.currency);
+  const [invoiceType, setInvoiceType] = useState(getSetting?.invoiceType);
+  const [qrCode, setQrCode] = useState(getSetting?.qrCode);
+  const [pageSize, setPageSize] = useState(getSetting?.pageSize);
+  const [pageOrientation, setPageOrientation] = useState(
+    getSetting?.pageOrientation
+  );
 
-  const [selectedTemplate, setTemplateImage] = useState(1);
-  const [bgColor, setBgColor] = useState("#ffffff");
+  const [selectedTemplate, setTemplateImage] = useState(
+    getSetting?.selectedTemplate
+  );
+  const [bgColor, setBgColor] = useState(getSetting?.bgColor);
 
   const handleColorChange = (newColor) => {
     setBgColor(newColor.hex);
@@ -58,10 +63,12 @@ const SettingComponent = () => {
     faxRef,
     emailRef,
     websiteRef,
-    txtRef,
+    waterMarkRef,
+    taxRef,
     vatRef,
     discountRef,
-    shippingRef = useRef();
+    shippingRef,
+    footerTextRef = useRef();
 
   const saveData = () => {
     let company_name = company_nameRef.value;
@@ -69,12 +76,14 @@ const SettingComponent = () => {
     let mobile = mobileRef.value;
     let phone = phoneRef.value;
     let fax = faxRef.value;
+    let footerText = footerTextRef.value;
     let email = emailRef.value;
     let website = websiteRef.value;
-    let txt = txtRef.value;
-    let vat = vatRef.value;
-    let discount = discountRef.value;
-    let shipping = shippingRef.value;
+    let waterMark = waterMarkRef.value;
+    let tax = toNumber(taxRef.value);
+    let vat = toNumber(vatRef.value);
+    let discount = toNumber(discountRef.value);
+    let shipping = toNumber(shippingRef.value);
 
     let setting = {
       bgColor,
@@ -85,6 +94,7 @@ const SettingComponent = () => {
       discount,
       email,
       fax,
+      footerText,
       invoiceType,
       logo,
       mobile,
@@ -94,12 +104,14 @@ const SettingComponent = () => {
       qrCode,
       shipping,
       selectedTemplate,
-      txt,
+      tax,
       vat,
       website,
+      waterMark,
     };
 
     localStorage.setItem("setting", JSON.stringify(setting));
+    SuccessToast("Update success!");
   };
 
   return (
@@ -115,6 +127,7 @@ const SettingComponent = () => {
                   <input
                     type="text"
                     className="input_box"
+                    defaultValue={getSetting?.company_name}
                     ref={(input) => (company_nameRef = input)}
                   />
                 </div>
@@ -125,6 +138,7 @@ const SettingComponent = () => {
                   <input
                     type="text"
                     className="input_box"
+                    defaultValue={getSetting?.company_address}
                     ref={(input) => (company_addressRef = input)}
                   />
                 </div>
@@ -135,6 +149,7 @@ const SettingComponent = () => {
                   <input
                     type="text"
                     className="input_box"
+                    defaultValue={getSetting?.mobile}
                     ref={(input) => (mobileRef = input)}
                   />
                 </div>
@@ -145,6 +160,7 @@ const SettingComponent = () => {
                   <input
                     type="text"
                     className="input_box"
+                    defaultValue={getSetting?.phone}
                     ref={(input) => (phoneRef = input)}
                   />
                 </div>
@@ -155,6 +171,7 @@ const SettingComponent = () => {
                   <input
                     type="text"
                     className="input_box"
+                    defaultValue={getSetting?.fax}
                     ref={(input) => (faxRef = input)}
                   />
                 </div>
@@ -165,6 +182,7 @@ const SettingComponent = () => {
                   <input
                     type="text"
                     className="input_box"
+                    defaultValue={getSetting?.email}
                     ref={(input) => (emailRef = input)}
                   />
                 </div>
@@ -175,6 +193,7 @@ const SettingComponent = () => {
                   <input
                     type="text"
                     className="input_box"
+                    defaultValue={getSetting?.website}
                     ref={(input) => (websiteRef = input)}
                   />
                 </div>
@@ -186,6 +205,7 @@ const SettingComponent = () => {
                     <Select
                       onChange={(event) => setCurrency(event)}
                       value={currency}
+                      defaultValue={currency}
                       label="Select item"
                       animate={{
                         mount: { y: 0 },
@@ -208,7 +228,8 @@ const SettingComponent = () => {
                     type="number"
                     className="input_box"
                     placeholder="0"
-                    ref={(input) => (txtRef = input)}
+                    defaultValue={getSetting?.tax}
+                    ref={(input) => (taxRef = input)}
                   />
                 </div>
               </div>
@@ -220,6 +241,7 @@ const SettingComponent = () => {
                       type="number"
                       className="input_box"
                       placeholder="0"
+                      defaultValue={getSetting?.vat}
                       ref={(input) => (vatRef = input)}
                     />
                   </span>
@@ -233,6 +255,7 @@ const SettingComponent = () => {
                       type="number"
                       className="input_box"
                       placeholder="0"
+                      defaultValue={getSetting?.discount}
                       ref={(input) => (discountRef = input)}
                     />
                   </span>
@@ -246,6 +269,7 @@ const SettingComponent = () => {
                       type="number"
                       className="input_box"
                       placeholder="0"
+                      defaultValue={getSetting?.shipping}
                       ref={(input) => (shippingRef = input)}
                     />
                   </span>
@@ -276,6 +300,8 @@ const SettingComponent = () => {
                   <div>
                     <Select
                       onChange={(event) => setQrCode(event)}
+                      value={qrCode}
+                      defaultValue={qrCode}
                       label="Select item"
                       animate={{
                         mount: { y: 0 },
@@ -283,7 +309,7 @@ const SettingComponent = () => {
                       }}
                     >
                       <Option value="yes">Yes</Option>
-                      <Option value="yes">No</Option>
+                      <Option value="no">No</Option>
                     </Select>
                   </div>
                 </div>
@@ -309,7 +335,7 @@ const SettingComponent = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-full col-span-3">
+              <div className="w-full col-span-4">
                 <div className="grid gap-[20px]">
                   <div className="grid gap-1">
                     <label>Page Orientation:</label>
@@ -346,6 +372,35 @@ const SettingComponent = () => {
                           </Option>
                         ))}
                       </Select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="w-full col-span-4">
+                <div className="grid gap-[20px]">
+                  <div className="grid gap-1">
+                    <label>Water mark:</label>
+                    <div>
+                      <input
+                        type="text"
+                        className="input_box"
+                        defaultValue={getSetting?.waterMark}
+                        ref={(input) => (waterMarkRef = input)}
+                      />
+                    </div>
+                  </div>
+                  <div className="grid gap-1">
+                    <label>Footer text:</label>
+                    <div>
+                      <textarea
+                        defaultValue={getSetting?.footerText}
+                        ref={(input) => (footerTextRef = input)}
+                        className="input_box"
+                        name=""
+                        id=""
+                        cols="30"
+                        rows="12"
+                      ></textarea>
                     </div>
                   </div>
                 </div>

@@ -15,6 +15,9 @@ class FormHelper {
   SuccessToast(msg) {
     toast.success(msg);
   }
+  toNumber(value) {
+    return parseFloat(value);
+  }
   getBase64(file) {
     return new Promise((resolve, reject) => {
       let reader = new FileReader();
@@ -24,5 +27,11 @@ class FormHelper {
     });
   }
 }
-export const { IsEmpty, IsEmail, ErrorToast, SuccessToast, getBase64 } =
-  new FormHelper();
+export const {
+  IsEmpty,
+  IsEmail,
+  ErrorToast,
+  SuccessToast,
+  getBase64,
+  toNumber,
+} = new FormHelper();

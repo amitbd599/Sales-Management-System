@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   FaDownload,
   FaMagnifyingGlass,
@@ -6,13 +6,23 @@ import {
   FaRegTrashCan,
 } from "react-icons/fa6";
 import DatePicker from "react-datepicker";
+import { ErrorToast, IsEmpty, SuccessToast } from "../helper/helper";
+import { useNavigate } from "react-router-dom";
 
 const HomeComponent = () => {
+  const navigate = useNavigate();
+  let getSetting = JSON.parse(localStorage.getItem("setting"));
+  let getInvoices = JSON.parse(localStorage.getItem("invoices"));
   const [startDate, setStartDate] = useState(new Date());
   const [deliveryDate, setDeliveryDate] = useState(new Date());
-
+  const [invoiceID, setInvoiceID] = useState("");
   const [invoiceItems, setInvoiceItems] = useState([]);
-  const [discount, setDiscount] = useState(0);
+  const [discount, setDiscount] = useState(getSetting?.discount);
+  const [shipping, setShipping] = useState(getSetting?.shipping);
+
+  useEffect(() => {
+    generateRandomNumber();
+  }, []);
 
   const handleAddItem = () => {
     setInvoiceItems([...invoiceItems, { item: "", quantity: 0, rate: 0 }]);
@@ -39,7 +49,52 @@ const HomeComponent = () => {
 
   const calculateTotal = () => {
     const subtotal = calculateSubtotal();
-    return subtotal - discount;
+    return (
+      subtotal +
+      getSetting?.tax +
+      getSetting?.vat +
+      getSetting?.shipping -
+      discount
+    );
+  };
+
+  const generateRandomNumber = () => {
+    const currentDate = new Date();
+    const timestamp = currentDate.getTime();
+    const random = Math.floor(Math.random() * 100) + 1;
+    setInvoiceID(`${timestamp}${random}`);
+  };
+
+  let customerNameRef,
+    addressRef,
+    invoiceWriterRef = useRef();
+
+  const saveInvoice = () => {
+    let invoice = invoiceID;
+    let customerName = customerNameRef.value;
+    let address = addressRef.value;
+    let invoiceWriter = invoiceWriterRef.value;
+
+    if (IsEmpty(invoice)) {
+      ErrorToast("Invoice is empty");
+    } else if (IsEmpty(customerName)) {
+      ErrorToast("Customer Name is empty");
+    } else if (IsEmpty(address)) {
+      ErrorToast("Address is empty");
+    } else if (IsEmpty(invoiceWriter)) {
+      ErrorToast("Invoice Writer is empty");
+    } else {
+      let data = {
+        invoice,
+        customerName,
+        address,
+        invoiceWriter,
+      };
+
+      localStorage.setItem("invoices", JSON.stringify([...getInvoices, data]));
+      SuccessToast("Success");
+      navigate("/all-invoice");
+    }
   };
 
   return (
@@ -52,7 +107,12 @@ const HomeComponent = () => {
                 <div className="w-full">
                   <div className="grid gap-1">
                     <label htmlFor="invoice">Invoice no:</label>
-                    <input id="invoice" type="text" className="input_box" />
+                    <input
+                      value={invoiceID}
+                      type="text"
+                      className="input_box"
+                      disabled
+                    />
                   </div>
                 </div>
                 <div className="w-full">
@@ -86,19 +146,31 @@ const HomeComponent = () => {
                 <div className="w-full">
                   <div className="grid gap-1">
                     <label htmlFor="invoice">Customer name:</label>
-                    <input id="invoice" type="text" className="input_box" />
+                    <input
+                      ref={(input) => (customerNameRef = input)}
+                      type="text"
+                      className="input_box"
+                    />
                   </div>
                 </div>
                 <div className="w-full">
                   <div className="grid gap-1">
                     <label htmlFor="invoice">Address:</label>
-                    <input type="text" className="input_box" />
+                    <input
+                      ref={(input) => (addressRef = input)}
+                      type="text"
+                      className="input_box"
+                    />
                   </div>
                 </div>
                 <div className="w-full">
                   <div className="grid gap-1">
                     <label htmlFor="invoice">Invoice writer name:</label>
-                    <input type="text" className="input_box" />
+                    <input
+                      ref={(input) => (invoiceWriterRef = input)}
+                      type="text"
+                      className="input_box"
+                    />
                   </div>
                 </div>
               </div>
@@ -242,26 +314,44 @@ const HomeComponent = () => {
                 Calculation flow:
               </h2>
               <div className="mt-[20px] grid gap-[16px]">
-                <p>
+                <p className="flex justify-between">
                   Subtotal: <span className="pl-3">{calculateSubtotal()}</span>
                 </p>
-                <p className="border-b border-gray-200 pb-3 flex gap-2 items-center">
+                <p className="flex justify-between">
+                  Tax: <span className="pl-3">+ {getSetting?.tax}</span>
+                </p>
+                <p className="flex justify-between">
+                  Vat: <span className="pl-3">+ {getSetting?.vat}</span>
+                </p>
+
+                <p className=" flex gap-2 items-center justify-between">
                   <p>Discount:</p>
                   <input
-                    className="input_box inline w-[100px]"
-                    defaultValue={0}
+                    className="input_box inline w-[60px] text-right"
+                    defaultValue={discount}
                     type="number"
-                    value={discount}
                     onChange={(e) => setDiscount(parseFloat(e.target.value))}
                   />
                 </p>
-                <p className="font-semibold">
+                <p className="border-b border-gray-200 pb-3 flex gap-2 items-center justify-between">
+                  <p>Shipping:</p>
+                  <input
+                    className="input_box inline w-[60px] text-right"
+                    defaultValue={shipping}
+                    type="number"
+                    onChange={(e) => setShipping(parseFloat(e.target.value))}
+                  />
+                </p>
+                <p className="font-semibold flex justify-between">
                   Total: <span className="pl-8">{calculateTotal()}</span>
                 </p>
               </div>
               <div>
                 <div className="w-full mt-[30px]">
-                  <button className="px-[20px] w-full py-[8px] rounded-md bg-purple-500 text-white">
+                  <button
+                    onClick={saveInvoice}
+                    className="px-[20px] w-full py-[8px] rounded-md bg-purple-500 text-white"
+                  >
                     Save Invoice
                   </button>
                 </div>
