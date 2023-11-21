@@ -18,6 +18,14 @@ class FormHelper {
   toNumber(value) {
     return parseFloat(value);
   }
+
+  fixNumber(value) {
+    if (value > 0) {
+      return value;
+    } else {
+      return 0;
+    }
+  }
   getBase64(file) {
     return new Promise((resolve, reject) => {
       let reader = new FileReader();
@@ -34,4 +42,5 @@ export const {
   SuccessToast,
   getBase64,
   toNumber,
+  fixNumber,
 } = new FormHelper();

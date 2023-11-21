@@ -3,7 +3,7 @@ import { Select, Option } from "@material-tailwind/react";
 import { currencyData } from "../script/currency";
 import { ChromePicker } from "react-color";
 import { page_size } from "../script/page_size";
-import { SuccessToast, getBase64, toNumber } from "../helper/helper";
+import { SuccessToast, fixNumber, getBase64, toNumber } from "../helper/helper";
 
 const SettingComponent = () => {
   let getSetting = JSON.parse(localStorage.getItem("setting"));
@@ -82,10 +82,10 @@ const SettingComponent = () => {
     let website = websiteRef.value;
     let waterMark = waterMarkRef.value;
     let invoiceWriter = invoiceWriterRef.value;
-    let tax = toNumber(taxRef.value);
-    let vat = toNumber(vatRef.value);
-    let discount = toNumber(discountRef.value);
-    let shipping = toNumber(shippingRef.value);
+    let tax = fixNumber(toNumber(taxRef.value));
+    let vat = fixNumber(toNumber(vatRef.value));
+    let discount = fixNumber(toNumber(discountRef.value));
+    let shipping = fixNumber(toNumber(shippingRef.value));
 
     let setting = {
       bgColor,
@@ -291,7 +291,7 @@ const SettingComponent = () => {
                         unmount: { y: 25 },
                       }}
                     >
-                      <Option value="number">Custom number</Option>
+                      <Option value="custom">Custom number</Option>
                       <Option value="random">Random input</Option>
                     </Select>
                   </div>

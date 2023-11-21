@@ -41,3 +41,9 @@
   width: 100%;
   display: block !important;
 }
+
+.mobile-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}

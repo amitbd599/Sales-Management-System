@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 
 const InitLoadingData = () => {
   let getSetting = localStorage.getItem("setting");
+  let getInvoices = localStorage.getItem("invoices");
 
   useEffect(() => {
     let setting = {
@@ -32,6 +33,9 @@ const InitLoadingData = () => {
 
     if (!!getSetting === false) {
       localStorage.setItem("setting", JSON.stringify(setting));
+    }
+    if (!!getInvoices === false) {
+      localStorage.setItem("invoices", JSON.stringify([]));
     }
   }, []);
   return <></>;
