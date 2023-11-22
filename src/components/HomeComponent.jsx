@@ -19,6 +19,12 @@ const HomeComponent = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [deliveryDate, setDeliveryDate] = useState(new Date());
   const [invoiceID, setInvoiceID] = useState("");
+  const [customerName, setCustomerName] = useState("");
+  const [address, setAddress] = useState("");
+  const [invoiceWriter, setInvoiceWriter] = useState(getSetting?.invoiceWriter);
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [note, setNote] = useState("");
   const [invoiceItems, setInvoiceItems] = useState([]);
   const [discount, setDiscount] = useState(getSetting?.discount);
   const [shipping, setShipping] = useState(getSetting?.shipping);
@@ -68,28 +74,34 @@ const HomeComponent = () => {
     setInvoiceID(`${timestamp}${random}`);
   };
 
-  let customerNameRef,
-    addressRef,
-    invoiceWriterRef,
-    phoneRef,
-    emailRef,
-    noteRef = useRef();
+  let tax = getSetting?.tax;
+  let vat = getSetting?.vat;
+  let selectedTemplate = getSetting?.selectedTemplate;
+  let subTotal = calculateSubtotal();
+  let total = calculateTotal();
+
+  let templateData = {
+    invoiceID,
+    customerName,
+    phone,
+    email,
+    address,
+    invoiceWriter,
+    invoiceItems,
+    subTotal,
+    total,
+    discount,
+    shipping,
+    startDate,
+    deliveryDate,
+    note,
+    tax,
+    vat,
+    selectedTemplate,
+  };
 
   const saveInvoice = () => {
-    let invoice = invoiceID;
-    let customerName = customerNameRef.value;
-    let address = addressRef.value;
-    let invoiceWriter = invoiceWriterRef.value;
-    let phone = phoneRef.value;
-    let email = emailRef.value;
-    let note = noteRef.value;
-    let tax = getSetting?.tax;
-    let vat = getSetting?.vat;
-    let selectedTemplate = getSetting?.selectedTemplate;
-    let subTotal = calculateSubtotal();
-    let total = calculateTotal();
-
-    if (IsEmpty(invoice)) {
+    if (IsEmpty(invoiceID)) {
       ErrorToast("Invoice is empty");
     } else if (IsEmpty(customerName)) {
       ErrorToast("Customer Name is empty");
@@ -99,7 +111,7 @@ const HomeComponent = () => {
       ErrorToast("Invoice Writer is empty");
     } else {
       let data = {
-        invoice,
+        invoiceID,
         customerName,
         phone,
         email,
@@ -130,11 +142,24 @@ const HomeComponent = () => {
     const content = document.getElementById("content-to-convert");
 
     var opt = {
-      margin: 1,
+      margin: 5,
       filename: "myfile.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+      image: { type: "png", quality: 1 },
+      html2canvas: { scale: 4 },
+
+      pagebreak: {
+        before: ".beforeClass",
+        after: ["#after1", "#after2"],
+        avoid: "img",
+      },
+
+      jsPDF: {
+        orientation: "p",
+        unit: "mm",
+        format: "a4",
+        putOnlyUsedFonts: true,
+        floatPrecision: 16,
+      },
     };
 
     // New Promise-based usage:
@@ -197,8 +222,8 @@ const HomeComponent = () => {
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Invoice writer name:</label>
                       <input
-                        defaultValue={getSetting?.invoiceWriter}
-                        ref={(input) => (invoiceWriterRef = input)}
+                        defaultValue={invoiceWriter}
+                        onChange={(e) => setInvoiceWriter(e.target.value)}
                         type="text"
                         className="input_box"
                       />
@@ -208,7 +233,7 @@ const HomeComponent = () => {
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer name:</label>
                       <input
-                        ref={(input) => (customerNameRef = input)}
+                        onChange={(e) => setCustomerName(e.target.value)}
                         type="text"
                         className="input_box"
                       />
@@ -218,7 +243,7 @@ const HomeComponent = () => {
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer Address:</label>
                       <input
-                        ref={(input) => (addressRef = input)}
+                        onChange={(e) => setAddress(e.target.value)}
                         type="text"
                         className="input_box"
                       />
@@ -228,7 +253,7 @@ const HomeComponent = () => {
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer Phone no:</label>
                       <input
-                        ref={(input) => (phoneRef = input)}
+                        onChange={(e) => setPhone(e.target.value)}
                         type="text"
                         className="input_box"
                       />
@@ -238,7 +263,7 @@ const HomeComponent = () => {
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer email:</label>
                       <input
-                        ref={(input) => (emailRef = input)}
+                        onChange={(e) => setEmail(e.target.value)}
                         type="text"
                         className="input_box"
                       />
@@ -368,7 +393,7 @@ const HomeComponent = () => {
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Note:</label>
                       <textarea
-                        ref={(input) => (noteRef = input)}
+                        onChange={(e) => setNote(e.target.value)}
                         name=""
                         id=""
                         cols="30"
@@ -471,7 +496,7 @@ const HomeComponent = () => {
         <div className="grid gap-[20px] grid-cols-12">
           <div className="col-span-9">
             <div className="bg-white rounded-md p-[20px]">
-              <TemplateOne />
+              <TemplateOne templateData={templateData} />
             </div>
           </div>
         </div>
