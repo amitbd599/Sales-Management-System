@@ -145,7 +145,7 @@ const HomeComponent = () => {
       margin: 5,
       filename: "myfile.pdf",
       image: { type: "png", quality: 1 },
-      html2canvas: { scale: 4 },
+      html2canvas: { scale: 2 },
 
       pagebreak: {
         before: ".beforeClass",
