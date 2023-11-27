@@ -5,12 +5,15 @@ import {
   FaPrint,
   FaRegTrashCan,
 } from "react-icons/fa6";
-
 import DatePicker from "react-datepicker";
 import { ErrorToast, IsEmpty, SuccessToast } from "../helper/helper";
 import { useNavigate } from "react-router-dom";
-import html2pdf from "html2pdf.js";
-import TemplateOne from "../childComponents/TemplateOne";
+import TemplateOneView from "../childComponents/TemplateOneView";
+import { Option, Select } from "@material-tailwind/react";
+import jsPDF from "jspdf";
+import { Document, Page, pdfjs } from "react-pdf";
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 const HomeComponent = () => {
   const navigate = useNavigate();
@@ -25,9 +28,13 @@ const HomeComponent = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [note, setNote] = useState("");
+  const [paymentStatus, setPaymentStatus] = useState("Paid");
   const [invoiceItems, setInvoiceItems] = useState([]);
   const [discount, setDiscount] = useState(getSetting?.discount);
   const [shipping, setShipping] = useState(getSetting?.shipping);
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pdfDataUri, setPdfDataUri] = useState(null);
 
   useEffect(() => {
     generateRandomNumber();
@@ -58,13 +65,7 @@ const HomeComponent = () => {
 
   const calculateTotal = () => {
     const subtotal = calculateSubtotal();
-    return (
-      subtotal +
-      getSetting?.tax +
-      getSetting?.vat +
-      getSetting?.shipping -
-      discount
-    );
+    return subtotal + getSetting?.tax + getSetting?.vat + shipping - discount;
   };
 
   const generateRandomNumber = () => {
@@ -98,6 +99,7 @@ const HomeComponent = () => {
     tax,
     vat,
     selectedTemplate,
+    paymentStatus,
   };
 
   const saveInvoice = () => {
@@ -128,6 +130,7 @@ const HomeComponent = () => {
         tax,
         vat,
         selectedTemplate,
+        paymentStatus,
       };
 
       localStorage.setItem("invoices", JSON.stringify([...getInvoices, data]));
@@ -137,33 +140,74 @@ const HomeComponent = () => {
     }
   };
 
-  const handleConvertToPDF = () => {
-    // Get the HTML content that you want to convert
-    const content = document.getElementById("content-to-convert");
+  let createPdf = () => {
+    const pdf = new jsPDF("p", "mm", "a4");
 
-    var opt = {
-      margin: 5,
-      filename: "myfile.pdf",
-      image: { type: "png", quality: 1 },
-      html2canvas: { scale: 2 },
+    // Logo
+    const imgWidth = 30; // Set the width of the image
+    // Calculate the center coordinates
+    const centerX = (pdf.internal.pageSize.width - imgWidth) / 2;
+    pdf.addImage(getSetting?.logo, "JPEG", centerX, 15, 30, 0);
+    pdf.setFontSize(12);
+    pdf.text(`invoiceID: ${invoiceID}`, 140, 15);
+    pdf.text(`Date: ${startDate}`, 140, 23);
+    pdf.text(`Delivery date: ${deliveryDate}`, 140, 31);
+    pdf.text(`Payment status: ${paymentStatus}`, 140, 39);
 
-      pagebreak: {
-        before: ".beforeClass",
-        after: ["#after1", "#after2"],
-        avoid: "img",
-      },
+    // Company Address
+    pdf.setFont("poppins", "bold");
+    pdf.setFontSize(18);
+    pdf.text(getSetting?.company_name, 15, 45);
+    pdf.setFont("poppins", "normal");
+    pdf.setFontSize(12);
+    pdf.text(getSetting?.company_address, 15, 53);
+    pdf.text(getSetting?.email, 15, 61);
+    pdf.text(getSetting?.mobile, 15, 69);
+    pdf.text(getSetting?.fax, 15, 77);
+    pdf.text(getSetting?.website, 15, 85);
 
-      jsPDF: {
-        orientation: "p",
-        unit: "mm",
-        format: "a4",
-        putOnlyUsedFonts: true,
-        floatPrecision: 16,
-      },
-    };
+    // // Items
+    // const items = [
+    //   { description: "Item 1", quantity: 2, price: 10 },
+    //   { description: "Item 2", quantity: 1, price: 20 },
+    //   // Add more items as needed
+    // ];
 
-    // New Promise-based usage:
-    html2pdf().set(opt).from(content).save();
+    // let y = 40; // Y-coordinate for the items
+    // items.forEach((item) => {
+    //   pdf.text(item.description, 15, y);
+    //   pdf.text(item.quantity.toString(), 100, y);
+    //   pdf.text(item.price.toString(), 150, y);
+    //   y += 10;
+    // });
+
+    // // Subtotal
+    // const subtotal = items.reduce(
+    //   (sum, item) => sum + item.quantity * item.price,
+    //   0
+    // );
+    // pdf.text("Subtotal:", 100, y + 10);
+    // pdf.text(subtotal.toString(), 150, y + 10);
+
+    // Footer
+    pdf.text(
+      "Thank you for your business!",
+      15,
+      pdf.internal.pageSize.height - 15
+    );
+
+    // Save the PDF
+    pdf.save("invoice.pdf");
+
+    // Convert the PDF to a data URL
+    const pdfDataUri = pdf.output("datauristring");
+    // Set the data URL in the state to trigger a re-render
+    setPdfDataUri(pdfDataUri);
+  };
+
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+    setPageNumber(1);
   };
 
   return (
@@ -193,7 +237,7 @@ const HomeComponent = () => {
                       )}
                     </div>
                   </div>
-                  <div className="col-span-3">
+                  <div className="col-span-2">
                     <div className="grid gap-1">
                       <label htmlFor="invoice_date">Invoice date:</label>
 
@@ -206,7 +250,7 @@ const HomeComponent = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="col-span-3">
+                  <div className="col-span-2">
                     <div className="grid gap-1">
                       <label htmlFor="delivery_date">Delivery date:</label>
                       <span className="input_box">
@@ -216,6 +260,26 @@ const HomeComponent = () => {
                           className="focus-visible:outline-none w-full block"
                         />
                       </span>
+                    </div>
+                  </div>
+                  <div className="col-span-2">
+                    <div className="grid gap-1">
+                      <label>Payment status:</label>
+                      <div>
+                        <Select
+                          onChange={(event) => setPaymentStatus(event)}
+                          value={paymentStatus}
+                          defaultValue={paymentStatus}
+                          label="Select item"
+                          animate={{
+                            mount: { y: 0 },
+                            unmount: { y: 25 },
+                          }}
+                        >
+                          <Option value="Paid">Paid</Option>
+                          <Option value="Unpaid">Unpaid</Option>
+                        </Select>
+                      </div>
                     </div>
                   </div>
                   <div className="col-span-3">
@@ -473,10 +537,10 @@ const HomeComponent = () => {
                   <p className="flex justify-center py-5">or</p>
                   <div className="flex gap-[20px] py-[2px] justify-around border border-purple-500 rounded-md">
                     <button
-                      onClick={handleConvertToPDF}
+                      onClick={createPdf}
                       className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
                     >
-                      <FaDownload className="text-[20px] hover:text-purple-500 transition-all duration-200" />
+                      click
                     </button>
                     <button className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple">
                       <FaMagnifyingGlass className="text-[20px] hover:text-purple-500 transition-all duration-200" />
@@ -495,8 +559,21 @@ const HomeComponent = () => {
       <section className="p-[16px]">
         <div className="grid gap-[20px] grid-cols-12">
           <div className="col-span-9">
-            <div className="bg-white rounded-md p-[20px]">
-              <TemplateOne templateData={templateData} />
+            <div className="bg-white rounded-md p-[20px] ">
+              {/* <TemplateOneView templateData={templateData} /> */}
+              {pdfDataUri && (
+                <div>
+                  <Document
+                    file={pdfDataUri}
+                    onLoadSuccess={onDocumentLoadSuccess}
+                  >
+                    <Page pageNumber={pageNumber} />
+                  </Document>
+                  <p>
+                    Page {pageNumber} of {numPages}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>

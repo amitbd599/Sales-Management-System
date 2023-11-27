@@ -1,19 +1,19 @@
 import React from "react";
 
-const TemplateOne = ({ templateData }) => {
+const TemplateOneView = ({ templateData }) => {
   console.log(templateData);
   let getSetting = JSON.parse(localStorage.getItem("setting"));
   return (
-    <div id="content-to-convert" className="px-[20px] text-black">
+    <div id="content-to-convert" className="px-[20px] text-black ">
       <div className="flex justify-between border-b border-gray-200 pb-3">
         <div className="mt-[30px]">
-          <h2 className="text-[30px] font-semibold">Invoice</h2>
+          <h2 className=" font-semibold">Invoice</h2>
           <div className="grid gap-1 mt-2">
             <p>Invoice no: 12345</p>
             <p>Date: 10/02/2023</p>
             <p>Delivery date: 10/02/2023</p>
             <p>
-              Payment status: <strong>Paid</strong>
+              Payment status: <strong>{templateData?.paymentStatus}</strong>
             </p>
           </div>
         </div>
@@ -118,4 +118,4 @@ const TemplateOne = ({ templateData }) => {
   );
 };
 
-export default TemplateOne;
+export default TemplateOneView;
