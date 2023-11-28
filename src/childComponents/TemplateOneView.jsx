@@ -93,7 +93,7 @@ const TemplateOneView = ({ templateData }) => {
                       Vat: <span className="pl-3">+ {templateData?.vat}</span>
                     </p>
                   )}
-                  {templateData?.vat !== 0 && (
+                  {templateData?.shipping !== 0 && (
                     <p className="flex justify-between">
                       Shipping:{" "}
                       <span className="pl-3">+ {templateData?.shipping}</span>

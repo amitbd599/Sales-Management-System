@@ -12,7 +12,7 @@ import TemplateOneView from "../childComponents/TemplateOneView";
 import { Option, Select } from "@material-tailwind/react";
 import jsPDF from "jspdf";
 import { Document, Page, pdfjs } from "react-pdf";
-
+import autoTable from "jspdf-autotable";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 const HomeComponent = () => {
@@ -41,7 +41,10 @@ const HomeComponent = () => {
   }, []);
 
   const handleAddItem = () => {
-    setInvoiceItems([...invoiceItems, { item: "", quantity: 0, rate: 0 }]);
+    setInvoiceItems([
+      ...invoiceItems,
+      { item: "", quantity: 0, rate: 0, amount: 0 },
+    ]);
   };
 
   const handleDeleteItem = (index) => {
@@ -142,54 +145,124 @@ const HomeComponent = () => {
 
   let createPdf = () => {
     const pdf = new jsPDF("p", "mm", "a4");
-
+    pdf.setFont("inter", "normal");
     // Logo
-    const imgWidth = 30; // Set the width of the image
-    // Calculate the center coordinates
-    const centerX = (pdf.internal.pageSize.width - imgWidth) / 2;
-    pdf.addImage(getSetting?.logo, "JPEG", centerX, 15, 30, 0);
+    pdf.addImage("/image/shape/shape_1.png", "JPEG", 0, 0, 110, 0);
+    pdf.addImage(getSetting?.logo, "JPEG", 15, 10, 30, 0);
     pdf.setFontSize(12);
-    pdf.text(`invoiceID: ${invoiceID}`, 140, 15);
-    pdf.text(`Date: ${startDate}`, 140, 23);
-    pdf.text(`Delivery date: ${deliveryDate}`, 140, 31);
-    pdf.text(`Payment status: ${paymentStatus}`, 140, 39);
+    pdf.text(`Id: ${invoiceID}`, 150, 15);
+    pdf.text(`Date: ${startDate.toISOString().slice(0, 10)}`, 150, 22);
+    pdf.text(
+      `Delivery date: ${deliveryDate.toISOString().slice(0, 10)}`,
+      150,
+      29
+    );
 
-    // Company Address
-    pdf.setFont("poppins", "bold");
-    pdf.setFontSize(18);
-    pdf.text(getSetting?.company_name, 15, 45);
-    pdf.setFont("poppins", "normal");
-    pdf.setFontSize(12);
-    pdf.text(getSetting?.company_address, 15, 53);
-    pdf.text(getSetting?.email, 15, 61);
-    pdf.text(getSetting?.mobile, 15, 69);
-    pdf.text(getSetting?.fax, 15, 77);
-    pdf.text(getSetting?.website, 15, 85);
+    // Client info
+    pdf.text("Invoice to:", 15, 45);
+    pdf.setFont("inter", "bold");
+    pdf.setFontSize(16);
+    pdf.text(customerName, 15, 54);
+    pdf.setFont("inter", "normal");
+    pdf.setFontSize(10);
+    pdf.text(address, 15, 60);
+    pdf.text(`Phone: ${address}`, 15, 66);
+    pdf.text(`Email: ${email}`, 15, 72);
+    pdf.text(`Payment method: Bank**`, 150, 45);
+    pdf.text(`Account no: 1254-85241-52 **`, 150, 54);
+    pdf.text(`Account name:Sonali bank **`, 150, 60);
+    pdf.text(`Branch name: Hathazari**`, 150, 66);
+    pdf.text(`Payment status: ${paymentStatus}`, 150, 72);
 
-    // // Items
-    // const items = [
-    //   { description: "Item 1", quantity: 2, price: 10 },
-    //   { description: "Item 2", quantity: 1, price: 20 },
-    //   // Add more items as needed
-    // ];
+    // Table head
 
-    // let y = 40; // Y-coordinate for the items
-    // items.forEach((item) => {
-    //   pdf.text(item.description, 15, y);
-    //   pdf.text(item.quantity.toString(), 100, y);
-    //   pdf.text(item.price.toString(), 150, y);
+    // pdf.rect(15, 84, 180, 10);
+    // pdf.text(`Sl`, 20, 90);
+    // pdf.text(`Item`, 30, 90);
+    // pdf.text(`Qty`, 140, 90);
+    // pdf.text(`Rate `, 160, 90);
+    // pdf.text(`Amount `, 178, 90);
+    // console.log(invoiceItems);
+
+    // let y = 100; // Y-coordinate for the items
+    // invoiceItems.forEach((item, index) => {
+    //   pdf.rect(15, y - 6, 180, 10);
+    //   pdf.text((index + 1).toString(), 20, y);
+    //   pdf.text(item?.item.toString(), 30, y);
+    //   pdf.text(item?.quantity.toString(), 140, y);
+    //   pdf.text(item?.rate.toString(), 160, y);
+    //   pdf.text((item?.quantity * item?.rate).toString(), 178, y);
     //   y += 10;
     // });
 
     // // Subtotal
-    // const subtotal = items.reduce(
-    //   (sum, item) => sum + item.quantity * item.price,
-    //   0
+    // pdf.rect(145, y - 6, 50, 10);
+    // pdf.text("Subtotal:", 150, y);
+    // pdf.text(subTotal.toString(), 178, y);
+    // // Tax
+    // pdf.rect(145, y + 4, 50, 10);
+    // pdf.text("Tax:", 150, y + 10);
+    // pdf.text(tax.toString(), 178, y + 10);
+    // // Vat
+    // pdf.rect(145, y + 14, 50, 10);
+    // pdf.text("Vat:", 150, y + 20);
+    // pdf.text(vat.toString(), 178, y + 20);
+    // // Vat
+    // pdf.rect(145, y + 24, 50, 10);
+    // pdf.text("Shipping:", 150, y + 30);
+    // pdf.text(shipping.toString(), 178, y + 30);
+    // // discount
+    // pdf.rect(145, y + 34, 50, 10);
+    // pdf.text("Discount:", 150, y + 40);
+    // pdf.text(discount.toString(), 178, y + 40);
+
+    autoTable(pdf, {
+      startY: 80,
+      headStyles: { europe: { halign: "center" }, fillColor: [250, 185, 7] }, // European countries centered
+      columnStyles: { europe: { halign: "center" } }, // European countries centered
+      body: invoiceItems,
+      columns: [
+        { header: "Item", dataKey: "item" },
+        { header: "Quantity", dataKey: "quantity" },
+        { header: "Rate", dataKey: "rate" },
+        { header: "Amount", dataKey: "amount" },
+      ],
+    });
+
+    autoTable(pdf, {
+      tableWidth: 120,
+      margin: { left: pdf.internal.pageSize.width - 134 },
+      headStyles: { europe: { halign: "right" }, fillColor: [250, 185, 7] }, // European countries centered
+      columnStyles: { europe: { halign: "center" } }, // European countries centered
+      body: [
+        {
+          Title: "Subtotal",
+          subTotal: `${subTotal.toString()}`,
+          Tax: `+ ${tax.toString()}`,
+          Vat: `${vat.toString()}`,
+          Shipping: `+ ${shipping.toString()}`,
+          Discount: `- ${discount.toString()}`,
+          Total: `= ${total.toString()}`,
+        },
+      ],
+      columns: [
+        { header: "Subtotal", dataKey: "subTotal" },
+        { header: "Tax", dataKey: "Tax" },
+        { header: "Vat", dataKey: "Vat" },
+        { header: "Shipping", dataKey: "Shipping" },
+        { header: "Discount", dataKey: "Discount" },
+        { header: "Total", dataKey: "Total" },
+      ],
+    });
+
+    // pdf.text(
+    //   "Additional text goes here",
+    //   15,
+    //   pdf.autoTable.previous.finalY + 10
     // );
-    // pdf.text("Subtotal:", 100, y + 10);
-    // pdf.text(subtotal.toString(), 150, y + 10);
 
     // Footer
+    pdf.setTextColor(0, 0, 0);
     pdf.text(
       "Thank you for your business!",
       15,
@@ -413,13 +486,18 @@ const HomeComponent = () => {
                                       type="number"
                                       value={item.rate}
                                       placeholder="Rate"
-                                      onChange={(e) =>
+                                      onChange={(e) => {
                                         handleItemChange(
                                           index,
                                           "rate",
                                           parseFloat(e.target.value)
-                                        )
-                                      }
+                                        );
+                                        handleItemChange(
+                                          index,
+                                          "amount",
+                                          parseFloat(item.quantity * item.rate)
+                                        );
+                                      }}
                                       className="input_box w-full"
                                     />
                                   </td>
