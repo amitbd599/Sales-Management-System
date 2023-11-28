@@ -216,7 +216,7 @@ const SettingComponent = () => {
                       }}
                     >
                       {currencyData.map((item, index) => (
-                        <Option key={index} value={item?.currency}>
+                        <Option key={index} value={item?.symbol}>
                           {item?.country} ({item?.currency} - {item?.symbol})
                         </Option>
                       ))}

@@ -1,18 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  FaDownload,
-  FaMagnifyingGlass,
-  FaPrint,
-  FaRegTrashCan,
-} from "react-icons/fa6";
+import React, { useEffect, useState } from "react";
+import { FaMagnifyingGlass, FaPrint, FaRegTrashCan } from "react-icons/fa6";
 import DatePicker from "react-datepicker";
-import { ErrorToast, IsEmpty, SuccessToast } from "../helper/helper";
+import {
+  ErrorToast,
+  IsEmpty,
+  SuccessToast,
+  fixNumber,
+  toNumber,
+} from "../helper/helper";
 import { useNavigate } from "react-router-dom";
-import TemplateOneView from "../childComponents/TemplateOneView";
 import { Option, Select } from "@material-tailwind/react";
-import jsPDF from "jspdf";
 import { Document, Page, pdfjs } from "react-pdf";
-import autoTable from "jspdf-autotable";
+import pdfScriptData from "../helper/pdf_script";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 const HomeComponent = () => {
@@ -33,7 +32,7 @@ const HomeComponent = () => {
   const [accountNumber, setAccountNumber] = useState("");
   const [branchName, setBranchName] = useState("");
   const [invoiceItems, setInvoiceItems] = useState([]);
-  const [payment, setPayment] = useState([]);
+  const [payment, setPayment] = useState(0);
   const [discount, setDiscount] = useState(getSetting?.discount);
   const [shipping, setShipping] = useState(getSetting?.shipping);
   const [numPages, setNumPages] = useState(null);
@@ -72,7 +71,8 @@ const HomeComponent = () => {
 
   const calculateTotal = () => {
     const subtotal = calculateSubtotal();
-    return subtotal + getSetting?.tax + getSetting?.vat + shipping - discount;
+    let taxCal = parseInt((subtotal * getSetting?.tax) / 100);
+    return subtotal + taxCal + getSetting?.vat + shipping - discount;
   };
   const calculateDue = () => {
     const total = calculateTotal();
@@ -86,9 +86,10 @@ const HomeComponent = () => {
     setInvoiceID(`${timestamp}${random}`);
   };
 
-  let tax = getSetting?.tax;
-  let vat = getSetting?.vat;
-  let selectedTemplate = getSetting?.selectedTemplate;
+  let tax = fixNumber(toNumber(getSetting?.tax));
+  let vat = fixNumber(toNumber(getSetting?.vat));
+  let selectedTemplate = fixNumber(toNumber(getSetting?.selectedTemplate));
+
   let subTotal = calculateSubtotal();
   let total = calculateTotal();
   let due = calculateDue();
@@ -103,6 +104,8 @@ const HomeComponent = () => {
     invoiceItems,
     subTotal,
     total,
+    due,
+    payment,
     discount,
     shipping,
     startDate,
@@ -112,6 +115,9 @@ const HomeComponent = () => {
     vat,
     selectedTemplate,
     paymentMethod,
+    accountName,
+    accountNumber,
+    branchName,
   };
 
   const saveInvoice = () => {
@@ -135,6 +141,7 @@ const HomeComponent = () => {
         subTotal,
         total,
         due,
+        payment,
         discount,
         shipping,
         startDate,
@@ -157,137 +164,7 @@ const HomeComponent = () => {
   };
 
   let createPdf = () => {
-    const pdf = new jsPDF("p", "mm", "a4");
-    pdf.setFont("inter", "normal");
-    // Logo
-    pdf.addImage("/image/shape/shape_1.png", "JPEG", 0, 0, 110, 0);
-    pdf.addImage(getSetting?.logo, "JPEG", 15, 10, 30, 0);
-    pdf.setFontSize(12);
-    pdf.text(`Id: ${invoiceID}`, 150, 15);
-    pdf.text(`Date: ${startDate.toISOString().slice(0, 10)}`, 150, 22);
-    pdf.text(
-      `Delivery date: ${deliveryDate.toISOString().slice(0, 10)}`,
-      150,
-      29
-    );
-
-    // Client info
-    pdf.text("Invoice to:", 15, 45);
-    pdf.setFont("inter", "bold");
-    pdf.setFontSize(16);
-    pdf.text(customerName, 15, 54);
-    pdf.setFont("inter", "normal");
-    pdf.setFontSize(10);
-    pdf.text(address, 15, 60);
-    pdf.text(`Phone: ${address}`, 15, 66);
-    pdf.text(`Email: ${email}`, 15, 72);
-    pdf.text(`Payment method: ${paymentMethod}`, 150, 45);
-    pdf.text(`Account no: ${accountNumber}`, 150, 54);
-    pdf.text(`Account name:  ${accountName}`, 150, 60);
-    pdf.text(`Branch name: ${branchName}`, 150, 66);
-    pdf.text(`Payment status: ${due > 0 ? "Due" : "Paid"}`, 150, 72);
-
-    // Table head
-
-    // pdf.rect(15, 84, 180, 10);
-    // pdf.text(`Sl`, 20, 90);
-    // pdf.text(`Item`, 30, 90);
-    // pdf.text(`Qty`, 140, 90);
-    // pdf.text(`Rate `, 160, 90);
-    // pdf.text(`Amount `, 178, 90);
-    // console.log(invoiceItems);
-
-    // let y = 100; // Y-coordinate for the items
-    // invoiceItems.forEach((item, index) => {
-    //   pdf.rect(15, y - 6, 180, 10);
-    //   pdf.text((index + 1).toString(), 20, y);
-    //   pdf.text(item?.item.toString(), 30, y);
-    //   pdf.text(item?.quantity.toString(), 140, y);
-    //   pdf.text(item?.rate.toString(), 160, y);
-    //   pdf.text((item?.quantity * item?.rate).toString(), 178, y);
-    //   y += 10;
-    // });
-
-    // // Subtotal
-    // pdf.rect(145, y - 6, 50, 10);
-    // pdf.text("Subtotal:", 150, y);
-    // pdf.text(subTotal.toString(), 178, y);
-    // // Tax
-    // pdf.rect(145, y + 4, 50, 10);
-    // pdf.text("Tax:", 150, y + 10);
-    // pdf.text(tax.toString(), 178, y + 10);
-    // // Vat
-    // pdf.rect(145, y + 14, 50, 10);
-    // pdf.text("Vat:", 150, y + 20);
-    // pdf.text(vat.toString(), 178, y + 20);
-    // // Vat
-    // pdf.rect(145, y + 24, 50, 10);
-    // pdf.text("Shipping:", 150, y + 30);
-    // pdf.text(shipping.toString(), 178, y + 30);
-    // // discount
-    // pdf.rect(145, y + 34, 50, 10);
-    // pdf.text("Discount:", 150, y + 40);
-    // pdf.text(discount.toString(), 178, y + 40);
-
-    autoTable(pdf, {
-      startY: 80,
-      headStyles: { europe: { halign: "center" }, fillColor: [250, 185, 7] }, // European countries centered
-      columnStyles: { europe: { halign: "center" } }, // European countries centered
-      body: invoiceItems,
-      columns: [
-        { header: "Item", dataKey: "item" },
-        { header: "Quantity", dataKey: "quantity" },
-        { header: "Rate", dataKey: "rate" },
-        { header: "Amount", dataKey: "amount" },
-      ],
-    });
-
-    autoTable(pdf, {
-      tableWidth: 120,
-      margin: { left: pdf.internal.pageSize.width - 134 },
-      headStyles: { europe: { halign: "right" }, fillColor: [250, 185, 7] }, // European countries centered
-      columnStyles: { europe: { halign: "center" } }, // European countries centered
-      body: [
-        {
-          Title: "Subtotal",
-          subTotal: `${subTotal.toString()}`,
-          Tax: `+ ${tax.toString()}`,
-          Vat: `${vat.toString()}`,
-          Shipping: `+ ${shipping.toString()}`,
-          Discount: `- ${discount.toString()}`,
-          Total: `= ${total.toString()}`,
-        },
-      ],
-      columns: [
-        { header: "Subtotal", dataKey: "subTotal" },
-        { header: "Tax", dataKey: "Tax" },
-        { header: "Vat", dataKey: "Vat" },
-        { header: "Shipping", dataKey: "Shipping" },
-        { header: "Discount", dataKey: "Discount" },
-        { header: "Total", dataKey: "Total" },
-      ],
-    });
-
-    // pdf.text(
-    //   "Additional text goes here",
-    //   15,
-    //   pdf.autoTable.previous.finalY + 10
-    // );
-
-    // Footer
-    pdf.setTextColor(0, 0, 0);
-    pdf.text(
-      "Thank you for your business!",
-      15,
-      pdf.internal.pageSize.height - 15
-    );
-
-    // Save the PDF
-    pdf.save("invoice.pdf");
-
-    // Convert the PDF to a data URL
-    const pdfDataUri = pdf.output("datauristring");
-    // Set the data URL in the state to trigger a re-render
+    let pdfDataUri = pdfScriptData.templateOne({ templateData, getSetting });
     setPdfDataUri(pdfDataUri);
   };
 
@@ -476,22 +353,22 @@ const HomeComponent = () => {
                                   </div>
                                 </th>
                                 <th className="p-2 ">
-                                  <div className="font-semibold text-left">
+                                  <div className="font-semibold text-center">
                                     Quantity
                                   </div>
                                 </th>
                                 <th className="p-2 ">
-                                  <div className="font-semibold text-left">
+                                  <div className="font-semibold text-center">
                                     Rate ({getSetting?.currency})
                                   </div>
                                 </th>
                                 <th className="p-2 ">
-                                  <div className="font-semibold text-left">
+                                  <div className="font-semibold text-center">
                                     Amount
                                   </div>
                                 </th>
                                 <th className="p-2 ">
-                                  <div className="font-semibold text-left">
+                                  <div className="font-semibold text-center">
                                     Action
                                   </div>
                                 </th>
@@ -525,13 +402,13 @@ const HomeComponent = () => {
                                         handleItemChange(
                                           index,
                                           "quantity",
-                                          parseInt(e.target.value, 10)
+                                          fixNumber(toNumber(e.target.value))
                                         )
                                       }
-                                      className="input_box w-full"
+                                      className="input_box w-full text-center"
                                     />
                                   </td>
-                                  <td className="py-2 pr-2 w-[100px]">
+                                  <td className="py-2 pr-2 w-[100px] ">
                                     <input
                                       type="number"
                                       value={item.rate}
@@ -540,18 +417,20 @@ const HomeComponent = () => {
                                         handleItemChange(
                                           index,
                                           "rate",
-                                          parseFloat(e.target.value)
+                                          fixNumber(toNumber(e.target.value))
                                         );
                                         handleItemChange(
                                           index,
                                           "amount",
-                                          parseFloat(item.quantity * item.rate)
+                                          fixNumber(
+                                            toNumber(item.quantity * item.rate)
+                                          )
                                         );
                                       }}
-                                      className="input_box w-full"
+                                      className="input_box w-full text-center"
                                     />
                                   </td>
-                                  <td className="py-2 pr-2 w-[100px]">
+                                  <td className="py-2 pr-2 w-[100px] text-center">
                                     <span>{item.quantity * item.rate}</span>
                                   </td>
                                   <td className="py-2 pr-2 w-[100px]">
@@ -602,73 +481,86 @@ const HomeComponent = () => {
                 <h2 className="font-semibold border-b border-gray-200 pb-2">
                   Calculation flow:
                 </h2>
-                <div className="mt-[20px] grid gap-[16px]">
-                  <p className="flex justify-between">
-                    Subtotal:{" "}
-                    <span className="pl-3">{calculateSubtotal()}</span>
-                  </p>
-                  {getSetting?.tax !== 0 && (
+                {subTotal >= 1 ? (
+                  <div className="mt-[20px] grid gap-[16px]">
                     <p className="flex justify-between">
-                      Tax: <span className="pl-3">+ {getSetting?.tax}</span>
+                      Subtotal:{" "}
+                      <span className="pl-3">{calculateSubtotal()}</span>
                     </p>
-                  )}
-                  {getSetting?.vat !== 0 && (
-                    <p className="flex justify-between">
-                      Vat: <span className="pl-3">+ {getSetting?.vat}</span>
+                    {getSetting?.tax !== 0 && (
+                      <p className="flex justify-between">
+                        Tax: <span className="pl-3">+ {getSetting?.tax}%</span>
+                      </p>
+                    )}
+                    {getSetting?.vat !== 0 && (
+                      <p className="flex justify-between">
+                        Vat: <span className="pl-3">+ {getSetting?.vat}</span>
+                      </p>
+                    )}
+
+                    <div className="border-b border-gray-200 pb-3 flex gap-2 items-center justify-between">
+                      <p>Shipping:</p>
+                      <span>
+                        {" "}
+                        +
+                        <input
+                          className="input_box inline w-[100px] text-right ml-2"
+                          type="number"
+                          value={shipping}
+                          onChange={(e) =>
+                            setShipping(fixNumber(toNumber(e.target.value)))
+                          }
+                        />
+                      </span>
+                    </div>
+
+                    <div className=" flex gap-2 items-center justify-between ">
+                      <p>Discount:</p>
+                      <span>
+                        -
+                        <input
+                          className="input_box inline w-[100px] text-right ml-2"
+                          type="number"
+                          value={discount}
+                          onChange={(e) =>
+                            setDiscount(fixNumber(toNumber(e.target.value)))
+                          }
+                        />
+                      </span>
+                    </div>
+
+                    <p className="font-semibold flex justify-between">
+                      Total:{" "}
+                      <span className="pl-8">
+                        {calculateTotal()} {getSetting?.currency}
+                      </span>
                     </p>
-                  )}
+                    <div className=" flex gap-2 items-center justify-between ">
+                      <p>Payment:</p>
+                      <span>
+                        -
+                        <input
+                          className="input_box inline w-[100px] text-right ml-2"
+                          type="number"
+                          value={payment}
+                          onChange={(e) =>
+                            setPayment(fixNumber(toNumber(e.target.value)))
+                          }
+                        />
+                      </span>
+                    </div>
 
-                  <div className="border-b border-gray-200 pb-3 flex gap-2 items-center justify-between">
-                    <p>Shipping:</p>
-                    <span>
-                      {" "}
-                      +
-                      <input
-                        className="input_box inline w-[60px] text-right ml-2"
-                        defaultValue={shipping}
-                        type="number"
-                        onChange={(e) =>
-                          setShipping(parseFloat(e.target.value))
-                        }
-                      />
-                    </span>
+                    <p className="font-semibold flex justify-between">
+                      Due:{" "}
+                      <span className="pl-8">
+                        {calculateDue()} {getSetting?.currency}
+                      </span>
+                    </p>
                   </div>
+                ) : (
+                  <p className="mt-2">Please add some item </p>
+                )}
 
-                  <div className=" flex gap-2 items-center justify-between ">
-                    <p>Discount:</p>
-                    <span>
-                      -
-                      <input
-                        className="input_box inline w-[60px] text-right ml-2"
-                        defaultValue={discount}
-                        type="number"
-                        onChange={(e) =>
-                          setDiscount(parseFloat(e.target.value))
-                        }
-                      />
-                    </span>
-                  </div>
-
-                  <p className="font-semibold flex justify-between">
-                    Total: <span className="pl-8">{calculateTotal()}</span>
-                  </p>
-                  <div className=" flex gap-2 items-center justify-between ">
-                    <p>Payment:</p>
-                    <span>
-                      -
-                      <input
-                        className="input_box inline w-[60px] text-right ml-2"
-                        defaultValue={0}
-                        type="number"
-                        onChange={(e) => setPayment(parseFloat(e.target.value))}
-                      />
-                    </span>
-                  </div>
-
-                  <p className="font-semibold flex justify-between">
-                    Due: <span className="pl-8">{calculateDue()}</span>
-                  </p>
-                </div>
                 <div>
                   <div className="w-full mt-[30px]">
                     <button
