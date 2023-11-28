@@ -28,8 +28,12 @@ const HomeComponent = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [note, setNote] = useState("");
-  const [paymentStatus, setPaymentStatus] = useState("Paid");
+  const [paymentMethod, setPaymentMethod] = useState("Bank");
+  const [accountName, setAccountName] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [branchName, setBranchName] = useState("");
   const [invoiceItems, setInvoiceItems] = useState([]);
+  const [payment, setPayment] = useState([]);
   const [discount, setDiscount] = useState(getSetting?.discount);
   const [shipping, setShipping] = useState(getSetting?.shipping);
   const [numPages, setNumPages] = useState(null);
@@ -70,6 +74,10 @@ const HomeComponent = () => {
     const subtotal = calculateSubtotal();
     return subtotal + getSetting?.tax + getSetting?.vat + shipping - discount;
   };
+  const calculateDue = () => {
+    const total = calculateTotal();
+    return total - payment;
+  };
 
   const generateRandomNumber = () => {
     const currentDate = new Date();
@@ -83,6 +91,7 @@ const HomeComponent = () => {
   let selectedTemplate = getSetting?.selectedTemplate;
   let subTotal = calculateSubtotal();
   let total = calculateTotal();
+  let due = calculateDue();
 
   let templateData = {
     invoiceID,
@@ -102,7 +111,7 @@ const HomeComponent = () => {
     tax,
     vat,
     selectedTemplate,
-    paymentStatus,
+    paymentMethod,
   };
 
   const saveInvoice = () => {
@@ -125,6 +134,7 @@ const HomeComponent = () => {
         invoiceItems,
         subTotal,
         total,
+        due,
         discount,
         shipping,
         startDate,
@@ -133,7 +143,10 @@ const HomeComponent = () => {
         tax,
         vat,
         selectedTemplate,
-        paymentStatus,
+        paymentMethod,
+        accountName,
+        accountNumber,
+        branchName,
       };
 
       localStorage.setItem("invoices", JSON.stringify([...getInvoices, data]));
@@ -168,11 +181,11 @@ const HomeComponent = () => {
     pdf.text(address, 15, 60);
     pdf.text(`Phone: ${address}`, 15, 66);
     pdf.text(`Email: ${email}`, 15, 72);
-    pdf.text(`Payment method: Bank**`, 150, 45);
-    pdf.text(`Account no: 1254-85241-52 **`, 150, 54);
-    pdf.text(`Account name:Sonali bank **`, 150, 60);
-    pdf.text(`Branch name: Hathazari**`, 150, 66);
-    pdf.text(`Payment status: ${paymentStatus}`, 150, 72);
+    pdf.text(`Payment method: ${paymentMethod}`, 150, 45);
+    pdf.text(`Account no: ${accountNumber}`, 150, 54);
+    pdf.text(`Account name:  ${accountName}`, 150, 60);
+    pdf.text(`Branch name: ${branchName}`, 150, 66);
+    pdf.text(`Payment status: ${due > 0 ? "Due" : "Paid"}`, 150, 72);
 
     // Table head
 
@@ -335,26 +348,7 @@ const HomeComponent = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="col-span-2">
-                    <div className="grid gap-1">
-                      <label>Payment status:</label>
-                      <div>
-                        <Select
-                          onChange={(event) => setPaymentStatus(event)}
-                          value={paymentStatus}
-                          defaultValue={paymentStatus}
-                          label="Select item"
-                          animate={{
-                            mount: { y: 0 },
-                            unmount: { y: 25 },
-                          }}
-                        >
-                          <Option value="Paid">Paid</Option>
-                          <Option value="Unpaid">Unpaid</Option>
-                        </Select>
-                      </div>
-                    </div>
-                  </div>
+
                   <div className="col-span-3">
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Invoice writer name:</label>
@@ -406,6 +400,62 @@ const HomeComponent = () => {
                       />
                     </div>
                   </div>
+                  <div className="col-span-3">
+                    <div className="grid gap-1">
+                      <label>Payment method:</label>
+                      <div>
+                        <Select
+                          onChange={(event) => setPaymentMethod(event)}
+                          value={paymentMethod}
+                          defaultValue={paymentMethod}
+                          label="Select item"
+                          animate={{
+                            mount: { y: 0 },
+                            unmount: { y: 25 },
+                          }}
+                        >
+                          <Option value="Bank">Bank</Option>
+                          <Option value="Cash">Cash</Option>
+                        </Select>
+                      </div>
+                    </div>
+                  </div>
+                  {paymentMethod === "Bank" && (
+                    <div className="col-span-3">
+                      <div className="grid gap-1">
+                        <label htmlFor="invoice">Account Name:</label>
+                        <input
+                          onChange={(e) => setAccountName(e.target.value)}
+                          type="text"
+                          className="input_box"
+                        />
+                      </div>
+                    </div>
+                  )}
+                  {paymentMethod === "Bank" && (
+                    <div className="col-span-3">
+                      <div className="grid gap-1">
+                        <label htmlFor="invoice">Account number:</label>
+                        <input
+                          onChange={(e) => setAccountNumber(e.target.value)}
+                          type="text"
+                          className="input_box"
+                        />
+                      </div>
+                    </div>
+                  )}
+                  {paymentMethod === "Bank" && (
+                    <div className="col-span-3">
+                      <div className="grid gap-1">
+                        <label htmlFor="invoice">Branch name:</label>
+                        <input
+                          onChange={(e) => setBranchName(e.target.value)}
+                          type="text"
+                          className="input_box"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex gap-[20px]">
@@ -601,6 +651,22 @@ const HomeComponent = () => {
 
                   <p className="font-semibold flex justify-between">
                     Total: <span className="pl-8">{calculateTotal()}</span>
+                  </p>
+                  <div className=" flex gap-2 items-center justify-between ">
+                    <p>Payment:</p>
+                    <span>
+                      -
+                      <input
+                        className="input_box inline w-[60px] text-right ml-2"
+                        defaultValue={0}
+                        type="number"
+                        onChange={(e) => setPayment(parseFloat(e.target.value))}
+                      />
+                    </span>
+                  </div>
+
+                  <p className="font-semibold flex justify-between">
+                    Due: <span className="pl-8">{calculateDue()}</span>
                   </p>
                 </div>
                 <div>
