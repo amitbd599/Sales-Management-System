@@ -592,7 +592,7 @@ const HomeComponent = () => {
         </div>
       </section>
       {/* Real time view invoice */}
-      <section className="p-[16px]">
+      <section className="p-[16px] ">
         <div className="grid gap-[20px] grid-cols-12">
           <div className="col-span-9">
             <div className="bg-white rounded-md p-[20px] ">

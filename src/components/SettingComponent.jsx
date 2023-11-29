@@ -23,7 +23,8 @@ const SettingComponent = () => {
   const [bgColor, setBgColor] = useState(getSetting?.bgColor);
 
   const handleColorChange = (newColor) => {
-    setBgColor(newColor.hex);
+    console.log(newColor);
+    setBgColor(newColor.rgb);
   };
 
   const logoHandel = (event) => {
@@ -339,6 +340,27 @@ const SettingComponent = () => {
                 </div>
               </div>
               <div className="w-full col-span-4">
+                <div className="grid gap-1 ">
+                  <label>Change theme color:</label>
+                  <div className="pt-2">
+                    <ChromePicker
+                      color={bgColor}
+                      onChange={handleColorChange}
+                      className="w-full"
+                      circleSize={40}
+                      circleSpacing={24}
+                      disableAlpha={true}
+                    />
+
+                    <p className="font-semibold mt-[20px]">Selected color</p>
+                    <div
+                      className=" h-[30px] mt-[10px]"
+                      style={{ backgroundColor: bgColor }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <div className="w-full col-span-4">
                 <div className="grid gap-[20px]">
                   <div className="grid gap-1">
                     <label>Page Orientation:</label>
@@ -352,8 +374,8 @@ const SettingComponent = () => {
                           unmount: { y: 25 },
                         }}
                       >
-                        <Option value="Landscape">Landscape</Option>
-                        <Option value="Portrait">Portrait</Option>
+                        <Option value="l">Landscape</Option>
+                        <Option value="p">Portrait</Option>
                       </Select>
                     </div>
                   </div>
@@ -370,8 +392,8 @@ const SettingComponent = () => {
                         }}
                       >
                         {page_size.map((item, index) => (
-                          <Option key={index} value={item?.page_name}>
-                            {item?.page_name} ({item?.with} * {item?.height})
+                          <Option key={index} value={item?.size}>
+                            {item?.size}
                           </Option>
                         ))}
                       </Select>
@@ -388,10 +410,6 @@ const SettingComponent = () => {
                       />
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="w-full col-span-4">
-                <div className="grid gap-[20px]">
                   <div className="grid gap-1">
                     <label>Water mark:</label>
                     <div>
@@ -403,19 +421,21 @@ const SettingComponent = () => {
                       />
                     </div>
                   </div>
-                  <div className="grid gap-1">
-                    <label>Footer text:</label>
-                    <div>
-                      <textarea
-                        defaultValue={getSetting?.footerText}
-                        ref={(input) => (footerTextRef = input)}
-                        className="input_box"
-                        name=""
-                        id=""
-                        cols="30"
-                        rows="12"
-                      ></textarea>
-                    </div>
+                </div>
+              </div>
+              <div className="w-full col-span-12">
+                <div className="grid gap-1">
+                  <label>Footer text:</label>
+                  <div>
+                    <textarea
+                      defaultValue={getSetting?.footerText}
+                      ref={(input) => (footerTextRef = input)}
+                      className="input_box"
+                      name=""
+                      id=""
+                      cols="30"
+                      rows="5"
+                    ></textarea>
                   </div>
                 </div>
               </div>
