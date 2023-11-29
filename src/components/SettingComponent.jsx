@@ -21,10 +21,16 @@ const SettingComponent = () => {
     getSetting?.selectedTemplate
   );
   const [bgColor, setBgColor] = useState(getSetting?.bgColor);
+  const [themeColor, setThemeColor] = useState(getSetting?.themeColor);
 
-  const handleColorChange = (newColor) => {
-    console.log(newColor);
+  console.log(bgColor);
+  console.log(themeColor);
+
+  const handleBGColorChange = (newColor) => {
     setBgColor(newColor.rgb);
+  };
+  const handleThemeColorChange = (newColor) => {
+    setThemeColor(newColor.rgb);
   };
 
   const logoHandel = (event) => {
@@ -90,6 +96,7 @@ const SettingComponent = () => {
 
     let setting = {
       bgColor,
+      themeColor,
       bgImg,
       company_address,
       company_name,
@@ -324,7 +331,7 @@ const SettingComponent = () => {
                   <div className="pt-2">
                     <ChromePicker
                       color={bgColor}
-                      onChange={handleColorChange}
+                      onChange={handleBGColorChange}
                       className="w-full"
                       circleSize={40}
                       circleSpacing={24}
@@ -334,7 +341,9 @@ const SettingComponent = () => {
                     <p className="font-semibold mt-[20px]">Selected color</p>
                     <div
                       className=" h-[30px] mt-[10px]"
-                      style={{ backgroundColor: bgColor }}
+                      style={{
+                        backgroundColor: `rgba(${bgColor?.r}, ${bgColor?.g}, ${bgColor?.b}, ${bgColor?.a} )`,
+                      }}
                     ></div>
                   </div>
                 </div>
@@ -344,8 +353,8 @@ const SettingComponent = () => {
                   <label>Change theme color:</label>
                   <div className="pt-2">
                     <ChromePicker
-                      color={bgColor}
-                      onChange={handleColorChange}
+                      color={themeColor}
+                      onChange={handleThemeColorChange}
                       className="w-full"
                       circleSize={40}
                       circleSpacing={24}
@@ -355,7 +364,9 @@ const SettingComponent = () => {
                     <p className="font-semibold mt-[20px]">Selected color</p>
                     <div
                       className=" h-[30px] mt-[10px]"
-                      style={{ backgroundColor: bgColor }}
+                      style={{
+                        backgroundColor: `rgba(${themeColor?.r}, ${themeColor?.g}, ${themeColor?.b}, ${themeColor?.a} )`,
+                      }}
                     ></div>
                   </div>
                 </div>

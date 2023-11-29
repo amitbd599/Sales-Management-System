@@ -35,8 +35,6 @@ class pdfScript {
     pdf.text(text, centerTextX, 60);
     pdf.setTextColor(0, 0, 0);
 
-    console.log(textWidth, centerTextX);
-
     // Bg image
     let imgWidth = 100; // Set the width of your image
     let imgHeight = 0; // Set the height of your image
@@ -44,18 +42,20 @@ class pdfScript {
     let centerImgY = (pdf.internal.pageSize.height - imgHeight) / 2;
 
     // Add the image to the PDF at the center position
-    pdf.addImage(
-      getSetting?.bgImg,
-      "JPEG",
-      centerImgX,
-      centerImgY,
-      imgWidth,
-      imgHeight
-    );
+
+    getSetting?.bgImg.length !== 0 &&
+      pdf.addImage(
+        getSetting?.bgImg,
+        "JPEG",
+        centerImgX,
+        centerImgY,
+        imgWidth,
+        imgHeight
+      );
 
     // Logo
-    // pdf.addImage("/image/shape/shape_1.png", "JPEG", 0, 0, 110, 0);
-    pdf.addImage(getSetting?.logo, "JPEG", 15, 6, 30, 0);
+    getSetting?.logo.length !== 0 &&
+      pdf.addImage(getSetting?.logo, "JPEG", 15, 10, 30, 0);
 
     // Adjust right position data
     let dataList = [
@@ -148,7 +148,14 @@ class pdfScript {
     // Table Item
     autoTable(pdf, {
       startY: 80,
-      headStyles: { halign: "left", fillColor: [250, 185, 7] },
+      headStyles: {
+        halign: "left",
+        fillColor: [
+          getSetting?.themeColor?.r,
+          getSetting?.themeColor?.g,
+          getSetting?.themeColor?.b,
+        ],
+      },
       columnStyles: { halign: "left" },
       body: templateData?.invoiceItems,
       columns: [
@@ -162,7 +169,14 @@ class pdfScript {
     autoTable(pdf, {
       tableWidth: 120,
       margin: { left: pdf.internal.pageSize.width - 134 },
-      headStyles: { halign: "left", fillColor: [250, 185, 7] },
+      headStyles: {
+        halign: "left",
+        fillColor: [
+          getSetting?.themeColor?.r,
+          getSetting?.themeColor?.g,
+          getSetting?.themeColor?.b,
+        ],
+      },
       columnStyles: { halign: "left" },
       body: [
         {
@@ -187,7 +201,14 @@ class pdfScript {
     autoTable(pdf, {
       tableWidth: 60,
       margin: { left: pdf.internal.pageSize.width - 74, bottom: 40 },
-      headStyles: { europe: { halign: "right" }, fillColor: [250, 185, 7] },
+      headStyles: {
+        europe: { halign: "right" },
+        fillColor: [
+          getSetting?.themeColor?.r,
+          getSetting?.themeColor?.g,
+          getSetting?.themeColor?.b,
+        ],
+      },
       columnStyles: { europe: { halign: "center" } },
       body: [
         {
@@ -213,7 +234,11 @@ class pdfScript {
     );
     pdf.setFontSize(10);
     pdf.setDrawColor(0);
-    pdf.setFillColor(255, 0, 0);
+    pdf.setFillColor(
+      getSetting?.themeColor?.r,
+      getSetting?.themeColor?.g,
+      getSetting?.themeColor?.b
+    );
     pdf.rect(-10, pdf.internal.pageSize.height - 15, 400, 1, "F");
     var splitTitle = pdf.splitTextToSize(getSetting?.footerText, 180);
     pdf.text(splitTitle, 10, pdf.internal.pageSize.height - 7);

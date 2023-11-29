@@ -6,7 +6,18 @@ const InitLoadingData = () => {
 
   useEffect(() => {
     let setting = {
-      bgColor: "#fff",
+      bgColor: {
+        r: 254,
+        g: 254,
+        b: 254,
+        a: 1,
+      },
+      themeColor: {
+        r: 68,
+        g: 68,
+        b: 206,
+        a: 1,
+      },
       bgImg: "",
       company_address: "",
       company_name: "",
