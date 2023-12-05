@@ -4,7 +4,7 @@ import { currencyData } from "../script/currency";
 import { ChromePicker } from "react-color";
 import { page_size } from "../script/page_size";
 import { SuccessToast, fixNumber, getBase64, toNumber } from "../helper/helper";
-
+import { FaXmark } from "react-icons/fa6";
 const SettingComponent = () => {
   let getSetting = JSON.parse(localStorage.getItem("setting"));
   const [logo, setLogo] = useState(getSetting?.logo);
@@ -455,13 +455,13 @@ const SettingComponent = () => {
           <div className="col-span-3  ">
             <div className="p-[20px] bg-white rounded-md">
               <div className="flex gap-[30px]">
-                <div className="w-[300px]">
+                <div className="w-[300px] relative">
                   <h2 className="font-semibold pb-2">
                     Upload your company logo
                   </h2>
                   <label
                     htmlFor="logo"
-                    className=" cursor-pointer flex w-full  max-w-lg flex-col items-center rounded-xl border-2 border-dashed border-blue-400 bg-white p-6 text-center"
+                    className=" cursor-pointer flex w-full  max-w-lg flex-col items-center rounded-xl border-2 border-dashed border-blue-400 bg-white p-6 text-center "
                   >
                     <div>
                       {logo ? (
@@ -502,10 +502,18 @@ const SettingComponent = () => {
                       onChange={(event) => logoHandel(event)}
                     />
                   </label>
+                  {logo && (
+                    <div>
+                      <FaXmark
+                        onClick={() => setLogo("")}
+                        className="absolute cursor-pointer right-[-22px] z-[999] top-[-10px] p-2 text-[50px] text-red-600"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex gap-[30px] mt-[40px]">
-                <div className="w-[300px]">
+                <div className="w-[300px] relative">
                   <h2 className="font-semibold pb-2">Add background image</h2>
                   <label
                     htmlFor="bg"
@@ -550,6 +558,14 @@ const SettingComponent = () => {
                       onChange={(event) => bgHandel(event)}
                     />
                   </label>
+                  {bgImg && (
+                    <div>
+                      <FaXmark
+                        onClick={() => setBgImg("")}
+                        className="absolute cursor-pointer right-[-22px] z-[999] top-[-10px] p-2 text-[50px] text-red-600"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="mt-5">

@@ -1,9 +1,10 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import QRCode from "qrcode-generator";
 
 class pdfScript {
   // Template one
-  templateOne({ getSetting, templateData }) {
+  templateOne({ getSetting, templateData, print, view, save }) {
     const pdf = new jsPDF(
       getSetting?.pageOrientation,
       "mm",
@@ -35,6 +36,27 @@ class pdfScript {
     pdf.text(text, centerTextX, 60);
     pdf.setTextColor(0, 0, 0);
 
+    // Your QR code content
+    const qrCodeContent = "Please add your information";
+    const typeNumber = 0;
+    const errorCorrectionLevel = "L";
+    const qr = QRCode(typeNumber, errorCorrectionLevel);
+    qr.addData(qrCodeContent);
+    qr.make();
+    const qrCodeImageUri = qr.createDataURL();
+    let qrWidth = 20; // Set the width of your image
+    let qrHeight = 20; // Set the height of your image
+    let centerQRX = (pdf.internal.pageSize.width - qrWidth) / 2;
+    getSetting?.qrCode === "yes" &&
+      pdf.addImage(
+        qrCodeImageUri,
+        "PNG",
+        centerQRX + 20,
+        10,
+        qrWidth,
+        qrHeight
+      );
+
     // Bg image
     let imgWidth = 100; // Set the width of your image
     let imgHeight = 0; // Set the height of your image
@@ -43,7 +65,7 @@ class pdfScript {
 
     // Add the image to the PDF at the center position
 
-    getSetting?.bgImg.length !== 0 &&
+    getSetting?.bgImg?.length !== 0 &&
       pdf.addImage(
         getSetting?.bgImg,
         "JPEG",
@@ -75,7 +97,7 @@ class pdfScript {
         maxWidth = itemWidth;
       }
     });
-    var rightPosition = pdf.internal.pageSize.width - maxWidth - 6;
+    var rightPosition = pdf.internal.pageSize.width - maxWidth - 4;
 
     // Invoice id
     pdf.setFontSize(12);
@@ -86,7 +108,11 @@ class pdfScript {
 
     pdf.setFontSize(10);
     pdf.text(`${getSetting?.company_address}`, 15, 32);
-    pdf.text(`${getSetting?.email}, ${getSetting?.mobile}`, 15, 38);
+    pdf.text(
+      `${getSetting?.email}, ${getSetting?.mobile}, ${getSetting?.website}`,
+      15,
+      38
+    );
     pdf.rect(15, 41, 80, 0.1);
     pdf.text(
       `Date: ${templateData?.startDate.toISOString().slice(0, 10)}`,
@@ -98,11 +124,7 @@ class pdfScript {
       rightPosition,
       27
     );
-    pdf.text(
-      `Invoice writer: ${templateData?.invoiceWriter}`,
-      rightPosition,
-      33
-    );
+    pdf.text(`Writer: ${templateData?.invoiceWriter}`, rightPosition, 33);
 
     // Client info
     pdf.text("Invoice to:", 15, 47);
@@ -245,9 +267,13 @@ class pdfScript {
 
     var note = pdf.splitTextToSize(`Note: ${templateData?.note}`, 120);
     pdf.text(note, 10, pdf.internal.pageSize.height - 35);
-
     // Save the PDF
-    pdf.save("invoice.pdf");
+
+    print === true && pdf.autoPrint();
+    view === true && pdf.output("dataurlnewwindow");
+    save === true && pdf.save("invoice.pdf");
+
+    console.log(print, view, save);
 
     // Convert the PDF to a data URL
     const pdfDataUri = pdf.output("datauristring");

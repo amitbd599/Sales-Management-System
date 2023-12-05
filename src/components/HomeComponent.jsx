@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaMagnifyingGlass, FaPrint, FaRegTrashCan } from "react-icons/fa6";
 import DatePicker from "react-datepicker";
 import {
@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { Option, Select } from "@material-tailwind/react";
 import { Document, Page, pdfjs } from "react-pdf";
 import pdfScriptData from "../helper/pdf_script";
+
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 const HomeComponent = () => {
@@ -163,9 +164,27 @@ const HomeComponent = () => {
     }
   };
 
-  let createPdf = () => {
-    let pdfDataUri = pdfScriptData.templateOne({ templateData, getSetting });
+  let savePdf = async () => {
+    let pdfDataUri = pdfScriptData.templateOne({
+      templateData,
+      getSetting,
+      save: true,
+    });
     setPdfDataUri(pdfDataUri);
+  };
+  let viewPdf = async () => {
+    pdfScriptData.templateOne({
+      templateData,
+      getSetting,
+      view: true,
+    });
+  };
+  let printPdf = async () => {
+    pdfScriptData.templateOne({
+      templateData,
+      getSetting,
+      print: true,
+    });
   };
 
   const onDocumentLoadSuccess = ({ numPages }) => {
@@ -460,17 +479,19 @@ const HomeComponent = () => {
                 </div>
 
                 <div className="flex gap-[20px]">
-                  <div className="w-full">
-                    <div className="grid gap-1">
-                      <label htmlFor="invoice">Note:</label>
-                      <textarea
-                        onChange={(e) => setNote(e.target.value)}
-                        name=""
-                        id=""
-                        cols="30"
-                        rows="6"
-                        className="input_box"
-                      ></textarea>
+                  <div className="grid grid-cols-12 gap-[30px] w-full">
+                    <div className="col-span-12 w-full">
+                      <div className="grid gap-1">
+                        <label htmlFor="invoice">Note:</label>
+                        <textarea
+                          onChange={(e) => setNote(e.target.value)}
+                          name=""
+                          id=""
+                          cols="30"
+                          rows="6"
+                          className="input_box"
+                        ></textarea>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -573,15 +594,21 @@ const HomeComponent = () => {
                   <p className="flex justify-center py-5">or</p>
                   <div className="flex gap-[20px] py-[2px] justify-around border border-purple-500 rounded-md">
                     <button
-                      onClick={createPdf}
+                      onClick={savePdf}
                       className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
                     >
                       click
                     </button>
-                    <button className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple">
+                    <button
+                      onClick={viewPdf}
+                      className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
+                    >
                       <FaMagnifyingGlass className="text-[20px] hover:text-purple-500 transition-all duration-200" />
                     </button>
-                    <button className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple">
+                    <button
+                      onClick={printPdf}
+                      className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
+                    >
                       <FaPrint className="text-[20px] hover:text-purple-500 transition-all duration-200" />
                     </button>
                   </div>
