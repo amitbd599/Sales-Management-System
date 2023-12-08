@@ -86,18 +86,20 @@ class pdfScript {
       templateData?.deliveryDate.toISOString().slice(0, 10),
       templateData?.invoiceWriter,
       `Payment method: ${templateData?.paymentMethod}`,
-      `Account no: ${templateData?.accountNumber}`,
-      `Branch name: ${templateData?.branchName}`,
+      `A/C no: ${templateData?.accountNumber}`,
+      `Branch: ${templateData?.branchName}`,
       `Payment status: ${templateData?.due}`,
     ];
     let maxWidth = 0;
+
     dataList.forEach(function (item) {
-      var itemWidth = pdf.getStringUnitWidth(item) * 5;
+      let itemWidth = pdf.getStringUnitWidth(item) * 5;
       if (itemWidth > maxWidth) {
-        maxWidth = itemWidth;
+        maxWidth = parseInt(itemWidth);
       }
     });
-    var rightPosition = pdf.internal.pageSize.width - maxWidth - 4;
+    let rightPosition =
+      parseInt(pdf.internal.pageSize.width) - parseInt(maxWidth) - 4;
 
     // Invoice id
     pdf.setFontSize(12);
@@ -137,7 +139,11 @@ class pdfScript {
     pdf.text(`Phone: ${templateData?.phone}`, 15, 66);
     pdf.text(`Email: ${templateData?.email}`, 15, 72);
     pdf.setFontSize(12);
-    pdf.text(`Payment: ${templateData?.paymentMethod}`, rightPosition, 48);
+    pdf.text(
+      `Payment method: ${templateData?.paymentMethod}`,
+      rightPosition,
+      48
+    );
     pdf.setFontSize(10);
     templateData?.paymentMethod === "Bank" &&
       pdf.text(`A/C no: ${templateData?.accountNumber}`, rightPosition, 54);
@@ -254,10 +260,10 @@ class pdfScript {
       getSetting?.themeColor?.b
     );
     pdf.rect(-10, pdf.internal.pageSize.height - 15, 400, 1, "F");
-    var splitTitle = pdf.splitTextToSize(getSetting?.footerText, 180);
+    let splitTitle = pdf.splitTextToSize(getSetting?.footerText, 180);
     pdf.text(splitTitle, 10, pdf.internal.pageSize.height - 7);
 
-    var note = pdf.splitTextToSize(`Note: ${templateData?.note}`, 120);
+    let note = pdf.splitTextToSize(`Note: ${templateData?.note}`, 120);
     pdf.text(note, 10, pdf.internal.pageSize.height - 35);
     // Save the PDF
 
@@ -277,8 +283,7 @@ class pdfScript {
       "mm",
       getSetting?.pageSize
     );
-    let maxWidth = 0;
-    var rightPosition = pdf.internal.pageSize.width - maxWidth - 4;
+
     pdf.setFont("inter", "normal");
 
     // Bg color
@@ -325,7 +330,55 @@ class pdfScript {
     getSetting?.logo.length !== 0 &&
       pdf.addImage(getSetting?.logo, "JPEG", 15, 10, 0, 14);
 
+    // Adjust right position data
+    let dataList = [
+      templateData?.invoiceID,
+      templateData?.startDate.toISOString().slice(0, 10),
+      templateData?.deliveryDate.toISOString().slice(0, 10),
+      templateData?.invoiceWriter,
+      `Payment method: ${templateData?.paymentMethod}`,
+      `A/C no: ${templateData?.accountNumber}`,
+      `Branch: ${templateData?.branchName}`,
+      `Payment status: ${templateData?.due}`,
+    ];
+    let maxWidth = 0;
+
+    dataList.forEach(function (item) {
+      let itemWidth = pdf.getStringUnitWidth(item) * 5;
+      if (itemWidth > maxWidth) {
+        maxWidth = itemWidth;
+      }
+    });
+    let rightPosition = pdf.internal.pageSize.width - maxWidth - 10;
+
+    pdf.setFontSize(12);
+    pdf.text(
+      `Payment method: ${templateData?.paymentMethod}`,
+      rightPosition,
+      20
+    );
+    pdf.setFontSize(10);
+    templateData?.paymentMethod === "Bank" &&
+      pdf.text(`A/C no: ${templateData?.accountNumber}`, rightPosition, 26);
+    templateData?.paymentMethod === "Bank" &&
+      pdf.text(`A/C name:  ${templateData?.accountName}`, rightPosition, 31);
+    templateData?.paymentMethod === "Bank" &&
+      pdf.text(`Branch: ${templateData?.branchName}`, rightPosition, 36);
+    pdf.setTextColor(255, 0, 0);
+    templateData?.paymentMethod === "Bank"
+      ? pdf.text(
+          `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
+          rightPosition,
+          41
+        )
+      : pdf.text(
+          `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
+          rightPosition,
+          54
+        );
+
     // Invoice id
+    pdf.setTextColor(0, 0, 0);
     pdf.setFontSize(12);
     pdf.text(`Invoice no: ${templateData?.invoiceID}`, 15, 35);
     pdf.text(
@@ -467,10 +520,10 @@ class pdfScript {
     pdf.setTextColor(0, 0, 0);
     pdf.setFontSize(14);
     let footerSingTextTemTwo = "Authorized Signature";
-    var pageSizeTemTwo = pdf.internal.pageSize;
-    var pageWidthTemTwo = pageSizeTemTwo.width;
-    var textWidthTemTwo = pdf.getStringUnitWidth(footerSingTextTemTwo);
-    var startXTemTwo =
+    let pageSizeTemTwo = pdf.internal.pageSize;
+    let pageWidthTemTwo = pageSizeTemTwo.width;
+    let textWidthTemTwo = pdf.getStringUnitWidth(footerSingTextTemTwo);
+    let startXTemTwo =
       parseInt(pageWidthTemTwo) - parseInt(textWidthTemTwo) - 50;
 
     pdf.text(
@@ -487,7 +540,7 @@ class pdfScript {
       getSetting?.themeColor?.b
     );
     pdf.rect(-10, pdf.internal.pageSize.height - 15, 400, 1, "F");
-    var splitTitle = pdf.splitTextToSize(getSetting?.footerText, 180);
+    let splitTitle = pdf.splitTextToSize(getSetting?.footerText, 180);
     pdf.text(splitTitle, 10, pdf.internal.pageSize.height - 7);
 
     // Your QR code content
@@ -510,7 +563,7 @@ class pdfScript {
         qrHeight
       );
 
-    var note = pdf.splitTextToSize(`Note: ${templateData?.note}`, 120);
+    let note = pdf.splitTextToSize(`Note: ${templateData?.note}`, 120);
     pdf.text(note, 10, pdf.internal.pageSize.height - 35);
     // Save the PDF
 
