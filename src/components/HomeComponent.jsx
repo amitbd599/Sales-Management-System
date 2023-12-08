@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FaMagnifyingGlass, FaPrint, FaRegTrashCan } from "react-icons/fa6";
+import {
+  FaRegFilePdf,
+  FaPrint,
+  FaRegTrashCan,
+  FaDownload,
+} from "react-icons/fa6";
 import DatePicker from "react-datepicker";
 import {
   ErrorToast,
@@ -158,33 +163,58 @@ const HomeComponent = () => {
       };
 
       localStorage.setItem("invoices", JSON.stringify([...getInvoices, data]));
-      console.log(data);
       SuccessToast("Success");
       navigate("/all-invoice");
     }
   };
 
   let savePdf = async () => {
-    let pdfDataUri = pdfScriptData.templateOne({
-      templateData,
-      getSetting,
-      save: true,
-    });
-    setPdfDataUri(pdfDataUri);
+    if (getSetting?.selectedTemplate === 1) {
+      let pdfDataUri = pdfScriptData.templateOne({
+        templateData,
+        getSetting,
+        save: true,
+      });
+      setPdfDataUri(pdfDataUri);
+    } else if (getSetting?.selectedTemplate === 2) {
+      let pdfDataUri = pdfScriptData.templateTwo({
+        templateData,
+        getSetting,
+        save: true,
+      });
+      setPdfDataUri(pdfDataUri);
+    }
   };
   let viewPdf = async () => {
-    pdfScriptData.templateOne({
-      templateData,
-      getSetting,
-      view: true,
-    });
+    if (getSetting?.selectedTemplate === 1) {
+      pdfScriptData.templateOne({
+        templateData,
+        getSetting,
+        view: true,
+      });
+    } else if (getSetting?.selectedTemplate === 2) {
+      pdfScriptData.templateTwo({
+        templateData,
+        getSetting,
+        view: true,
+      });
+    }
   };
   let printPdf = async () => {
-    pdfScriptData.templateOne({
-      templateData,
-      getSetting,
-      print: true,
-    });
+    // saveInvoice();
+    if (getSetting?.selectedTemplate === 1) {
+      pdfScriptData.templateOne({
+        templateData,
+        getSetting,
+        print: true,
+      });
+    } else if (getSetting?.selectedTemplate === 2) {
+      pdfScriptData.templateTwo({
+        templateData,
+        getSetting,
+        print: true,
+      });
+    }
   };
 
   const onDocumentLoadSuccess = ({ numPages }) => {
@@ -597,13 +627,13 @@ const HomeComponent = () => {
                       onClick={savePdf}
                       className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
                     >
-                      click
+                      <FaDownload />
                     </button>
                     <button
                       onClick={viewPdf}
                       className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
                     >
-                      <FaMagnifyingGlass className="text-[20px] hover:text-purple-500 transition-all duration-200" />
+                      <FaRegFilePdf className="text-[20px] hover:text-purple-500 transition-all duration-200" />
                     </button>
                     <button
                       onClick={printPdf}
@@ -623,7 +653,6 @@ const HomeComponent = () => {
         <div className="grid gap-[20px] grid-cols-12">
           <div className="col-span-9">
             <div className="bg-white rounded-md p-[20px] ">
-              {/* <TemplateOneView templateData={templateData} /> */}
               {pdfDataUri && (
                 <div>
                   <Document
