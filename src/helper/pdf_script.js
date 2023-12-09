@@ -573,6 +573,10 @@ class pdfScript {
     // Set the data URL in the state to trigger a re-render
     return pdfDataUri;
   }
+
+  templateThree({
+    console.log("Hello");
+  })
 }
 
 let pdfScriptData = new pdfScript();
