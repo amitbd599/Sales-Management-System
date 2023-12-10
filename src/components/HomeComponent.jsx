@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaRegFilePdf,
   FaPrint,
@@ -14,7 +14,7 @@ import {
   toNumber,
 } from "../helper/helper";
 import { useNavigate } from "react-router-dom";
-import { Option, Select } from "@material-tailwind/react";
+import { Option, Select, Tooltip } from "@material-tailwind/react";
 import { Document, Page, pdfjs } from "react-pdf";
 import pdfScriptData from "../helper/pdf_script";
 
@@ -92,11 +92,11 @@ const HomeComponent = () => {
     setInvoiceID(`${timestamp}${random}`);
   };
 
-  let tax = fixNumber(toNumber(getSetting?.tax));
   let vat = fixNumber(toNumber(getSetting?.vat));
   let selectedTemplate = fixNumber(toNumber(getSetting?.selectedTemplate));
 
   let subTotal = calculateSubtotal();
+  let tax = parseInt((subTotal * getSetting?.tax) / 100);
   let total = calculateTotal();
   let due = calculateDue();
 
@@ -164,7 +164,21 @@ const HomeComponent = () => {
 
       localStorage.setItem("invoices", JSON.stringify([...getInvoices, data]));
       SuccessToast("Success");
-      navigate("/all-invoice");
+      // After save action
+      generateRandomNumber();
+      setStartDate(new Date());
+      setCustomerName("");
+      setAddress("");
+      setPhone("");
+      setEmail("");
+      setNote("");
+      setAccountName("");
+      setAccountNumber("");
+      setBranchName("");
+      setInvoiceItems([]);
+      setPayment(0);
+
+      // navigate("/all-invoice");
     }
   };
 
@@ -183,7 +197,15 @@ const HomeComponent = () => {
         save: true,
       });
       setPdfDataUri(pdfDataUri);
+    } else if (getSetting?.selectedTemplate === 3) {
+      let pdfDataUri = pdfScriptData.templateThree({
+        templateData,
+        getSetting,
+        save: true,
+      });
+      setPdfDataUri(pdfDataUri);
     }
+    saveInvoice();
   };
   let viewPdf = async () => {
     if (getSetting?.selectedTemplate === 1) {
@@ -198,6 +220,13 @@ const HomeComponent = () => {
         getSetting,
         view: true,
       });
+    } else if (getSetting?.selectedTemplate === 3) {
+      let pdfDataUri = pdfScriptData.templateThree({
+        templateData,
+        getSetting,
+        save: true,
+      });
+      setPdfDataUri(pdfDataUri);
     }
   };
   let printPdf = async () => {
@@ -214,7 +243,15 @@ const HomeComponent = () => {
         getSetting,
         print: true,
       });
+    } else if (getSetting?.selectedTemplate === 3) {
+      let pdfDataUri = pdfScriptData.templateThree({
+        templateData,
+        getSetting,
+        save: true,
+      });
+      setPdfDataUri(pdfDataUri);
     }
+    saveInvoice();
   };
 
   const onDocumentLoadSuccess = ({ numPages }) => {
@@ -290,6 +327,7 @@ const HomeComponent = () => {
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer name:</label>
                       <input
+                        value={customerName}
                         onChange={(e) => setCustomerName(e.target.value)}
                         type="text"
                         className="input_box"
@@ -300,6 +338,7 @@ const HomeComponent = () => {
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer Address:</label>
                       <input
+                        value={address}
                         onChange={(e) => setAddress(e.target.value)}
                         type="text"
                         className="input_box"
@@ -310,6 +349,7 @@ const HomeComponent = () => {
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer Phone no:</label>
                       <input
+                        value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         type="text"
                         className="input_box"
@@ -320,6 +360,7 @@ const HomeComponent = () => {
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer email:</label>
                       <input
+                        value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         type="text"
                         className="input_box"
@@ -351,6 +392,7 @@ const HomeComponent = () => {
                       <div className="grid gap-1">
                         <label htmlFor="invoice">Account Name:</label>
                         <input
+                          value={accountName}
                           onChange={(e) => setAccountName(e.target.value)}
                           type="text"
                           className="input_box"
@@ -363,6 +405,7 @@ const HomeComponent = () => {
                       <div className="grid gap-1">
                         <label htmlFor="invoice">Account number:</label>
                         <input
+                          value={accountNumber}
                           onChange={(e) => setAccountNumber(e.target.value)}
                           type="text"
                           className="input_box"
@@ -375,6 +418,7 @@ const HomeComponent = () => {
                       <div className="grid gap-1">
                         <label htmlFor="invoice">Branch name:</label>
                         <input
+                          value={branchName}
                           onChange={(e) => setBranchName(e.target.value)}
                           type="text"
                           className="input_box"
@@ -514,6 +558,7 @@ const HomeComponent = () => {
                       <div className="grid gap-1">
                         <label htmlFor="invoice">Note:</label>
                         <textarea
+                          value={note}
                           onChange={(e) => setNote(e.target.value)}
                           name=""
                           id=""
@@ -623,24 +668,51 @@ const HomeComponent = () => {
                   </div>
                   <p className="flex justify-center py-5">or</p>
                   <div className="flex gap-[20px] py-[2px] justify-around border border-purple-500 rounded-md">
-                    <button
-                      onClick={savePdf}
-                      className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
+                    <Tooltip
+                      content="Save & Download"
+                      placement="bottom"
+                      animate={{
+                        mount: { scale: 1, y: 0 },
+                        unmount: { scale: 0, y: 25 },
+                      }}
                     >
-                      <FaDownload />
-                    </button>
-                    <button
-                      onClick={viewPdf}
-                      className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
+                      <button
+                        onClick={savePdf}
+                        className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
+                      >
+                        <FaDownload />
+                      </button>
+                    </Tooltip>
+                    <Tooltip
+                      content="View Invoice"
+                      placement="bottom"
+                      animate={{
+                        mount: { scale: 1, y: 0 },
+                        unmount: { scale: 0, y: 25 },
+                      }}
                     >
-                      <FaRegFilePdf className="text-[20px] hover:text-purple-500 transition-all duration-200" />
-                    </button>
-                    <button
-                      onClick={printPdf}
-                      className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
+                      <button
+                        onClick={viewPdf}
+                        className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
+                      >
+                        <FaRegFilePdf className="text-[20px] hover:text-purple-500 transition-all duration-200" />
+                      </button>
+                    </Tooltip>
+                    <Tooltip
+                      content="Save & Print"
+                      placement="bottom"
+                      animate={{
+                        mount: { scale: 1, y: 0 },
+                        unmount: { scale: 0, y: 25 },
+                      }}
                     >
-                      <FaPrint className="text-[20px] hover:text-purple-500 transition-all duration-200" />
-                    </button>
+                      <button
+                        onClick={printPdf}
+                        className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
+                      >
+                        <FaPrint className="text-[20px] hover:text-purple-500 transition-all duration-200" />
+                      </button>
+                    </Tooltip>
                   </div>
                 </div>
               </div>
