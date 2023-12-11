@@ -595,27 +595,6 @@ class pdfScript {
 
     pdf.setFont("inter", "normal");
 
-    // Bg color
-    // pdf.setFillColor.apply(null, [
-    //   getSetting?.bgColor.r,
-    //   getSetting?.bgColor.g,
-    //   getSetting?.bgColor.b,
-    // ]);
-    // pdf.rect(
-    //   0,
-    //   0,
-    //   pdf.internal.pageSize.width,
-    //   pdf.internal.pageSize.height,
-    //   "F"
-    // );
-
-    // Demo Text
-    pdf.setTextColor(200);
-    let text = "Template Two";
-    pdf.setFontSize(50);
-    let textWidth = pdf.getTextWidth(text);
-    let centerTextX = (pdf.internal.pageSize.width - textWidth) / 2;
-    pdf.text(text, centerTextX, 60);
     pdf.setTextColor(0, 0, 0);
 
     // Bg image
@@ -637,7 +616,7 @@ class pdfScript {
 
     // Logo
     getSetting?.logo.length !== 0 &&
-      pdf.addImage(getSetting?.logo, "JPEG", 15, 10, 0, 14);
+      pdf.addImage(getSetting?.logo, "JPEG", 15, 8, 0, 14);
 
     pdf.setDrawColor(0);
     pdf.setFillColor(
@@ -645,7 +624,7 @@ class pdfScript {
       getSetting?.themeColor?.g,
       getSetting?.themeColor?.b
     );
-    pdf.rect(-10, 35, 400, 1, "F");
+    pdf.rect(-10, 44, 400, 1, "F");
 
     pdf.setFontSize(40);
     pdf.setFont("inter", "bold");
@@ -654,9 +633,37 @@ class pdfScript {
       getSetting?.themeColor?.g,
       getSetting?.themeColor?.b
     );
-    pdf.text("INVOICE", pdf.internal.pageSize.width - 15, 24, {
-      align: "right",
-    });
+    // Your QR code content
+    const qrCodeContent = "Please add your information";
+    const typeNumber = 0;
+    const errorCorrectionLevel = "L";
+    const qr = QRCode(typeNumber, errorCorrectionLevel);
+    qr.addData(qrCodeContent);
+    qr.make();
+    const qrCodeImageUri = qr.createDataURL();
+    let qrWidth = 30; // Set the width of your image
+    let qrHeight = 30; // Set the height of your image
+    getSetting?.qrCode === "yes" &&
+      pdf.addImage(
+        qrCodeImageUri,
+        "PNG",
+        pdf.internal.pageSize.width - 40,
+        12,
+        qrWidth,
+        qrHeight
+      );
+
+    pdf.setTextColor(0, 0, 0);
+    pdf.setFont("inter", "normal");
+    pdf.setFontSize(12);
+    pdf.text(`${getSetting?.company_name}`, 15, 28);
+    pdf.setFontSize(10);
+    pdf.text(`${getSetting?.company_address}`, 15, 33);
+    pdf.text(
+      `${getSetting?.email}, ${getSetting?.mobile}, ${getSetting?.website}`,
+      15,
+      38
+    );
 
     // Filled red square
     pdf.setDrawColor(0);
@@ -685,7 +692,7 @@ class pdfScript {
     pdf.text(
       `INVOICE #  ${templateData?.invoiceID}`,
       pdf.internal.pageSize.width - 15,
-      66,
+      55,
       {
         align: "right",
       }
@@ -693,7 +700,7 @@ class pdfScript {
     pdf.text(
       `Submit Date  ${templateData?.startDate.toISOString().slice(0, 10)}`,
       pdf.internal.pageSize.width - 15,
-      71,
+      60,
       {
         align: "right",
       }
@@ -701,11 +708,57 @@ class pdfScript {
     pdf.text(
       `Delivery date  ${templateData?.deliveryDate.toISOString().slice(0, 10)}`,
       pdf.internal.pageSize.width - 15,
-      76,
+      65,
       {
         align: "right",
       }
     );
+
+    templateData?.paymentMethod === "Bank" &&
+      pdf.text(
+        `A/C no: ${templateData?.accountNumber}`,
+        pdf.internal.pageSize.width - 15,
+        70,
+        {
+          align: "right",
+        }
+      );
+    templateData?.paymentMethod === "Bank" &&
+      pdf.text(
+        `A/C name:  ${templateData?.accountName}`,
+        pdf.internal.pageSize.width - 15,
+        75,
+        {
+          align: "right",
+        }
+      );
+    templateData?.paymentMethod === "Bank" &&
+      pdf.text(
+        `Branch: ${templateData?.branchName}`,
+        pdf.internal.pageSize.width - 15,
+        80,
+        {
+          align: "right",
+        }
+      );
+    pdf.setTextColor(255, 0, 0);
+    templateData?.paymentMethod === "Bank"
+      ? pdf.text(
+          `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
+          pdf.internal.pageSize.width - 15,
+          85,
+          {
+            align: "right",
+          }
+        )
+      : pdf.text(
+          `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
+          pdf.internal.pageSize.width - 15,
+          85,
+          {
+            align: "right",
+          }
+        );
 
     // Table Item
     autoTable(pdf, {
@@ -746,7 +799,266 @@ class pdfScript {
       return (
         (item[1] !== 0 && item[0] === "Description") ||
         (item[1] !== null && item[0] === "Subtotal") ||
-        (item[1] !== null && item[0] === "Tax(15%)") ||
+        (item[1] !== 0 && item[0] === "Tax(15%)") ||
+        (item[1] !== 0 && item[0] === "Vat") ||
+        (item[1] !== null && item[0] === "Shipping") ||
+        (item[1] !== null && item[0] === "Discount") ||
+        (item[1] !== null && item[0] === "Total") ||
+        (item[1] !== null && item[0] === "Payment") ||
+        (item[1] !== null && item[0] === "Due")
+      );
+    });
+
+    var styles = {
+      fontStyle: "bold",
+      fontSize: 10,
+      textColor: 0,
+      halign: "center",
+    };
+
+    pdf.autoTable({
+      tableWidth: 60,
+      margin: { left: pdf.internal.pageSize.width - 74, bottom: 40 },
+      head: [filteredData[0]],
+      body: filteredData.slice(1),
+      styles: styles,
+      headStyles: {
+        europe: { halign: "right" },
+        fillColor: [
+          getSetting?.themeColor?.r,
+          getSetting?.themeColor?.g,
+          getSetting?.themeColor?.b,
+        ],
+        textColor: [255, 255, 255],
+      },
+      columnStyles: {
+        0: { fontStyle: "normal" },
+      },
+    });
+
+    // Footer
+    pdf.setTextColor(0, 0, 0);
+    pdf.setFontSize(14);
+
+    pdf.text(
+      "Authorized Signature",
+      pdf.internal.pageSize.width - 15,
+      pdf.internal.pageSize.height - 23,
+      {
+        align: "right",
+      }
+    );
+    pdf.setFontSize(10);
+    pdf.setDrawColor(0);
+    pdf.setFillColor(
+      getSetting?.themeColor?.r,
+      getSetting?.themeColor?.g,
+      getSetting?.themeColor?.b
+    );
+    pdf.rect(-10, pdf.internal.pageSize.height - 15, 400, 1, "F");
+    let splitTitle = pdf.splitTextToSize(
+      getSetting?.footerText,
+      pdf.internal.pageSize.width - 15
+    );
+    pdf.text(splitTitle, 10, pdf.internal.pageSize.height - 7);
+
+    let note = pdf.splitTextToSize(`Note: ${templateData?.note}`, 120);
+    pdf.text(note, 10, pdf.internal.pageSize.height - 35);
+
+    // Water nark
+    pdf.setTextColor(0);
+    let text = "Demo";
+    pdf.setFontSize(100);
+    let textWidth = pdf.getTextWidth(text);
+    let centerTextX = (pdf.internal.pageSize.width - textWidth) / 2;
+    let centerTextY = (pdf.internal.pageSize.height - textWidth) / 2;
+    pdf.text(text, centerTextX, centerTextY, null, 0);
+
+    // Save the PDF
+
+    if (print === true) {
+      pdf.autoPrint();
+      pdf.output("dataurlnewwindow");
+    }
+
+    view === true && pdf.output("dataurlnewwindow");
+    save === true && pdf.save("invoice.pdf");
+
+    // Convert the PDF to a data URL
+    const pdfDataUri = pdf.output("datauristring");
+    // Set the data URL in the state to trigger a re-render
+    return pdfDataUri;
+  }
+
+  //Template four
+  templateFour({ getSetting, templateData, print, view, save }) {
+    const pdf = new jsPDF(
+      getSetting?.pageOrientation,
+      "mm",
+      getSetting?.pageSize
+    );
+
+    pdf.setFont("inter", "normal");
+    // Bg image
+    let imgWidth = 100; // Set the width of your image
+    let imgHeight = 0; // Set the height of your image
+    let centerImgX = (pdf.internal.pageSize.width - imgWidth) / 2;
+    let centerImgY = (pdf.internal.pageSize.height - imgHeight) / 2;
+
+    // Background image set
+    getSetting?.bgImg?.length !== 0 &&
+      pdf.addImage(
+        getSetting?.bgImg,
+        "JPEG",
+        centerImgX,
+        centerImgY,
+        imgWidth,
+        imgHeight
+      );
+
+    // Logo
+    getSetting?.logo.length !== 0 &&
+      pdf.addImage(getSetting?.logo, "JPEG", 15, 8, 0, 14);
+
+    pdf.setDrawColor(0);
+    pdf.setFillColor(
+      getSetting?.themeColor?.r,
+      getSetting?.themeColor?.g,
+      getSetting?.themeColor?.b
+    );
+    pdf.rect(-10, 44, 400, 1, "F");
+
+    pdf.setFontSize(40);
+    pdf.setFont("inter", "bold");
+    pdf.setTextColor(
+      getSetting?.themeColor?.r,
+      getSetting?.themeColor?.g,
+      getSetting?.themeColor?.b
+    );
+
+    // Your QR code content
+    const qrCodeContent = "Please add your information";
+    const typeNumber = 0;
+    const errorCorrectionLevel = "L";
+    const qr = QRCode(typeNumber, errorCorrectionLevel);
+    qr.addData(qrCodeContent);
+    qr.make();
+    const qrCodeImageUri = qr.createDataURL();
+    let qrWidth = 35; // Set the width of your image
+    let qrHeight = 35; // Set the height of your image
+    getSetting?.qrCode === "yes" &&
+      pdf.addImage(
+        qrCodeImageUri,
+        "PNG",
+        pdf.internal.pageSize.width - 40,
+        5,
+        qrWidth,
+        qrHeight
+      );
+
+    pdf.setTextColor(0, 0, 0);
+    pdf.setFont("inter", "normal");
+    pdf.setFontSize(12);
+    pdf.text(`${getSetting?.company_name}`, 15, 28);
+    pdf.setFontSize(10);
+    pdf.text(`${getSetting?.company_address}`, 15, 33);
+    pdf.text(
+      `${getSetting?.email}, ${getSetting?.mobile}, ${getSetting?.website}`,
+      15,
+      38
+    );
+
+    // Right side data
+    let templateTwoRightStart = parseInt(pdf.internal.pageSize.width) / 2;
+    // Filled red square
+    pdf.setDrawColor(0);
+    pdf.setFillColor(
+      getSetting?.themeColor?.r,
+      getSetting?.themeColor?.g,
+      getSetting?.themeColor?.b
+    );
+    pdf.rect(15, 52, templateTwoRightStart - 30, 8, "F");
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(12);
+    pdf.text("Bill Form", 20, 57);
+    pdf.setTextColor(0, 0, 0);
+    // company_name
+    pdf.setFontSize(14);
+    pdf.setFont("inter", "bold");
+    pdf.text(`${getSetting?.company_name}`, 20, 68);
+    pdf.setFont("inter", "normal");
+    pdf.setFontSize(10);
+    pdf.text(`${getSetting?.company_address}`, 20, 73);
+    pdf.text(`${getSetting?.email}, ${getSetting?.mobile}`, 20, 78);
+    pdf.text(`${getSetting?.website}`, 20, 83);
+
+    // Filled red square
+    pdf.setDrawColor(0);
+    pdf.setFillColor(
+      getSetting?.themeColor?.r,
+      getSetting?.themeColor?.g,
+      getSetting?.themeColor?.b
+    );
+    pdf.rect(
+      templateTwoRightStart + 15,
+      52,
+      templateTwoRightStart - 30,
+      8,
+      "F"
+    );
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(12);
+    pdf.text("Payment info", templateTwoRightStart + 20, 57);
+    pdf.setTextColor(0, 0, 0);
+    pdf.setFontSize(14);
+    pdf.setFont("inter", "bold");
+    pdf.text(templateData?.customerName, templateTwoRightStart + 20, 68);
+    pdf.setFontSize(10);
+    pdf.setFont("inter", "normal");
+    pdf.text(templateData?.address, templateTwoRightStart + 20, 73);
+    pdf.text(`Phone: ${templateData?.phone}`, templateTwoRightStart + 20, 78);
+    pdf.text(`Email: ${templateData?.email}`, templateTwoRightStart + 20, 83);
+
+    // Table Item
+    autoTable(pdf, {
+      startY: 90,
+      headStyles: {
+        halign: "left",
+        fillColor: [
+          getSetting?.themeColor?.r,
+          getSetting?.themeColor?.g,
+          getSetting?.themeColor?.b,
+        ],
+      },
+      columnStyles: { halign: "left" },
+      body: templateData?.invoiceItems,
+      columns: [
+        { header: "Item", dataKey: "item" },
+        { header: "Quantity", dataKey: "quantity" },
+        { header: "Rate", dataKey: "rate" },
+        { header: "Amount", dataKey: "amount" },
+      ],
+    });
+    // Table payment calculation
+
+    let data = [
+      ["Description", "Value"],
+      ["Subtotal", templateData?.subTotal],
+      ["Tax(15%)", templateData?.tax],
+      ["Vat", templateData?.vat],
+      ["Shipping", templateData?.shipping],
+      ["Discount", templateData?.discount],
+      ["Total", templateData?.total],
+      ["Payment", templateData?.payment],
+      ["Due", templateData?.due],
+    ];
+
+    // Filter out elements where the second element is 0
+    var filteredData = data.filter(function (item) {
+      return (
+        (item[1] !== 0 && item[0] === "Description") ||
+        (item[1] !== null && item[0] === "Subtotal") ||
+        (item[1] !== 0 && item[0] === "Tax(15%)") ||
         (item[1] !== 0 && item[0] === "Vat") ||
         (item[1] !== null && item[0] === "Shipping") ||
         (item[1] !== null && item[0] === "Discount") ||

@@ -204,6 +204,13 @@ const HomeComponent = () => {
         save: true,
       });
       setPdfDataUri(pdfDataUri);
+    } else if (getSetting?.selectedTemplate === 4) {
+      let pdfDataUri = pdfScriptData.templateFour({
+        templateData,
+        getSetting,
+        save: true,
+      });
+      setPdfDataUri(pdfDataUri);
     }
     saveInvoice();
   };
@@ -227,6 +234,13 @@ const HomeComponent = () => {
         save: true,
       });
       setPdfDataUri(pdfDataUri);
+    } else if (getSetting?.selectedTemplate === 4) {
+      let pdfDataUri = pdfScriptData.templateFour({
+        templateData,
+        getSetting,
+        save: true,
+      });
+      setPdfDataUri(pdfDataUri);
     }
   };
   let printPdf = async () => {
@@ -245,6 +259,13 @@ const HomeComponent = () => {
       });
     } else if (getSetting?.selectedTemplate === 3) {
       let pdfDataUri = pdfScriptData.templateThree({
+        templateData,
+        getSetting,
+        save: true,
+      });
+      setPdfDataUri(pdfDataUri);
+    } else if (getSetting?.selectedTemplate === 4) {
+      let pdfDataUri = pdfScriptData.templateFour({
         templateData,
         getSetting,
         save: true,
