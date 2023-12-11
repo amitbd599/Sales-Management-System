@@ -596,18 +596,18 @@ class pdfScript {
     pdf.setFont("inter", "normal");
 
     // Bg color
-    pdf.setFillColor.apply(null, [
-      getSetting?.bgColor.r,
-      getSetting?.bgColor.g,
-      getSetting?.bgColor.b,
-    ]);
-    pdf.rect(
-      0,
-      0,
-      pdf.internal.pageSize.width,
-      pdf.internal.pageSize.height,
-      "F"
-    );
+    // pdf.setFillColor.apply(null, [
+    //   getSetting?.bgColor.r,
+    //   getSetting?.bgColor.g,
+    //   getSetting?.bgColor.b,
+    // ]);
+    // pdf.rect(
+    //   0,
+    //   0,
+    //   pdf.internal.pageSize.width,
+    //   pdf.internal.pageSize.height,
+    //   "F"
+    // );
 
     // Demo Text
     pdf.setTextColor(200);
@@ -731,15 +731,31 @@ class pdfScript {
 
     let data = [
       ["Description", "Value"],
-      ["Subtotal", `= ${templateData?.subTotal.toString()}`],
-      ["Tax", `+ ${templateData?.tax.toString()}`],
-      ["Vat", `${templateData?.vat.toString()}`],
-      ["Shipping", `+ ${templateData?.shipping.toString()}`],
-      ["Discount", `- ${templateData?.discount.toString()}`],
-      ["Total", `= ${templateData?.total.toString()}`],
-      ["Payment", `- ${templateData?.payment.toString()}`],
-      ["Due", `= ${templateData?.due.toString()}`],
+      ["Subtotal", templateData?.subTotal],
+      ["Tax(15%)", templateData?.tax],
+      ["Vat", templateData?.vat],
+      ["Shipping", templateData?.shipping],
+      ["Discount", templateData?.discount],
+      ["Total", templateData?.total],
+      ["Payment", templateData?.payment],
+      ["Due", templateData?.due],
     ];
+
+    // Filter out elements where the second element is 0
+    var filteredData = data.filter(function (item) {
+      return (
+        (item[1] !== 0 && item[0] === "Description") ||
+        (item[1] !== null && item[0] === "Subtotal") ||
+        (item[1] !== null && item[0] === "Tax(15%)") ||
+        (item[1] !== 0 && item[0] === "Vat") ||
+        (item[1] !== null && item[0] === "Shipping") ||
+        (item[1] !== null && item[0] === "Discount") ||
+        (item[1] !== null && item[0] === "Total") ||
+        (item[1] !== null && item[0] === "Payment") ||
+        (item[1] !== null && item[0] === "Due")
+      );
+    });
+
     var styles = {
       fontStyle: "bold",
       fontSize: 10,
@@ -750,8 +766,8 @@ class pdfScript {
     pdf.autoTable({
       tableWidth: 60,
       margin: { left: pdf.internal.pageSize.width - 74, bottom: 40 },
-      head: [data[0]],
-      body: data.slice(1),
+      head: [filteredData[0]],
+      body: filteredData.slice(1),
       styles: styles,
       headStyles: {
         europe: { halign: "right" },
@@ -787,7 +803,10 @@ class pdfScript {
       getSetting?.themeColor?.b
     );
     pdf.rect(-10, pdf.internal.pageSize.height - 15, 400, 1, "F");
-    let splitTitle = pdf.splitTextToSize(getSetting?.footerText, 180);
+    let splitTitle = pdf.splitTextToSize(
+      getSetting?.footerText,
+      pdf.internal.pageSize.width - 15
+    );
     pdf.text(splitTitle, 10, pdf.internal.pageSize.height - 7);
 
     let note = pdf.splitTextToSize(`Note: ${templateData?.note}`, 120);
