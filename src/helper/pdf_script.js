@@ -975,7 +975,7 @@ class pdfScript {
       }
     );
     pdf.text(
-      `Submit Date  ${templateData?.startDate.toISOString().slice(0, 10)}`,
+      `Submit date  ${templateData?.startDate.toISOString().slice(0, 10)}`,
       pdf.internal.pageSize.width - 15,
       18,
       {
@@ -1203,6 +1203,11 @@ class pdfScript {
       getSetting?.pageSize
     );
 
+    // shape set
+    var pdfWidth = pdf.internal.pageSize.width;
+    // Add the image to the PDF
+    pdf.addImage("/image/shape/shape_2.png", "JPEG", pdfWidth - 200, 0, 200, 0);
+
     pdf.setFont("inter", "normal");
     // Bg image
     let imgWidth = 100; // Set the width of your image
@@ -1237,25 +1242,6 @@ class pdfScript {
       getSetting?.themeColor?.b
     );
 
-    // Your QR code content
-    const qrCodeContent = "Please add your information";
-    const typeNumber = 0;
-    const errorCorrectionLevel = "L";
-    const qr = QRCode(typeNumber, errorCorrectionLevel);
-    qr.addData(qrCodeContent);
-    qr.make();
-    const qrCodeImageUri = qr.createDataURL();
-    let qrWidth = 20; // Set the width of your image
-    let qrHeight = 20; // Set the height of your image
-    getSetting?.qrCode === "yes" &&
-      pdf.addImage(
-        qrCodeImageUri,
-        "PNG",
-        pdf.internal.pageSize.width - 32,
-        22,
-        qrWidth,
-        qrHeight
-      );
     pdf.setTextColor(0, 0, 0);
     pdf.setFont("inter", "normal");
     pdf.setFontSize(8);
@@ -1477,6 +1463,26 @@ class pdfScript {
       pdf.internal.pageSize.width - 15
     );
     pdf.text(splitTitle, 10, pdf.internal.pageSize.height - 7);
+
+    // Your QR code content
+    const qrCodeContent = "Please add your information";
+    const typeNumber = 0;
+    const errorCorrectionLevel = "L";
+    const qr = QRCode(typeNumber, errorCorrectionLevel);
+    qr.addData(qrCodeContent);
+    qr.make();
+    const qrCodeImageUri = qr.createDataURL();
+    let qrWidth = 20; // Set the width of your image
+    let qrHeight = 20; // Set the height of your image
+    getSetting?.qrCode === "yes" &&
+      pdf.addImage(
+        qrCodeImageUri,
+        "PNG",
+        7,
+        pdf.internal.pageSize.height - 58,
+        qrWidth,
+        qrHeight
+      );
 
     let note = pdf.splitTextToSize(`Note: ${templateData?.note}`, 120);
     pdf.text(note, 10, pdf.internal.pageSize.height - 35);
