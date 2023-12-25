@@ -301,10 +301,12 @@ const HomeComponent = () => {
     setPageNumber(1);
   };
 
+
+
   return (
     <>
       <section className="p-[16px] ">
-        <div>
+        <div className="container">
           <div className="grid grid-cols-12 gap-[20px]">
             <div className="col-span-9 bg-white rounded-md p-[20px]">
               <div className="grid gap-[20px]">
@@ -354,7 +356,7 @@ const HomeComponent = () => {
                     </div>
                   </div>
 
-                  <div className="col-span-3">
+                  <div className="col-span-5">
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Invoice writer name:</label>
                       <input
@@ -480,7 +482,7 @@ const HomeComponent = () => {
                       <div className="p-3">
                         <div className="overflow-x-auto">
                           <table className=" w-full">
-                            <thead className="text-xs font-semibold uppercase rounded-md text-purple-600 bg-purple-50">
+                            <thead className="text-xs font-semibold uppercase rounded-md text-gray-800 bg-gray-100">
                               <tr>
                                 <th className="p-2 ">
                                   <div className="font-semibold text-left">
@@ -583,7 +585,7 @@ const HomeComponent = () => {
                         </div>
                         <div className="mt-2">
                           <button
-                            className="px-[20px] py-[8px] rounded-md bg-purple-500 text-white"
+                            className="px-[20px] py-[8px] rounded-md bg-gray-900 text-white"
                             onClick={handleAddItem}
                           >
                             Add item
@@ -703,13 +705,13 @@ const HomeComponent = () => {
                   <div className="w-full mt-[30px]">
                     <button
                       onClick={saveInvoice}
-                      className="px-[20px] w-full py-[8px] rounded-md bg-purple-500 text-white"
+                      className="px-[20px] w-full py-[8px] rounded-md bg-gray-900 text-white"
                     >
                       Save Invoice
                     </button>
                   </div>
                   <p className="flex justify-center py-5">or</p>
-                  <div className="flex gap-[20px] py-[2px] justify-around border border-purple-500 rounded-md">
+                  <div className="flex gap-[20px] py-[2px] justify-around border border-gray-900 rounded-md">
                     <Tooltip
                       content="Save & Download"
                       placement="bottom"
@@ -737,7 +739,7 @@ const HomeComponent = () => {
                         onClick={viewPdf}
                         className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
                       >
-                        <FaRegFilePdf className="text-[20px] hover:text-purple-500 transition-all duration-200" />
+                        <FaRegFilePdf className="text-[20px] hover:text-gray-900 transition-all duration-200" />
                       </button>
                     </Tooltip>
                     <Tooltip
@@ -752,7 +754,7 @@ const HomeComponent = () => {
                         onClick={printPdf}
                         className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
                       >
-                        <FaPrint className="text-[20px] hover:text-purple-500 transition-all duration-200" />
+                        <FaPrint className="text-[20px] hover:text-gray-900 transition-all duration-200" />
                       </button>
                     </Tooltip>
                   </div>
@@ -763,8 +765,9 @@ const HomeComponent = () => {
         </div>
       </section>
       {/* Real time view invoice */}
-      <section className="p-[16px] ">
-        <div className="grid gap-[20px] grid-cols-12">
+
+      <section className="p-[16px]">
+        <div className="container"><div className="grid gap-[20px] grid-cols-12">
           <div className="col-span-9">
             <div className="bg-white rounded-md p-[20px] ">
               {pdfDataUri && (
@@ -782,7 +785,8 @@ const HomeComponent = () => {
               )}
             </div>
           </div>
-        </div>
+        </div></div>
+
       </section>
     </>
   );

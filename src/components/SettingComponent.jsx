@@ -3,6 +3,7 @@ import { Select, Option } from "@material-tailwind/react";
 import { currencyData } from "../script/currency";
 import { ChromePicker } from "react-color";
 import { page_size } from "../script/page_size";
+import { taxation_data } from "../script/taxation";
 import { SuccessToast, fixNumber, getBase64, toNumber } from "../helper/helper";
 import { FaXmark } from "react-icons/fa6";
 const SettingComponent = () => {
@@ -10,6 +11,7 @@ const SettingComponent = () => {
   const [logo, setLogo] = useState(getSetting?.logo);
   const [bgImg, setBgImg] = useState(getSetting?.bgImg);
   const [currency, setCurrency] = useState(getSetting?.currency);
+  const [taxation, setTaxation] = useState(getSetting?.taxation);
   const [invoiceType, setInvoiceType] = useState(getSetting?.invoiceType);
   const [qrCode, setQrCode] = useState(getSetting?.qrCode);
   const [pageSize, setPageSize] = useState(getSetting?.pageSize);
@@ -125,9 +127,10 @@ const SettingComponent = () => {
     SuccessToast("Update success!");
   };
 
+
   return (
     <section className="p-[16px]">
-      <div>
+      <div className="container">
         <div className="grid grid-cols-12 gap-[20px] ">
           <div className="col-span-9 p-[20px] bg-white rounded-md">
             <h2 className="font-semibold mb-3">Setting your company info:</h2>
@@ -232,7 +235,43 @@ const SettingComponent = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-full col-span-1">
+              <div className="w-full col-span-4">
+
+                <label>Taxable cost:</label>
+                <div>
+                  <Select
+                    onChange={(event) => setTaxation(event)}
+                    value={taxation}
+                    defaultValue={taxation}
+                    label="Select item"
+                    animate={{
+                      mount: { y: 0 },
+                      unmount: { y: 25 },
+                    }}
+                  >
+                    {taxation_data.map((item, index) => (
+                      <Option key={index} value={item?.name}>
+                        {item?.name}
+                      </Option>
+                    ))}
+                  </Select>
+                </div>
+
+              </div>
+              <div className="w-full col-span-4">
+                <div className="grid gap-1">
+                  <label>{taxation} (%):</label>
+                  <input
+                    type="number"
+                    className="input_box"
+                    placeholder="0"
+                    defaultValue={getSetting?.tax}
+                    ref={(input) => (taxRef = input)}
+                  />
+                </div>
+              </div>
+
+              {/* <div className="w-full col-span-1">
                 <div className="grid gap-1">
                   <label>Tax (%):</label>
                   <input
@@ -257,8 +296,8 @@ const SettingComponent = () => {
                     />
                   </span>
                 </div>
-              </div>
-              <div className="w-full col-span-1">
+              </div> */}
+              <div className="w-full col-span-2">
                 <div className="grid gap-1">
                   <label>Discounts:</label>
                   <span className="flex gap-2 justify-center items-center">
@@ -272,7 +311,7 @@ const SettingComponent = () => {
                   </span>
                 </div>
               </div>
-              <div className="w-full col-span-1">
+              <div className="w-full col-span-2">
                 <div className="grid gap-1">
                   <label>Shipping:</label>
                   <span className="flex gap-2 justify-center items-center">
@@ -589,11 +628,10 @@ const SettingComponent = () => {
                     <img
                       src={item?.src}
                       alt=""
-                      className={`w-full border p-[10px] shadow-xl rounded-md  ${
-                        selectedTemplate === item.id
-                          ? "border-2 border-red-500"
-                          : " border-gray-200"
-                      }`}
+                      className={`w-full border p-[10px] shadow-xl rounded-md  ${selectedTemplate === item.id
+                        ? "border-2 border-red-500"
+                        : " border-gray-200"
+                        }`}
                       onClick={() => handleImageClick(item.id)}
                       style={{
                         border:

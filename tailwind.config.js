@@ -14,6 +14,10 @@ module.exports = withMT({
         "2xl": "4rem",
       },
     },
+    colors: {
+      transparent: 'transparent',
+      primary: '#55E6A5',
+    },
     screens: {
       sm: "380px",
       // => @media (min-width: 380px) { ... }

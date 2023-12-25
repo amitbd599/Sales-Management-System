@@ -104,7 +104,7 @@ const AllInvoiceComponent = () => {
 
   return (
     <section className="p-[16px]">
-      <div>
+      <div className="container">
         <div className="grid grid-cols-12 gap-[20px]">
           <div className="col-span-12 bg-white rounded-md p-[20px]">
             <h2 className="font-semibold">List of invoice data:</h2>
