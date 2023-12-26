@@ -10,32 +10,10 @@ class pdfScript {
       "mm",
       getSetting?.pageSize
     );
-
     pdf.setFont("inter", "normal");
-
-    // Bg color
-    pdf.setFillColor.apply(null, [
-      getSetting?.bgColor.r,
-      getSetting?.bgColor.g,
-      getSetting?.bgColor.b,
-    ]);
-    pdf.rect(
-      0,
-      0,
-      pdf.internal.pageSize.width,
-      pdf.internal.pageSize.height,
-      "F"
-    );
-
-    // Demo Text
-    pdf.setTextColor(200);
-    let text = "Template one";
-    pdf.setFontSize(50);
-    let textWidth = pdf.getTextWidth(text);
-    let centerTextX = (pdf.internal.pageSize.width - textWidth) / 2;
-    pdf.text(text, centerTextX, 60);
-    pdf.setTextColor(0, 0, 0);
-
+    pdf.setTextColor(getSetting?.textColor?.r,
+      getSetting?.textColor?.g,
+      getSetting?.textColor?.b,);
     // Your QR code content
     const qrCodeContent = "Please add your information";
     const typeNumber = 0;
@@ -136,8 +114,8 @@ class pdfScript {
     pdf.setFont("inter", "normal");
     pdf.setFontSize(10);
     pdf.text(templateData?.address, 15, 60);
-    pdf.text(`Phone: ${templateData?.phone}`, 15, 66);
-    pdf.text(`Email: ${templateData?.email}`, 15, 72);
+    pdf.text(`Phone: ${templateData?.phone}`, 15, 65);
+    pdf.text(`Email: ${templateData?.email}`, 15, 70);
     pdf.setFontSize(12);
     pdf.text(
       `Payment method: ${templateData?.paymentMethod}`,
@@ -148,26 +126,27 @@ class pdfScript {
     templateData?.paymentMethod === "Bank" &&
       pdf.text(`A/C no: ${templateData?.accountNumber}`, rightPosition, 54);
     templateData?.paymentMethod === "Bank" &&
-      pdf.text(`A/C name:  ${templateData?.accountName}`, rightPosition, 60);
+      pdf.text(`A/C name:  ${templateData?.accountName}`, rightPosition, 59);
     templateData?.paymentMethod === "Bank" &&
-      pdf.text(`Branch: ${templateData?.branchName}`, rightPosition, 66);
-    pdf.setTextColor(255, 0, 0);
+      pdf.text(`Branch: ${templateData?.branchName}`, rightPosition, 64);
+
     templateData?.paymentMethod === "Bank"
       ? pdf.text(
-          `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
-          rightPosition,
-          72
-        )
+        `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
+        rightPosition,
+        69
+      )
       : pdf.text(
-          `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
-          rightPosition,
-          54
-        );
-    pdf.setTextColor(0, 0, 0);
+        `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
+        rightPosition,
+        54
+      );
+
 
     // Table Item
     autoTable(pdf, {
       startY: 80,
+      theme: 'grid',
       headStyles: {
         halign: "left",
         fillColor: [
@@ -185,42 +164,29 @@ class pdfScript {
         { header: "Amount", dataKey: "amount" },
       ],
     });
-    // Table Calculation
-    autoTable(pdf, {
-      tableWidth: 120,
-      margin: { left: pdf.internal.pageSize.width - 134 },
-      headStyles: {
-        halign: "left",
-        fillColor: [
-          getSetting?.themeColor?.r,
-          getSetting?.themeColor?.g,
-          getSetting?.themeColor?.b,
-        ],
-      },
-      columnStyles: { halign: "left" },
-      body: [
-        {
-          subTotal: `= ${templateData?.subTotal.toString()}`,
-          Tax: `+ ${templateData?.tax.toString()}`,
-          Vat: `${templateData?.vat.toString()}`,
-          Shipping: `+ ${templateData?.shipping.toString()}`,
-          Discount: `- ${templateData?.discount.toString()}`,
-          Total: `= ${templateData?.total.toString()}`,
-        },
-      ],
-      columns: [
-        { header: "Subtotal", dataKey: "subTotal" },
-        { header: "Tax", dataKey: "Tax" },
-        { header: "Vat", dataKey: "Vat" },
-        { header: "Shipping", dataKey: "Shipping" },
-        { header: "Discount", dataKey: "Discount" },
-        { header: "Total", dataKey: "Total" },
-      ],
-    });
-    // Table payment calculation
-    autoTable(pdf, {
+    let data = [
+      ["Description", "Value"],
+      ["Subtotal", templateData?.subTotal],
+      [`${templateData?.taxationName} (15%)`, templateData?.taxation],
+      ["Shipping", templateData?.shipping],
+      ["Discount", templateData?.discount],
+      ["Total", templateData?.total],
+      ["Payment", templateData?.payment],
+      ["Due", templateData?.due],
+    ];
+    var styles = {
+      fontStyle: "bold",
+      fontSize: 10,
+      textColor: 0,
+      halign: "left",
+    };
+    pdf.autoTable({
       tableWidth: 60,
       margin: { left: pdf.internal.pageSize.width - 74, bottom: 40 },
+      // head: [data[0]],
+      body: data.slice(1),
+      styles: styles,
+      theme: 'grid',
       headStyles: {
         europe: { halign: "right" },
         fillColor: [
@@ -228,29 +194,22 @@ class pdfScript {
           getSetting?.themeColor?.g,
           getSetting?.themeColor?.b,
         ],
+        textColor: [255, 255, 255],
       },
-      columnStyles: { europe: { halign: "center" } },
-      body: [
-        {
-          Total: `${templateData?.total.toString()}`,
-          Payment: `- ${templateData?.payment.toString()}`,
-          Due: `${templateData?.due.toString()}`,
-        },
-      ],
-      columns: [
-        { header: "Total", dataKey: "Total" },
-        { header: "Payment", dataKey: "Payment" },
-        { header: "Due", dataKey: "Due" },
-      ],
+      columnStyles: {
+        0: { fontStyle: "normal" },
+      },
     });
 
     // Footer
-    pdf.setTextColor(0, 0, 0);
     pdf.setFontSize(14);
     pdf.text(
-      "Authorized Signature",
-      rightPosition,
-      pdf.internal.pageSize.height - 23
+      `Authorized Signature`,
+      pdf.internal.pageSize.width - 15,
+      pdf.internal.pageSize.height - 23,
+      {
+        align: "right",
+      }
     );
     pdf.setFontSize(10);
     pdf.setDrawColor(0);
@@ -265,7 +224,13 @@ class pdfScript {
 
     let note = pdf.splitTextToSize(`Note: ${templateData?.note}`, 120);
     pdf.text(note, 10, pdf.internal.pageSize.height - 35);
-    // Save the PDF
+
+    // Demo Text
+    pdf.setFontSize(200);
+    pdf.saveGraphicsState();
+    pdf.setGState(new pdf.GState({ opacity: 0.1 }));
+    pdf.text(templateData?.waterMark, 50, 220, null, 45)
+    pdf.restoreGraphicsState();
 
     if (print === true) {
       pdf.autoPrint();
@@ -290,19 +255,6 @@ class pdfScript {
 
     pdf.setFont("inter", "normal");
 
-    // Bg color
-    pdf.setFillColor.apply(null, [
-      getSetting?.bgColor.r,
-      getSetting?.bgColor.g,
-      getSetting?.bgColor.b,
-    ]);
-    pdf.rect(
-      0,
-      0,
-      pdf.internal.pageSize.width,
-      pdf.internal.pageSize.height,
-      "F"
-    );
 
     // Demo Text
     pdf.setTextColor(200);
@@ -371,15 +323,15 @@ class pdfScript {
     pdf.setTextColor(255, 0, 0);
     templateData?.paymentMethod === "Bank"
       ? pdf.text(
-          `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
-          rightPosition,
-          41
-        )
+        `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
+        rightPosition,
+        41
+      )
       : pdf.text(
-          `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
-          rightPosition,
-          54
-        );
+        `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
+        rightPosition,
+        54
+      );
 
     // Invoice id
     pdf.setTextColor(0, 0, 0);
@@ -477,8 +429,7 @@ class pdfScript {
       body: [
         {
           subTotal: `${templateData?.subTotal.toString()}`,
-          Tax: `+ ${templateData?.tax.toString()}`,
-          Vat: `${templateData?.vat.toString()}`,
+          taxation: `+ ${templateData?.tax.toString()}`,
           Shipping: `+ ${templateData?.shipping.toString()}`,
           Discount: `- ${templateData?.discount.toString()}`,
           Total: `= ${templateData?.total.toString()}`,
@@ -487,7 +438,6 @@ class pdfScript {
       columns: [
         { header: "Subtotal", dataKey: "subTotal" },
         { header: "Tax", dataKey: "Tax" },
-        { header: "Vat", dataKey: "Vat" },
         { header: "Shipping", dataKey: "Shipping" },
         { header: "Discount", dataKey: "Discount" },
         { header: "Total", dataKey: "Total" },
@@ -744,21 +694,21 @@ class pdfScript {
     pdf.setTextColor(255, 0, 0);
     templateData?.paymentMethod === "Bank"
       ? pdf.text(
-          `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
-          pdf.internal.pageSize.width - 15,
-          85,
-          {
-            align: "right",
-          }
-        )
+        `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
+        pdf.internal.pageSize.width - 15,
+        85,
+        {
+          align: "right",
+        }
+      )
       : pdf.text(
-          `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
-          pdf.internal.pageSize.width - 15,
-          85,
-          {
-            align: "right",
-          }
-        );
+        `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
+        pdf.internal.pageSize.width - 15,
+        85,
+        {
+          align: "right",
+        }
+      );
 
     // Table Item
     autoTable(pdf, {

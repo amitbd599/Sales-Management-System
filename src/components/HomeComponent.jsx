@@ -13,7 +13,6 @@ import {
   fixNumber,
   toNumber,
 } from "../helper/helper";
-import { useNavigate } from "react-router-dom";
 import { Option, Select, Tooltip } from "@material-tailwind/react";
 import { Document, Page, pdfjs } from "react-pdf";
 import pdfScriptData from "../helper/pdf_script";
@@ -21,7 +20,6 @@ import pdfScriptData from "../helper/pdf_script";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 const HomeComponent = () => {
-  const navigate = useNavigate();
   let getSetting = JSON.parse(localStorage.getItem("setting"));
   let getInvoices = JSON.parse(localStorage.getItem("invoices"));
   const [startDate, setStartDate] = useState(new Date());
@@ -77,8 +75,8 @@ const HomeComponent = () => {
 
   const calculateTotal = () => {
     const subtotal = calculateSubtotal();
-    let taxCal = parseInt((subtotal * getSetting?.tax) / 100);
-    return subtotal + taxCal + getSetting?.vat + shipping - discount;
+    let taxCal = parseInt((subtotal * getSetting?.taxation) / 100);
+    return subtotal + taxCal + shipping - discount;
   };
   const calculateDue = () => {
     const total = calculateTotal();
@@ -92,11 +90,13 @@ const HomeComponent = () => {
     setInvoiceID(`${timestamp}${random}`);
   };
 
-  let vat = fixNumber(toNumber(getSetting?.vat));
+
   let selectedTemplate = fixNumber(toNumber(getSetting?.selectedTemplate));
 
   let subTotal = calculateSubtotal();
-  let tax = parseInt((subTotal * getSetting?.tax) / 100);
+  let taxation = parseInt((subTotal * getSetting?.taxation) / 100);
+  let taxationName = getSetting?.taxationName;
+  let waterMark = getSetting?.waterMark;
   let total = calculateTotal();
   let due = calculateDue();
 
@@ -117,13 +117,14 @@ const HomeComponent = () => {
     startDate,
     deliveryDate,
     note,
-    tax,
-    vat,
+    taxation,
+    taxationName,
     selectedTemplate,
     paymentMethod,
     accountName,
     accountNumber,
     branchName,
+    waterMark
   };
 
   const saveInvoice = () => {
@@ -153,8 +154,8 @@ const HomeComponent = () => {
         startDate,
         deliveryDate,
         note,
-        tax,
-        vat,
+        taxation,
+        taxationName,
         selectedTemplate,
         paymentMethod,
         accountName,
@@ -627,16 +628,12 @@ const HomeComponent = () => {
                       Subtotal:{" "}
                       <span className="pl-3">{calculateSubtotal()}</span>
                     </p>
-                    {getSetting?.tax !== 0 && (
-                      <p className="flex justify-between">
-                        Tax: <span className="pl-3">+ {getSetting?.tax}%</span>
-                      </p>
-                    )}
-                    {getSetting?.vat !== 0 && (
-                      <p className="flex justify-between">
-                        Vat: <span className="pl-3">+ {getSetting?.vat}</span>
-                      </p>
-                    )}
+
+                    <p className="flex justify-between">
+                      {getSetting?.taxationName}: <span className="pl-3">+ {getSetting?.taxation}%</span>
+                    </p>
+
+
 
                     <div className="border-b border-gray-200 pb-3 flex gap-2 items-center justify-between">
                       <p>Shipping:</p>
