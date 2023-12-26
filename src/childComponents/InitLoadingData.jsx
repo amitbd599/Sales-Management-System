@@ -6,7 +6,7 @@ const InitLoadingData = () => {
 
   useEffect(() => {
     let setting = {
-      bgColor: {
+      textColor: {
         r: 254,
         g: 254,
         b: 254,
@@ -37,8 +37,8 @@ const InitLoadingData = () => {
       qrCode: "no",
       shipping: 0,
       selectedTemplate: 1,
-      tax: 0,
-      vat: 0,
+      taxation: 0,
+      taxationName: "Income Tax",
       website: "paytalk.com",
       waterMark: "Water mark",
     };

@@ -8,43 +8,43 @@ import { SuccessToast, fixNumber, getBase64, toNumber } from "../helper/helper";
 import { FaXmark } from "react-icons/fa6";
 const SettingComponent = () => {
   let getSetting = JSON.parse(localStorage.getItem("setting"));
-  const [logo, setLogo] = useState(getSetting?.logo);
-  const [bgImg, setBgImg] = useState(getSetting?.bgImg);
-  const [currency, setCurrency] = useState(getSetting?.currency);
-  const [taxation, setTaxation] = useState(getSetting?.taxation);
-  const [invoiceType, setInvoiceType] = useState(getSetting?.invoiceType);
-  const [qrCode, setQrCode] = useState(getSetting?.qrCode);
-  const [pageSize, setPageSize] = useState(getSetting?.pageSize);
-  const [pageOrientation, setPageOrientation] = useState(
+  let [logo, setLogo] = useState(getSetting?.logo);
+  let [bgImg, setBgImg] = useState(getSetting?.bgImg);
+  let [currency, setCurrency] = useState(getSetting?.currency);
+  let [taxation, setTaxation] = useState(getSetting?.taxation);
+  let [taxationName, setTaxationName] = useState(getSetting?.taxationName);
+  let [invoiceType, setInvoiceType] = useState(getSetting?.invoiceType);
+  let [qrCode, setQrCode] = useState(getSetting?.qrCode);
+  let [pageSize, setPageSize] = useState(getSetting?.pageSize);
+  let [pageOrientation, setPageOrientation] = useState(
     getSetting?.pageOrientation
   );
 
-  const [selectedTemplate, setTemplateImage] = useState(
+  let [selectedTemplate, setTemplateImage] = useState(
     getSetting?.selectedTemplate
   );
-  const [bgColor, setBgColor] = useState(getSetting?.bgColor);
-  const [themeColor, setThemeColor] = useState(getSetting?.themeColor);
+  let [textColor, setBgColor] = useState(getSetting?.textColor);
+  let [themeColor, setThemeColor] = useState(getSetting?.themeColor);
 
-  console.log(bgColor);
-  console.log(themeColor);
-
-  const handleBGColorChange = (newColor) => {
+  let handleTextColorChange = (newColor) => {
     setBgColor(newColor.rgb);
   };
-  const handleThemeColorChange = (newColor) => {
+  let handleThemeColorChange = (newColor) => {
     setThemeColor(newColor.rgb);
   };
 
-  const logoHandel = (event) => {
+  let logoHandel = (event) => {
     getBase64(event.target.files[0]).then((base64Img) => {
       setLogo(base64Img);
     });
   };
-  const bgHandel = (event) => {
+  let bgHandel = (event) => {
     getBase64(event.target.files[0]).then((base64Img) => {
       setBgImg(base64Img);
     });
   };
+
+  console.log(taxation);
 
   const templates = [
     { id: 1, src: "/image/1.jpg" },
@@ -73,8 +73,6 @@ const SettingComponent = () => {
     emailRef,
     websiteRef,
     waterMarkRef,
-    taxRef,
-    vatRef,
     discountRef,
     shippingRef,
     footerTextRef,
@@ -91,19 +89,20 @@ const SettingComponent = () => {
     let website = websiteRef.value;
     let waterMark = waterMarkRef.value;
     let invoiceWriter = invoiceWriterRef.value;
-    let tax = fixNumber(toNumber(taxRef.value));
-    let vat = fixNumber(toNumber(vatRef.value));
+    // let taxation = fixNumber(toNumber(taxation));
     let discount = fixNumber(toNumber(discountRef.value));
     let shipping = fixNumber(toNumber(shippingRef.value));
 
     let setting = {
-      bgColor,
+      textColor,
       themeColor,
       bgImg,
       company_address,
       company_name,
       currency,
       discount,
+      taxation,
+      taxationName,
       email,
       fax,
       footerText,
@@ -117,8 +116,6 @@ const SettingComponent = () => {
       qrCode,
       shipping,
       selectedTemplate,
-      tax,
-      vat,
       website,
       waterMark,
     };
@@ -240,9 +237,8 @@ const SettingComponent = () => {
                 <label>Taxable cost:</label>
                 <div>
                   <Select
-                    onChange={(event) => setTaxation(event)}
-                    value={taxation}
-                    defaultValue={taxation}
+                    onChange={(event) => setTaxationName(event)}
+                    value={taxationName}
                     label="Select item"
                     animate={{
                       mount: { y: 0 },
@@ -260,43 +256,17 @@ const SettingComponent = () => {
               </div>
               <div className="w-full col-span-4">
                 <div className="grid gap-1">
-                  <label>{taxation} (%):</label>
+                  <label>{taxationName} (%):</label>
                   <input
                     type="number"
                     className="input_box"
                     placeholder="0"
-                    defaultValue={getSetting?.tax}
-                    ref={(input) => (taxRef = input)}
-                  />
-                </div>
-              </div>
+                    defaultValue={getSetting?.taxation}
+                    onChange={(event) => setTaxation(toNumber(event.target.value))}
 
-              {/* <div className="w-full col-span-1">
-                <div className="grid gap-1">
-                  <label>Tax (%):</label>
-                  <input
-                    type="number"
-                    className="input_box"
-                    placeholder="0"
-                    defaultValue={getSetting?.tax}
-                    ref={(input) => (taxRef = input)}
                   />
                 </div>
               </div>
-              <div className="w-full col-span-1">
-                <div className="grid gap-1">
-                  <label>Vat:</label>
-                  <span className="flex gap-2 justify-center items-center">
-                    <input
-                      type="number"
-                      className="input_box"
-                      placeholder="0"
-                      defaultValue={getSetting?.vat}
-                      ref={(input) => (vatRef = input)}
-                    />
-                  </span>
-                </div>
-              </div> */}
               <div className="w-full col-span-2">
                 <div className="grid gap-1">
                   <label>Discounts:</label>
@@ -325,7 +295,7 @@ const SettingComponent = () => {
                   </span>
                 </div>
               </div>
-              <div className="w-full col-span-4">
+              <div className="w-full col-span-3">
                 <div className="grid gap-1">
                   <label>Invoice No type:</label>
                   <div>
@@ -344,7 +314,7 @@ const SettingComponent = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-full col-span-4">
+              <div className="w-full col-span-3">
                 <div className="grid gap-1">
                   <label>QRCode:</label>
                   <div>
@@ -364,26 +334,61 @@ const SettingComponent = () => {
                   </div>
                 </div>
               </div>
+              <div className="w-full col-span-3">
+                <div className="grid gap-1">
+                  <label>Page Orientation:</label>
+                  <div>
+                    <Select
+                      onChange={(event) => setPageOrientation(event)}
+                      value={pageOrientation}
+                      label="Select item"
+                      animate={{
+                        mount: { y: 0 },
+                        unmount: { y: 25 },
+                      }}
+                    >
+                      <Option value="l">Landscape</Option>
+                      <Option value="p">Portrait</Option>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+              <div className="w-full col-span-3">
+                <div className="grid gap-1">
+                  <label>Page Size :</label>
+                  <div>
+                    <Select
+                      onChange={(event) => setPageSize(event)}
+                      value={pageSize}
+                      label="Select item"
+                      animate={{
+                        mount: { y: 0 },
+                        unmount: { y: 25 },
+                      }}
+                    >
+                      {page_size.map((item, index) => (
+                        <Option key={index} value={item?.size}>
+                          {item?.size}
+                        </Option>
+                      ))}
+                    </Select>
+                  </div>
+                </div>
+              </div>
               <div className="w-full col-span-4">
                 <div className="grid gap-1 ">
-                  <label>Change paper background color:</label>
+                  <label>Change paper text color:</label>
                   <div className="pt-2">
                     <ChromePicker
-                      color={bgColor}
-                      onChange={handleBGColorChange}
+                      color={textColor}
+                      onChange={handleTextColorChange}
                       className="w-full"
                       circleSize={40}
                       circleSpacing={24}
                       disableAlpha={true}
                     />
 
-                    <p className="font-semibold mt-[20px]">Selected color</p>
-                    <div
-                      className=" h-[30px] mt-[10px]"
-                      style={{
-                        backgroundColor: `rgba(${bgColor?.r}, ${bgColor?.g}, ${bgColor?.b}, ${bgColor?.a} )`,
-                      }}
-                    ></div>
+
                   </div>
                 </div>
               </div>
@@ -400,55 +405,14 @@ const SettingComponent = () => {
                       disableAlpha={true}
                     />
 
-                    <p className="font-semibold mt-[20px]">Selected color</p>
-                    <div
-                      className=" h-[30px] mt-[10px]"
-                      style={{
-                        backgroundColor: `rgba(${themeColor?.r}, ${themeColor?.g}, ${themeColor?.b}, ${themeColor?.a} )`,
-                      }}
-                    ></div>
+
                   </div>
                 </div>
               </div>
               <div className="w-full col-span-4">
-                <div className="grid gap-[20px]">
-                  <div className="grid gap-1">
-                    <label>Page Orientation:</label>
-                    <div>
-                      <Select
-                        onChange={(event) => setPageOrientation(event)}
-                        value={pageOrientation}
-                        label="Select item"
-                        animate={{
-                          mount: { y: 0 },
-                          unmount: { y: 25 },
-                        }}
-                      >
-                        <Option value="l">Landscape</Option>
-                        <Option value="p">Portrait</Option>
-                      </Select>
-                    </div>
-                  </div>
-                  <div className="grid gap-1">
-                    <label>Page Size :</label>
-                    <div>
-                      <Select
-                        onChange={(event) => setPageSize(event)}
-                        value={pageSize}
-                        label="Select item"
-                        animate={{
-                          mount: { y: 0 },
-                          unmount: { y: 25 },
-                        }}
-                      >
-                        {page_size.map((item, index) => (
-                          <Option key={index} value={item?.size}>
-                            {item?.size}
-                          </Option>
-                        ))}
-                      </Select>
-                    </div>
-                  </div>
+                <div className="grid gap-[15px]">
+
+
                   <div className="grid gap-1">
                     <label>Invoice writer name:</label>
                     <div>
@@ -471,24 +435,25 @@ const SettingComponent = () => {
                       />
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="w-full col-span-12">
-                <div className="grid gap-1">
-                  <label>Footer text:</label>
-                  <div>
-                    <textarea
-                      defaultValue={getSetting?.footerText}
-                      ref={(input) => (footerTextRef = input)}
-                      className="input_box"
-                      name=""
-                      id=""
-                      cols="30"
-                      rows="5"
-                    ></textarea>
+                  <div className="grid gap-1">
+
+                    <label>Footer text:</label>
+                    <div>
+                      <textarea
+                        defaultValue={getSetting?.footerText}
+                        ref={(input) => (footerTextRef = input)}
+                        className="input_box"
+                        name=""
+                        id=""
+                        cols="30"
+                        rows="4"
+                      ></textarea>
+
+                    </div>
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
           <div className="col-span-3  ">
