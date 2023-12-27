@@ -1108,7 +1108,7 @@ class pdfScript {
     return pdfDataUri;
   }
 
-  //Template five
+  //! Template five
   templateFive({ getSetting, templateData, print, view, save }) {
     const pdf = new jsPDF(
       getSetting?.pageOrientation,
@@ -1116,29 +1116,7 @@ class pdfScript {
       getSetting?.pageSize
     );
 
-    // shape set
-    var pdfWidth = pdf.internal.pageSize.width;
-    // Add the image to the PDF
-    pdf.addImage("/image/shape/shape_2.png", "JPEG", pdfWidth - 200, 0, 200, 0);
-
     pdf.setFont("inter", "normal");
-    // Bg image
-    let imgWidth = 100; // Set the width of your image
-    let imgHeight = 0; // Set the height of your image
-    let centerImgX = (pdf.internal.pageSize.width - imgWidth) / 2;
-    let centerImgY = (pdf.internal.pageSize.height - imgHeight) / 2;
-
-    // Background image set
-    getSetting?.bgImg?.length !== 0 &&
-      pdf.addImage(
-        getSetting?.bgImg,
-        "JPEG",
-        centerImgX,
-        centerImgY,
-        imgWidth,
-        imgHeight
-      );
-
     // Logo
     getSetting?.logo.length !== 0 &&
       pdf.addImage(getSetting?.logo, "JPEG", 15, 8, 0, 14);
@@ -1157,35 +1135,44 @@ class pdfScript {
 
     pdf.setTextColor(0, 0, 0);
     pdf.setFont("inter", "normal");
-    pdf.setFontSize(8);
+    pdf.setFontSize(12);
     pdf.text(
       `INVOICE # ${templateData?.invoiceID}`,
       pdf.internal.pageSize.width - 15,
-      10,
+      15,
       {
         align: "right",
       }
     );
+    pdf.setFontSize(11);
     pdf.text(
       `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
       pdf.internal.pageSize.width - 15,
-      14,
+      20,
       {
         align: "right",
       }
     );
     pdf.text(
-      `Submit Date  ${templateData?.startDate.toISOString().slice(0, 10)}`,
+      `Submit date:  ${templateData?.startDate.toISOString().slice(0, 10)}`,
       pdf.internal.pageSize.width - 15,
-      18,
+      26,
       {
         align: "right",
       }
     );
     pdf.text(
-      `Delivery date  ${templateData?.deliveryDate.toISOString().slice(0, 10)}`,
+      `Delivery date:  ${templateData?.deliveryDate.toISOString().slice(0, 10)}`,
       pdf.internal.pageSize.width - 15,
-      22,
+      32,
+      {
+        align: "right",
+      }
+    );
+    pdf.text(
+      `Writer:  ${templateData?.invoiceWriter}`,
+      pdf.internal.pageSize.width - 15,
+      38,
       {
         align: "right",
       }
@@ -1202,27 +1189,19 @@ class pdfScript {
 
     // Right side data
     let templateTwoRightStart = parseInt(pdf.internal.pageSize.width) / 2;
-    // Filled red square
-    pdf.setDrawColor(0);
-    pdf.setFillColor(
-      getSetting?.themeColor?.r,
-      getSetting?.themeColor?.g,
-      getSetting?.themeColor?.b
-    );
-    pdf.rect(15, 52, templateTwoRightStart - 30, 8, "F");
-    pdf.setTextColor(255, 255, 255);
-    pdf.setFontSize(12);
-    pdf.text("Client information", 20, 57);
+    pdf.setTextColor(0, 0, 0);
+    pdf.setFontSize(10);
+    pdf.text("Bill To", 15, 57);
     pdf.setTextColor(0, 0, 0);
     // company_name
-    pdf.setFontSize(14);
+    pdf.setFontSize(12);
     pdf.setFont("inter", "bold");
-    pdf.text(`${templateData?.customerName}`, 20, 66);
+    pdf.text(`${templateData?.customerName}`, 15, 62);
     pdf.setFont("inter", "normal");
     pdf.setFontSize(10);
-    pdf.text(`${templateData?.address}`, 20, 73);
-    pdf.text(`Phone: ${templateData?.phone}`, 20, 78);
-    pdf.text(`Email: ${templateData?.email}`, 20, 83);
+    pdf.text(`${templateData?.address}`, 15, 67);
+    pdf.text(`Phone: ${templateData?.phone}`, 15, 72);
+    pdf.text(`Email: ${templateData?.email}`, 15, 77);
 
     // Filled red square
     pdf.setDrawColor(0);
@@ -1231,27 +1210,17 @@ class pdfScript {
       getSetting?.themeColor?.g,
       getSetting?.themeColor?.b
     );
-    pdf.rect(
-      templateTwoRightStart + 15,
-      52,
-      templateTwoRightStart - 30,
-      8,
-      "F"
-    );
-    pdf.setTextColor(255, 255, 255);
-    pdf.setFontSize(12);
+
+    pdf.setTextColor(0, 0, 0);
+    pdf.setFontSize(10);
     pdf.text("Payment info", templateTwoRightStart + 20, 57);
     pdf.setTextColor(0, 0, 0);
-    pdf.setFontSize(14);
-    pdf.setFont("inter", "bold");
-    pdf.setFontSize(10);
-    pdf.setFont("inter", "normal");
-    pdf.setFontSize(14);
+    pdf.setFontSize(12);
     pdf.setFont("inter", "bold");
     pdf.text(
       `Payment method: ${templateData?.paymentMethod}`,
       templateTwoRightStart + 20,
-      66
+      62
     );
     pdf.setFont("inter", "normal");
     pdf.setFontSize(10);
@@ -1259,25 +1228,26 @@ class pdfScript {
       pdf.text(
         `A/C name:  ${templateData?.accountName}`,
         templateTwoRightStart + 20,
-        73
+        67
       );
     templateData?.paymentMethod === "Bank" &&
       pdf.text(
         `A/C no: ${templateData?.accountNumber}`,
         templateTwoRightStart + 20,
-        78
+        72
       );
     templateData?.paymentMethod === "Bank" &&
       pdf.text(
         `Branch: ${templateData?.branchName}`,
         templateTwoRightStart + 20,
-        83
+        77
       );
-    pdf.setTextColor(255, 0, 0);
+    pdf.setTextColor(0, 0, 0);
 
     // Table Item
     autoTable(pdf, {
-      startY: 90,
+      startY: 82,
+      theme: 'grid',
       headStyles: {
         halign: "left",
         fillColor: [
@@ -1285,58 +1255,39 @@ class pdfScript {
           getSetting?.themeColor?.g,
           getSetting?.themeColor?.b,
         ],
+        textColor: [0, 0, 0],
       },
       columnStyles: { halign: "left" },
       body: templateData?.invoiceItems,
       columns: [
         { header: "Item", dataKey: "item" },
         { header: "Quantity", dataKey: "quantity" },
-        { header: "Rate", dataKey: "rate" },
+        { header: `Rate(${templateData?.currency})`, dataKey: "rate" },
         { header: "Amount", dataKey: "amount" },
       ],
     });
     // Table payment calculation
-
     let data = [
-      ["Description", "Value"],
       ["Subtotal", templateData?.subTotal],
-      ["Tax(15%)", templateData?.tax],
-      ["Vat", templateData?.vat],
+      [`${templateData?.taxationName}(${templateData?.taxationPercent}%)`, templateData?.taxation],
       ["Shipping", templateData?.shipping],
       ["Discount", templateData?.discount],
       ["Total", templateData?.total],
       ["Payment", templateData?.payment],
       ["Due", templateData?.due],
     ];
-
-    // Filter out elements where the second element is 0
-    var filteredData = data.filter(function (item) {
-      return (
-        (item[1] !== 0 && item[0] === "Description") ||
-        (item[1] !== null && item[0] === "Subtotal") ||
-        (item[1] !== 0 && item[0] === "Tax(15%)") ||
-        (item[1] !== 0 && item[0] === "Vat") ||
-        (item[1] !== null && item[0] === "Shipping") ||
-        (item[1] !== null && item[0] === "Discount") ||
-        (item[1] !== null && item[0] === "Total") ||
-        (item[1] !== null && item[0] === "Payment") ||
-        (item[1] !== null && item[0] === "Due")
-      );
-    });
-
     var styles = {
       fontStyle: "bold",
       fontSize: 10,
       textColor: 0,
-      halign: "center",
+      halign: "left",
     };
-
-    pdf.autoTable({
-      tableWidth: 60,
-      margin: { left: pdf.internal.pageSize.width - 74, bottom: 40 },
-      head: [filteredData[0]],
-      body: filteredData.slice(1),
+    autoTable(pdf,{
+      tableWidth: 70,
+      margin: { left: pdf.internal.pageSize.width - 84, bottom: 40, },
+      body: data,
       styles: styles,
+      theme: 'plain',
       headStyles: {
         europe: { halign: "right" },
         fillColor: [
@@ -1399,6 +1350,33 @@ class pdfScript {
 
     let note = pdf.splitTextToSize(`Note: ${templateData?.note}`, 120);
     pdf.text(note, 10, pdf.internal.pageSize.height - 35);
+
+    for (let i = 1; i <= pdf.internal.getNumberOfPages(); i++) {
+      pdf.setPage(i);
+      // Water nark
+      pdf.setFontSize(200);
+      pdf.saveGraphicsState();
+      pdf.setGState(new pdf.GState({ opacity: 0.1 }));
+      pdf.text(templateData?.waterMark, 50, 220, null, 45)
+      // Bg image
+      let imgWidth = 100; // Set the width of your image
+      let imgHeight = 0; // Set the height of your image
+      let centerImgX = (pdf.internal.pageSize.width - imgWidth) / 2;
+      let centerImgY = (pdf.internal.pageSize.height - imgHeight) / 2;
+
+      // Add the image to the PDF at the center position
+
+      getSetting?.bgImg?.length !== 0 &&
+        pdf.addImage(
+          getSetting?.bgImg,
+          "JPEG",
+          centerImgX,
+          centerImgY,
+          imgWidth,
+          imgHeight
+        );
+      pdf.restoreGraphicsState();
+    }
     // Save the PDF
 
     if (print === true) {
