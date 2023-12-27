@@ -13,14 +13,16 @@ export const taxation_data = [
     },
     {
         id: 4,
-        name: "Goods and Services Tax (GST)"
+        name: "Goods and Services Tax"
     },
     {
         id: 5,
-        name: "Value Added Tax (VAT)"
+        name: "Value Added Tax"
     },
     {
         id: 6,
         name: "Excise Tax"
     }
 ]
+
+

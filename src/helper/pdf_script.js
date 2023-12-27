@@ -3,7 +3,7 @@ import autoTable from "jspdf-autotable";
 import QRCode from "qrcode-generator";
 
 class pdfScript {
-  // Template one
+  //! Template one
   templateOne({ getSetting, templateData, print, view, save }) {
     const pdf = new jsPDF(
       getSetting?.pageOrientation,
@@ -150,7 +150,7 @@ class pdfScript {
     let data = [
       ["Description", "Value"],
       ["Subtotal", templateData?.subTotal],
-      [`${templateData?.taxationName} (15%)`, templateData?.taxation],
+      [`${templateData?.taxationName}(${templateData?.taxationPercent}%)`, templateData?.taxation],
       ["Shipping", templateData?.shipping],
       ["Discount", templateData?.discount],
       ["Total", templateData?.total],
@@ -207,29 +207,33 @@ class pdfScript {
 
     let note = pdf.splitTextToSize(`Note: ${templateData?.note}`, 120);
     pdf.text(note, 10, pdf.internal.pageSize.height - 35);
-    // Demo Text
-    pdf.setFontSize(200);
-    pdf.saveGraphicsState();
-    pdf.setGState(new pdf.GState({ opacity: 0.1 }));
-    pdf.text(templateData?.waterMark, 50, 220, null, 45)
-    // Bg image
-    let imgWidth = 100; // Set the width of your image
-    let imgHeight = 0; // Set the height of your image
-    let centerImgX = (pdf.internal.pageSize.width - imgWidth) / 2;
-    let centerImgY = (pdf.internal.pageSize.height - imgHeight) / 2;
 
-    // Add the image to the PDF at the center position
+    for (let i = 1; i <= pdf.internal.getNumberOfPages(); i++) {
+      pdf.setPage(i);
+      // Water nark
+      pdf.setFontSize(200);
+      pdf.saveGraphicsState();
+      pdf.setGState(new pdf.GState({ opacity: 0.1 }));
+      pdf.text(templateData?.waterMark, 50, 220, null, 45)
+      // Bg image
+      let imgWidth = 100; // Set the width of your image
+      let imgHeight = 0; // Set the height of your image
+      let centerImgX = (pdf.internal.pageSize.width - imgWidth) / 2;
+      let centerImgY = (pdf.internal.pageSize.height - imgHeight) / 2;
 
-    getSetting?.bgImg?.length !== 0 &&
-      pdf.addImage(
-        getSetting?.bgImg,
-        "JPEG",
-        centerImgX,
-        centerImgY,
-        imgWidth,
-        imgHeight
-      );
-    pdf.restoreGraphicsState();
+      // Add the image to the PDF at the center position
+
+      getSetting?.bgImg?.length !== 0 &&
+        pdf.addImage(
+          getSetting?.bgImg,
+          "JPEG",
+          centerImgX,
+          centerImgY,
+          imgWidth,
+          imgHeight
+        );
+      pdf.restoreGraphicsState();
+    }
 
     if (print === true) {
       pdf.autoPrint();
@@ -244,7 +248,7 @@ class pdfScript {
     // Set the data URL in the state to trigger a re-render
     return pdfDataUri;
   }
-  // Template two
+  //! Template two
   templateTwo({ getSetting, templateData, print, view, save }) {
     const pdf = new jsPDF(
       getSetting?.pageOrientation,
@@ -389,7 +393,7 @@ class pdfScript {
     let data = [
       ["Description", `Value(${templateData?.currency})`],
       ["Subtotal", templateData?.subTotal],
-      [`${templateData?.taxationName} (15%)`, templateData?.taxation],
+      [`${templateData?.taxationName}(${templateData?.taxationPercent}%)`, templateData?.taxation],
       ["Shipping", templateData?.shipping],
       ["Discount", templateData?.discount],
       ["Total", templateData?.total],
@@ -473,29 +477,32 @@ class pdfScript {
     let note = pdf.splitTextToSize(`Note: ${templateData?.note}`, 120);
     pdf.text(note, 15, pdf.internal.pageSize.height - 35);
 
-    // Demo Text
-    pdf.setFontSize(200);
-    pdf.saveGraphicsState();
-    pdf.setGState(new pdf.GState({ opacity: 0.1 }));
-    pdf.text(templateData?.waterMark, 50, 220, null, 45)
-    // Bg image
-    let imgWidth = 100; // Set the width of your image
-    let imgHeight = 0; // Set the height of your image
-    let centerImgX = (pdf.internal.pageSize.width - imgWidth) / 2;
-    let centerImgY = (pdf.internal.pageSize.height - imgHeight) / 2;
+    for (let i = 1; i <= pdf.internal.getNumberOfPages(); i++) {
+      pdf.setPage(i);
+      // Water nark
+      pdf.setFontSize(200);
+      pdf.saveGraphicsState();
+      pdf.setGState(new pdf.GState({ opacity: 0.1 }));
+      pdf.text(templateData?.waterMark, 50, 220, null, 45)
+      // Bg image
+      let imgWidth = 100; // Set the width of your image
+      let imgHeight = 0; // Set the height of your image
+      let centerImgX = (pdf.internal.pageSize.width - imgWidth) / 2;
+      let centerImgY = (pdf.internal.pageSize.height - imgHeight) / 2;
 
-    // Add the image to the PDF at the center position
+      // Add the image to the PDF at the center position
 
-    getSetting?.bgImg?.length !== 0 &&
-      pdf.addImage(
-        getSetting?.bgImg,
-        "JPEG",
-        centerImgX,
-        centerImgY,
-        imgWidth,
-        imgHeight
-      );
-    pdf.restoreGraphicsState();
+      getSetting?.bgImg?.length !== 0 &&
+        pdf.addImage(
+          getSetting?.bgImg,
+          "JPEG",
+          centerImgX,
+          centerImgY,
+          imgWidth,
+          imgHeight
+        );
+      pdf.restoreGraphicsState();
+    }
 
     // Save the PDF
 
@@ -513,7 +520,7 @@ class pdfScript {
     return pdfDataUri;
   }
 
-  // Template three
+  //! Template three
   templateThree({ getSetting, templateData, print, view, save }) {
     const pdf = new jsPDF(
       getSetting?.pageOrientation,
@@ -524,24 +531,6 @@ class pdfScript {
     pdf.setFont("inter", "normal");
 
     pdf.setTextColor(0, 0, 0);
-
-    // Bg image
-    let imgWidth = 100; // Set the width of your image
-    let imgHeight = 0; // Set the height of your image
-    let centerImgX = (pdf.internal.pageSize.width - imgWidth) / 2;
-    let centerImgY = (pdf.internal.pageSize.height - imgHeight) / 2;
-
-    // Background image set
-    getSetting?.bgImg?.length !== 0 &&
-      pdf.addImage(
-        getSetting?.bgImg,
-        "JPEG",
-        centerImgX,
-        centerImgY,
-        imgWidth,
-        imgHeight
-      );
-
     // Logo
     getSetting?.logo.length !== 0 &&
       pdf.addImage(getSetting?.logo, "JPEG", 15, 8, 0, 14);
@@ -691,7 +680,7 @@ class pdfScript {
     // Table Item
     autoTable(pdf, {
       startY: 90,
-
+      theme: 'grid',
       headStyles: {
         halign: "left",
         fillColor: [
@@ -705,37 +694,32 @@ class pdfScript {
       columns: [
         { header: "Item", dataKey: "item" },
         { header: "Quantity", dataKey: "quantity" },
-        { header: "Rate", dataKey: "rate" },
+        { header: `Rate(${templateData?.currency})`, dataKey: "rate" },
         { header: "Amount", dataKey: "amount" },
       ],
     });
     // Table payment calculation
-
     let data = [
-      ["Description", "Value"],
       ["Subtotal", templateData?.subTotal],
-      ["Tax(15%)", templateData?.taxation],
+      [`${templateData?.taxationName}(${templateData?.taxationPercent}%)`, templateData?.taxation],
       ["Shipping", templateData?.shipping],
       ["Discount", templateData?.discount],
       ["Total", templateData?.total],
       ["Payment", templateData?.payment],
       ["Due", templateData?.due],
     ];
-
-
     var styles = {
       fontStyle: "bold",
       fontSize: 10,
       textColor: 0,
-      halign: "center",
+      halign: "left",
     };
-
     pdf.autoTable({
-      tableWidth: 60,
-      margin: { left: pdf.internal.pageSize.width - 74, bottom: 40 },
-      head: [data[0]],
-      body: data.slice(1),
+      tableWidth: 70,
+      margin: { left: pdf.internal.pageSize.width - 84, bottom: 40 },
+      body: data,
       styles: styles,
+      theme: 'grid',
       headStyles: {
         europe: { halign: "right" },
         fillColor: [
@@ -749,6 +733,7 @@ class pdfScript {
         0: { fontStyle: "normal" },
       },
     });
+
 
     // Footer
     pdf.setTextColor(0, 0, 0);
@@ -779,14 +764,35 @@ class pdfScript {
     let note = pdf.splitTextToSize(`Note: ${templateData?.note}`, 120);
     pdf.text(note, 10, pdf.internal.pageSize.height - 35);
 
-    // Water nark
-    pdf.setTextColor(0);
-    let text = "Demo";
-    pdf.setFontSize(100);
-    let textWidth = pdf.getTextWidth(text);
-    let centerTextX = (pdf.internal.pageSize.width - textWidth) / 2;
-    let centerTextY = (pdf.internal.pageSize.height - textWidth) / 2;
-    pdf.text(text, centerTextX, centerTextY, null, 0);
+
+    for (let i = 1; i <= pdf.internal.getNumberOfPages(); i++) {
+      pdf.setPage(i);
+      // Water nark
+      pdf.setFontSize(200);
+      pdf.saveGraphicsState();
+      pdf.setGState(new pdf.GState({ opacity: 0.1 }));
+      pdf.text(templateData?.waterMark, 50, 220, null, 45)
+      // Bg image
+      let imgWidth = 100; // Set the width of your image
+      let imgHeight = 0; // Set the height of your image
+      let centerImgX = (pdf.internal.pageSize.width - imgWidth) / 2;
+      let centerImgY = (pdf.internal.pageSize.height - imgHeight) / 2;
+
+      // Add the image to the PDF at the center position
+
+      getSetting?.bgImg?.length !== 0 &&
+        pdf.addImage(
+          getSetting?.bgImg,
+          "JPEG",
+          centerImgX,
+          centerImgY,
+          imgWidth,
+          imgHeight
+        );
+      pdf.restoreGraphicsState();
+    }
+
+
 
     // Save the PDF
 
@@ -1011,46 +1017,30 @@ class pdfScript {
     });
     // Table payment calculation
 
+    // / Table Calculation
     let data = [
-      ["Description", "Value"],
+      ["Description", `Value(${templateData?.currency})`],
       ["Subtotal", templateData?.subTotal],
-      ["Tax(15%)", templateData?.tax],
-      ["Vat", templateData?.vat],
+      [`${templateData?.taxationName}(${templateData?.taxationPercent}%)`, templateData?.taxation],
       ["Shipping", templateData?.shipping],
       ["Discount", templateData?.discount],
       ["Total", templateData?.total],
       ["Payment", templateData?.payment],
       ["Due", templateData?.due],
     ];
-
-    // Filter out elements where the second element is 0
-    var filteredData = data.filter(function (item) {
-      return (
-        (item[1] !== 0 && item[0] === "Description") ||
-        (item[1] !== null && item[0] === "Subtotal") ||
-        (item[1] !== 0 && item[0] === "Tax(15%)") ||
-        (item[1] !== 0 && item[0] === "Vat") ||
-        (item[1] !== null && item[0] === "Shipping") ||
-        (item[1] !== null && item[0] === "Discount") ||
-        (item[1] !== null && item[0] === "Total") ||
-        (item[1] !== null && item[0] === "Payment") ||
-        (item[1] !== null && item[0] === "Due")
-      );
-    });
-
     var styles = {
       fontStyle: "bold",
       fontSize: 10,
       textColor: 0,
-      halign: "center",
+      halign: "left",
     };
-
     pdf.autoTable({
-      tableWidth: 60,
-      margin: { left: pdf.internal.pageSize.width - 74, bottom: 40 },
-      head: [filteredData[0]],
-      body: filteredData.slice(1),
+      tableWidth: 70,
+      margin: { left: pdf.internal.pageSize.width - 84, bottom: 40 },
+      head: [data[0]],
+      body: data.slice(1),
       styles: styles,
+      theme: 'plain',
       headStyles: {
         europe: { halign: "right" },
         fillColor: [
@@ -1064,6 +1054,7 @@ class pdfScript {
         0: { fontStyle: "normal" },
       },
     });
+
 
     // Footer
     pdf.setTextColor(0, 0, 0);

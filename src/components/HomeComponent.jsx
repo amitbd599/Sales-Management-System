@@ -96,6 +96,7 @@ const HomeComponent = () => {
   let subTotal = calculateSubtotal();
   let taxation = parseInt((subTotal * getSetting?.taxation) / 100);
   let taxationName = getSetting?.taxationName;
+  let taxationPercent = getSetting?.taxation;
   let waterMark = getSetting?.waterMark;
   let currency = getSetting?.currency;
   let total = calculateTotal();
@@ -120,6 +121,7 @@ const HomeComponent = () => {
     note,
     taxation,
     taxationName,
+    taxationPercent,
     selectedTemplate,
     paymentMethod,
     accountName,
@@ -158,6 +160,7 @@ const HomeComponent = () => {
         note,
         taxation,
         taxationName,
+        taxationPercent,
         selectedTemplate,
         paymentMethod,
         accountName,
@@ -239,12 +242,12 @@ const HomeComponent = () => {
         view: true,
       });
     } else if (getSetting?.selectedTemplate === 3) {
-      let pdfDataUri = pdfScriptData.templateThree({
+      pdfScriptData.templateThree({
         templateData,
         getSetting,
-        save: true,
+        view: true,
       });
-      setPdfDataUri(pdfDataUri);
+
     } else if (getSetting?.selectedTemplate === 4) {
       let pdfDataUri = pdfScriptData.templateFour({
         templateData,
