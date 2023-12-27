@@ -97,6 +97,7 @@ const HomeComponent = () => {
   let taxation = parseInt((subTotal * getSetting?.taxation) / 100);
   let taxationName = getSetting?.taxationName;
   let waterMark = getSetting?.waterMark;
+  let currency = getSetting?.currency;
   let total = calculateTotal();
   let due = calculateDue();
 
@@ -124,7 +125,8 @@ const HomeComponent = () => {
     accountName,
     accountNumber,
     branchName,
-    waterMark
+    waterMark,
+    currency
   };
 
   const saveInvoice = () => {
@@ -161,6 +163,7 @@ const HomeComponent = () => {
         accountName,
         accountNumber,
         branchName,
+        currency
       };
 
       localStorage.setItem("invoices", JSON.stringify([...getInvoices, data]));
