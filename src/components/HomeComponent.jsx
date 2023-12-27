@@ -249,19 +249,18 @@ const HomeComponent = () => {
       });
 
     } else if (getSetting?.selectedTemplate === 4) {
-      let pdfDataUri = pdfScriptData.templateFour({
+      pdfScriptData.templateFour({
         templateData,
         getSetting,
-        save: true,
+        view: true,
       });
-      setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 5) {
-      let pdfDataUri = pdfScriptData.templateFive({
+      pdfScriptData.templateFive({
         templateData,
         getSetting,
-        save: true,
+        view: true,
       });
-      setPdfDataUri(pdfDataUri);
+
     }
   };
   let printPdf = async () => {

@@ -810,7 +810,7 @@ class pdfScript {
     return pdfDataUri;
   }
 
-  //Template four
+  //! Template four 
   templateFour({ getSetting, templateData, print, view, save }) {
     const pdf = new jsPDF(
       getSetting?.pageOrientation,
@@ -819,23 +819,6 @@ class pdfScript {
     );
 
     pdf.setFont("inter", "normal");
-    // Bg image
-    let imgWidth = 100; // Set the width of your image
-    let imgHeight = 0; // Set the height of your image
-    let centerImgX = (pdf.internal.pageSize.width - imgWidth) / 2;
-    let centerImgY = (pdf.internal.pageSize.height - imgHeight) / 2;
-
-    // Background image set
-    getSetting?.bgImg?.length !== 0 &&
-      pdf.addImage(
-        getSetting?.bgImg,
-        "JPEG",
-        centerImgX,
-        centerImgY,
-        imgWidth,
-        imgHeight
-      );
-
     // Logo
     getSetting?.logo.length !== 0 &&
       pdf.addImage(getSetting?.logo, "JPEG", 15, 8, 0, 14);
@@ -998,6 +981,7 @@ class pdfScript {
     // Table Item
     autoTable(pdf, {
       startY: 90,
+      theme: 'grid',
       headStyles: {
         halign: "left",
         fillColor: [
@@ -1011,15 +995,12 @@ class pdfScript {
       columns: [
         { header: "Item", dataKey: "item" },
         { header: "Quantity", dataKey: "quantity" },
-        { header: "Rate", dataKey: "rate" },
+        { header: `Rate(${templateData?.currency})`, dataKey: "rate" },
         { header: "Amount", dataKey: "amount" },
       ],
     });
     // Table payment calculation
-
-    // / Table Calculation
     let data = [
-      ["Description", `Value(${templateData?.currency})`],
       ["Subtotal", templateData?.subTotal],
       [`${templateData?.taxationName}(${templateData?.taxationPercent}%)`, templateData?.taxation],
       ["Shipping", templateData?.shipping],
@@ -1037,10 +1018,9 @@ class pdfScript {
     pdf.autoTable({
       tableWidth: 70,
       margin: { left: pdf.internal.pageSize.width - 84, bottom: 40 },
-      head: [data[0]],
-      body: data.slice(1),
+      body: data,
       styles: styles,
-      theme: 'plain',
+      theme: 'grid',
       headStyles: {
         europe: { halign: "right" },
         fillColor: [
@@ -1084,6 +1064,34 @@ class pdfScript {
 
     let note = pdf.splitTextToSize(`Note: ${templateData?.note}`, 120);
     pdf.text(note, 10, pdf.internal.pageSize.height - 35);
+
+    for (let i = 1; i <= pdf.internal.getNumberOfPages(); i++) {
+      pdf.setPage(i);
+      // Water nark
+      pdf.setFontSize(200);
+      pdf.saveGraphicsState();
+      pdf.setGState(new pdf.GState({ opacity: 0.1 }));
+      pdf.text(templateData?.waterMark, 50, 220, null, 45)
+      // Bg image
+      let imgWidth = 100; // Set the width of your image
+      let imgHeight = 0; // Set the height of your image
+      let centerImgX = (pdf.internal.pageSize.width - imgWidth) / 2;
+      let centerImgY = (pdf.internal.pageSize.height - imgHeight) / 2;
+
+      // Add the image to the PDF at the center position
+
+      getSetting?.bgImg?.length !== 0 &&
+        pdf.addImage(
+          getSetting?.bgImg,
+          "JPEG",
+          centerImgX,
+          centerImgY,
+          imgWidth,
+          imgHeight
+        );
+      pdf.restoreGraphicsState();
+    }
+
     // Save the PDF
 
     if (print === true) {
