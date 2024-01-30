@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Select, Option } from "@material-tailwind/react";
 import { currencyData } from "../script/currency";
 import { ChromePicker } from "react-color";
@@ -23,14 +23,21 @@ const SettingComponent = () => {
   let [selectedTemplate, setTemplateImage] = useState(
     getSetting?.selectedTemplate
   );
-  let [textColor, setBgColor] = useState(getSetting?.textColor);
   let [themeColor, setThemeColor] = useState(getSetting?.themeColor);
+  let [themeTextColor, setThemeTextColor] = useState(
+    getSetting?.themeTextColor
+  );
+  let [paperColor, setPaperColor] = useState(getSetting?.paperColor);
 
-  let handleTextColorChange = (newColor) => {
-    setBgColor(newColor.rgb);
-  };
   let handleThemeColorChange = (newColor) => {
     setThemeColor(newColor.rgb);
+  };
+  let handleThemeTextColorChange = (newColor) => {
+    setThemeTextColor(newColor.rgb);
+  };
+
+  let handlePaperColorChange = (newColor) => {
+    setPaperColor(newColor.rgb);
   };
 
   let logoHandel = (event) => {
@@ -43,8 +50,6 @@ const SettingComponent = () => {
       setBgImg(base64Img);
     });
   };
-
-  console.log(taxation);
 
   const templates = [
     { id: 1, src: "/image/1.jpg" },
@@ -74,6 +79,7 @@ const SettingComponent = () => {
     websiteRef,
     waterMarkRef,
     discountRef,
+    taxationRef,
     shippingRef,
     footerTextRef,
     invoiceWriterRef = useRef();
@@ -89,13 +95,14 @@ const SettingComponent = () => {
     let website = websiteRef.value;
     let waterMark = waterMarkRef.value;
     let invoiceWriter = invoiceWriterRef.value;
-    // let taxation = fixNumber(toNumber(taxation));
+    let taxation = fixNumber(toNumber(taxationRef.value));
     let discount = fixNumber(toNumber(discountRef.value));
     let shipping = fixNumber(toNumber(shippingRef.value));
 
     let setting = {
-      textColor,
       themeColor,
+      themeTextColor,
+      paperColor,
       bgImg,
       company_address,
       company_name,
@@ -121,9 +128,8 @@ const SettingComponent = () => {
     };
 
     localStorage.setItem("setting", JSON.stringify(setting));
-    SuccessToast("Update success!");
+    SuccessToast("Update success!000");
   };
-
 
   return (
     <section className="p-[16px]">
@@ -233,7 +239,6 @@ const SettingComponent = () => {
                 </div>
               </div>
               <div className="w-full col-span-4">
-
                 <label>Taxable cost:</label>
                 <div>
                   <Select
@@ -252,7 +257,6 @@ const SettingComponent = () => {
                     ))}
                   </Select>
                 </div>
-
               </div>
               <div className="w-full col-span-4">
                 <div className="grid gap-1">
@@ -262,8 +266,7 @@ const SettingComponent = () => {
                     className="input_box"
                     placeholder="0"
                     defaultValue={getSetting?.taxation}
-                    onChange={(event) => setTaxation(toNumber(event.target.value))}
-
+                    ref={(input) => (taxationRef = input)}
                   />
                 </div>
               </div>
@@ -377,23 +380,6 @@ const SettingComponent = () => {
               </div>
               <div className="w-full col-span-4">
                 <div className="grid gap-1 ">
-                  <label>Change paper text color:</label>
-                  <div className="pt-2">
-                    <ChromePicker
-                      color={textColor}
-                      onChange={handleTextColorChange}
-                      className="w-full"
-                      circleSize={40}
-                      circleSpacing={24}
-                      disableAlpha={true}
-                    />
-
-
-                  </div>
-                </div>
-              </div>
-              <div className="w-full col-span-4">
-                <div className="grid gap-1 ">
                   <label>Change theme color:</label>
                   <div className="pt-2">
                     <ChromePicker
@@ -404,15 +390,42 @@ const SettingComponent = () => {
                       circleSpacing={24}
                       disableAlpha={true}
                     />
-
-
                   </div>
                 </div>
               </div>
               <div className="w-full col-span-4">
-                <div className="grid gap-[15px]">
+                <div className="grid gap-1 ">
+                  <label>Change theme text color:</label>
+                  <div className="pt-2">
+                    <ChromePicker
+                      color={themeTextColor}
+                      onChange={handleThemeTextColorChange}
+                      className="w-full"
+                      circleSize={40}
+                      circleSpacing={24}
+                      disableAlpha={true}
+                    />
+                  </div>
+                </div>
+              </div>
 
-
+              <div className="w-full col-span-4">
+                <div className="grid gap-1 ">
+                  <label>Change paper color:</label>
+                  <div className="pt-2">
+                    <ChromePicker
+                      color={paperColor}
+                      onChange={handlePaperColorChange}
+                      className="w-full"
+                      circleSize={40}
+                      circleSpacing={24}
+                      disableAlpha={true}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="w-full col-span-4">
+                <div className="grid gap-[20px]">
                   <div className="grid gap-1">
                     <label>Invoice writer name:</label>
                     <div>
@@ -435,25 +448,24 @@ const SettingComponent = () => {
                       />
                     </div>
                   </div>
-                  <div className="grid gap-1">
-
-                    <label>Footer text:</label>
-                    <div>
-                      <textarea
-                        defaultValue={getSetting?.footerText}
-                        ref={(input) => (footerTextRef = input)}
-                        className="input_box"
-                        name=""
-                        id=""
-                        cols="30"
-                        rows="4"
-                      ></textarea>
-
-                    </div>
+                </div>
+              </div>
+              <div className="w-full col-span-8">
+                <div className="grid gap-1">
+                  <label>Footer text:</label>
+                  <div>
+                    <textarea
+                      defaultValue={getSetting?.footerText}
+                      ref={(input) => (footerTextRef = input)}
+                      className="input_box"
+                      name=""
+                      id=""
+                      cols="30"
+                      rows="5"
+                    ></textarea>
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
           <div className="col-span-3  ">
@@ -593,10 +605,11 @@ const SettingComponent = () => {
                     <img
                       src={item?.src}
                       alt=""
-                      className={`w-full border p-[10px] shadow-xl rounded-md  ${selectedTemplate === item.id
-                        ? "border-2 border-red-500"
-                        : " border-gray-200"
-                        }`}
+                      className={`w-full border p-[10px] shadow-xl rounded-md  ${
+                        selectedTemplate === item.id
+                          ? "border-2 border-red-500"
+                          : " border-gray-200"
+                      }`}
                       onClick={() => handleImageClick(item.id)}
                       style={{
                         border:

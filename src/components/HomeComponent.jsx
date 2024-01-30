@@ -14,10 +14,11 @@ import {
   toNumber,
 } from "../helper/helper";
 import { Option, Select, Tooltip } from "@material-tailwind/react";
-import { Document, Page, pdfjs } from "react-pdf";
-import pdfScriptData from "../helper/pdf_script";
-
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+import TemplateOne from "../pdf-templates/TemplateOne";
+import TemplateTwo from "../pdf-templates/TemplateTwo";
+import TemplateThree from "../pdf-templates/TemplateThree";
+import TemplateFour from "../pdf-templates/TemplateFour";
+import TemplateFive from "../pdf-templates/TemplateFive";
 
 const HomeComponent = () => {
   let getSetting = JSON.parse(localStorage.getItem("setting"));
@@ -191,35 +192,35 @@ const HomeComponent = () => {
 
   let savePdf = async () => {
     if (getSetting?.selectedTemplate === 1) {
-      let pdfDataUri = pdfScriptData.templateOne({
+      let pdfDataUri = TemplateOne({
         templateData,
         getSetting,
         save: true,
       });
       setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 2) {
-      let pdfDataUri = pdfScriptData.templateTwo({
+      let pdfDataUri = TemplateTwo({
         templateData,
         getSetting,
         save: true,
       });
       setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 3) {
-      let pdfDataUri = pdfScriptData.templateThree({
+      let pdfDataUri = TemplateThree({
         templateData,
         getSetting,
         save: true,
       });
       setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 4) {
-      let pdfDataUri = pdfScriptData.templateFour({
+      let pdfDataUri = TemplateFour({
         templateData,
         getSetting,
         save: true,
       });
       setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 5) {
-      let pdfDataUri = pdfScriptData.templateFive({
+      let pdfDataUri = TemplateFive({
         templateData,
         getSetting,
         save: true,
@@ -230,32 +231,32 @@ const HomeComponent = () => {
   };
   let viewPdf = async () => {
     if (getSetting?.selectedTemplate === 1) {
-      pdfScriptData.templateOne({
+      TemplateOne({
         templateData,
         getSetting,
         view: true,
       });
     } else if (getSetting?.selectedTemplate === 2) {
-      pdfScriptData.templateTwo({
+      TemplateTwo({
         templateData,
         getSetting,
         view: true,
       });
     } else if (getSetting?.selectedTemplate === 3) {
-      pdfScriptData.templateThree({
+      TemplateThree({
         templateData,
         getSetting,
         view: true,
       });
 
     } else if (getSetting?.selectedTemplate === 4) {
-      pdfScriptData.templateFour({
+      TemplateFour({
         templateData,
         getSetting,
         view: true,
       });
     } else if (getSetting?.selectedTemplate === 5) {
-      pdfScriptData.templateFive({
+      TemplateFive({
         templateData,
         getSetting,
         view: true,
@@ -266,33 +267,33 @@ const HomeComponent = () => {
   let printPdf = async () => {
     // saveInvoice();
     if (getSetting?.selectedTemplate === 1) {
-      pdfScriptData.templateOne({
+      TemplateOne({
         templateData,
         getSetting,
         print: true,
       });
     } else if (getSetting?.selectedTemplate === 2) {
-      pdfScriptData.templateTwo({
+      TemplateTwo({
         templateData,
         getSetting,
         print: true,
       });
     } else if (getSetting?.selectedTemplate === 3) {
-      let pdfDataUri = pdfScriptData.templateThree({
+      let pdfDataUri = TemplateThree({
         templateData,
         getSetting,
         save: true,
       });
       setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 4) {
-      let pdfDataUri = pdfScriptData.templateFour({
+      let pdfDataUri = TemplateFour({
         templateData,
         getSetting,
         save: true,
       });
       setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 5) {
-      let pdfDataUri = pdfScriptData.templateFive({
+      let pdfDataUri = TemplateFive({
         templateData,
         getSetting,
         save: true,
@@ -765,30 +766,6 @@ const HomeComponent = () => {
             </div>
           </div>
         </div>
-      </section>
-      {/* Real time view invoice */}
-
-      <section className="p-[16px]">
-        <div className="container"><div className="grid gap-[20px] grid-cols-12">
-          <div className="col-span-9">
-            <div className="bg-white rounded-md p-[20px] ">
-              {pdfDataUri && (
-                <div>
-                  <Document
-                    file={pdfDataUri}
-                    onLoadSuccess={onDocumentLoadSuccess}
-                  >
-                    <Page pageNumber={pageNumber} />
-                  </Document>
-                  <p>
-                    Page {pageNumber} of {numPages}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div></div>
-
       </section>
     </>
   );

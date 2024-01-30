@@ -6,13 +6,19 @@ const InitLoadingData = () => {
 
   useEffect(() => {
     let setting = {
-      textColor: {
+      paperColor: {
         r: 254,
         g: 254,
         b: 254,
         a: 1,
       },
       themeColor: {
+        r: 68,
+        g: 68,
+        b: 206,
+        a: 1,
+      },
+      themeTextColor: {
         r: 68,
         g: 68,
         b: 206,
@@ -40,7 +46,7 @@ const InitLoadingData = () => {
       taxation: 0,
       taxationName: "Income Tax",
       website: "paytalk.com",
-      waterMark: "Water mark",
+      waterMark: "Demo",
     };
 
     if (!!getSetting === false) {
