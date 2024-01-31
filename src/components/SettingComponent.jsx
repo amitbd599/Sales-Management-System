@@ -388,7 +388,7 @@ const SettingComponent = () => {
                       className="w-full"
                       circleSize={40}
                       circleSpacing={24}
-                      disableAlpha={true}
+                      // disableAlpha={true}
                     />
                   </div>
                 </div>
@@ -403,29 +403,14 @@ const SettingComponent = () => {
                       className="w-full"
                       circleSize={40}
                       circleSpacing={24}
-                      disableAlpha={true}
+                      // disableAlpha={true}
                     />
                   </div>
                 </div>
               </div>
 
               <div className="w-full col-span-4">
-                <div className="grid gap-1 ">
-                  <label>Change paper color:</label>
-                  <div className="pt-2">
-                    <ChromePicker
-                      color={paperColor}
-                      onChange={handlePaperColorChange}
-                      className="w-full"
-                      circleSize={40}
-                      circleSpacing={24}
-                      disableAlpha={true}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="w-full col-span-4">
-                <div className="grid gap-[20px]">
+                <div className="grid gap-[14px]">
                   <div className="grid gap-1">
                     <label>Invoice writer name:</label>
                     <div>
@@ -448,21 +433,19 @@ const SettingComponent = () => {
                       />
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="w-full col-span-8">
-                <div className="grid gap-1">
-                  <label>Footer text:</label>
-                  <div>
-                    <textarea
-                      defaultValue={getSetting?.footerText}
-                      ref={(input) => (footerTextRef = input)}
-                      className="input_box"
-                      name=""
-                      id=""
-                      cols="30"
-                      rows="5"
-                    ></textarea>
+                  <div className="grid gap-1">
+                    <label>Footer text:</label>
+                    <div>
+                      <textarea
+                        defaultValue={getSetting?.footerText}
+                        ref={(input) => (footerTextRef = input)}
+                        className="input_box"
+                        name=""
+                        id=""
+                        cols="30"
+                        rows="5"
+                      ></textarea>
+                    </div>
                   </div>
                 </div>
               </div>

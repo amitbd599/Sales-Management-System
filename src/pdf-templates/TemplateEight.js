@@ -2,7 +2,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import QRCode from "qrcode-generator";
 
-function TemplateFive({ getSetting, templateData, print, view, save }) {
+function TemplateEight({ getSetting, templateData, print, view, save }) {
   const pdf = new jsPDF(
     getSetting?.pageOrientation,
     "mm",
@@ -10,6 +10,8 @@ function TemplateFive({ getSetting, templateData, print, view, save }) {
   );
 
   pdf.setFont("inter", "normal");
+
+  pdf.setTextColor(0, 0, 0);
   // Logo
   getSetting?.logo.length !== 0 &&
     pdf.addImage(getSetting?.logo, "JPEG", 15, 8, 0, 14);
@@ -24,51 +26,34 @@ function TemplateFive({ getSetting, templateData, print, view, save }) {
 
   pdf.setFontSize(40);
   pdf.setFont("inter", "bold");
+  pdf.setTextColor(
+    getSetting?.themeColor?.r,
+    getSetting?.themeColor?.g,
+    getSetting?.themeColor?.b
+  );
+  // Your QR code content
+  const qrCodeContent = `Invoice Id #-${templateData?.invoiceID}`;
+  const typeNumber = 0;
+  const errorCorrectionLevel = "L";
+  const qr = QRCode(typeNumber, errorCorrectionLevel);
+  qr.addData(qrCodeContent);
+  qr.make();
+  const qrCodeImageUri = qr.createDataURL();
+  let qrWidth = 30; // Set the width of your image
+  let qrHeight = 30; // Set the height of your image
+  getSetting?.qrCode === "yes" &&
+    pdf.addImage(
+      qrCodeImageUri,
+      "PNG",
+      pdf.internal.pageSize.width - 40,
+      12,
+      qrWidth,
+      qrHeight
+    );
+
   pdf.setTextColor(0, 0, 0);
   pdf.setFont("inter", "normal");
   pdf.setFontSize(12);
-  pdf.text(
-    `INVOICE # ${templateData?.invoiceID}`,
-    pdf.internal.pageSize.width - 15,
-    15,
-    {
-      align: "right",
-    }
-  );
-  pdf.setFontSize(11);
-  pdf.text(
-    `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
-    pdf.internal.pageSize.width - 15,
-    20,
-    {
-      align: "right",
-    }
-  );
-  pdf.text(
-    `Submit date:  ${templateData?.startDate.toISOString().slice(0, 10)}`,
-    pdf.internal.pageSize.width - 15,
-    26,
-    {
-      align: "right",
-    }
-  );
-  pdf.text(
-    `Delivery date:  ${templateData?.deliveryDate.toISOString().slice(0, 10)}`,
-    pdf.internal.pageSize.width - 15,
-    32,
-    {
-      align: "right",
-    }
-  );
-  pdf.text(
-    `Writer:  ${templateData?.invoiceWriter}`,
-    pdf.internal.pageSize.width - 15,
-    38,
-    {
-      align: "right",
-    }
-  );
-
   pdf.text(`${getSetting?.company_name}`, 15, 28);
   pdf.setFontSize(10);
   pdf.text(`${getSetting?.company_address}`, 15, 33);
@@ -78,56 +63,109 @@ function TemplateFive({ getSetting, templateData, print, view, save }) {
     38
   );
 
-  // Right side data
-  let templateTwoRightStart = parseInt(pdf.internal.pageSize.width) / 2;
-  pdf.setFontSize(10);
-  pdf.text("Bill To", 15, 57);
-  // company_name
-  pdf.setFontSize(12);
-  pdf.setFont("inter", "bold");
-  pdf.text(`${templateData?.customerName}`, 15, 62);
-  pdf.setFont("inter", "normal");
-  pdf.setFontSize(10);
-  pdf.text(`${templateData?.address}`, 15, 67);
-  pdf.text(`Phone: ${templateData?.phone}`, 15, 72);
-  pdf.text(`Email: ${templateData?.email}`, 15, 77);
-
   // Filled red square
   pdf.setDrawColor(0);
-  pdf.setFontSize(10);
-  pdf.text("Payment info", templateTwoRightStart + 20, 57);
-  pdf.setFontSize(12);
-  pdf.setFont("inter", "bold");
-  pdf.text(
-    `Payment method: ${templateData?.paymentMethod}`,
-    templateTwoRightStart + 20,
-    62
+  pdf.setFillColor(
+    getSetting?.themeColor?.r,
+    getSetting?.themeColor?.g,
+    getSetting?.themeColor?.b
   );
+  pdf.rect(0, 50, 40, 8, "F");
+
+  pdf.setFontSize(12);
+  pdf.setTextColor(
+    getSetting?.themeTextColor?.r,
+    getSetting?.themeTextColor?.g,
+    getSetting?.themeTextColor?.b
+  );
+  pdf.text("Invoice To", 15, 55);
+
+  pdf.setFont("inter", "normal");
+  pdf.setFontSize(20);
+  pdf.setTextColor(0, 0, 0);
+  pdf.text(templateData?.customerName, 15, 66);
+
   pdf.setFont("inter", "normal");
   pdf.setFontSize(10);
-  templateData?.paymentMethod === "Bank" &&
-    pdf.text(
-      `A/C name:  ${templateData?.accountName}`,
-      templateTwoRightStart + 20,
-      67
-    );
+  pdf.text(templateData?.address, 15, 72);
+  pdf.text(`Phone: ${templateData?.phone}`, 15, 77);
+  pdf.text(`Email: ${templateData?.email}`, 15, 82);
+
+  pdf.text(
+    `INVOICE # ${templateData?.invoiceID}`,
+    pdf.internal.pageSize.width - 15,
+    55,
+    {
+      align: "right",
+    }
+  );
+  pdf.text(
+    `Submit Date  ${templateData?.startDate.toISOString().slice(0, 10)}`,
+    pdf.internal.pageSize.width - 15,
+    60,
+    {
+      align: "right",
+    }
+  );
+  pdf.text(
+    `Delivery date  ${templateData?.deliveryDate.toISOString().slice(0, 10)}`,
+    pdf.internal.pageSize.width - 15,
+    65,
+    {
+      align: "right",
+    }
+  );
+
   templateData?.paymentMethod === "Bank" &&
     pdf.text(
       `A/C no: ${templateData?.accountNumber}`,
-      templateTwoRightStart + 20,
-      72
+      pdf.internal.pageSize.width - 15,
+      70,
+      {
+        align: "right",
+      }
+    );
+  templateData?.paymentMethod === "Bank" &&
+    pdf.text(
+      `A/C name:  ${templateData?.accountName}`,
+      pdf.internal.pageSize.width - 15,
+      75,
+      {
+        align: "right",
+      }
     );
   templateData?.paymentMethod === "Bank" &&
     pdf.text(
       `Branch: ${templateData?.branchName}`,
-      templateTwoRightStart + 20,
-      77
+      pdf.internal.pageSize.width - 15,
+      80,
+      {
+        align: "right",
+      }
     );
+  pdf.setTextColor(255, 0, 0);
+  templateData?.paymentMethod === "Bank"
+    ? pdf.text(
+        `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
+        pdf.internal.pageSize.width - 15,
+        85,
+        {
+          align: "right",
+        }
+      )
+    : pdf.text(
+        `Payment status: ${templateData?.due > 0 ? "Due" : "Paid"}`,
+        pdf.internal.pageSize.width - 15,
+        85,
+        {
+          align: "right",
+        }
+      );
 
   // Table Item
   autoTable(pdf, {
-    startY: 82,
-    theme: "grid",
+    startY: 90,
+    theme: "plain",
     headStyles: {
       halign: "left",
       fillColor: [
@@ -141,15 +179,13 @@ function TemplateFive({ getSetting, templateData, print, view, save }) {
         getSetting?.themeTextColor?.b,
       ],
     },
-    columnStyles: {
-      halign: "left",
-    },
+    columnStyles: { halign: "left" },
     body: templateData?.invoiceItems,
     columns: [
       { header: "Item", dataKey: "item" },
       { header: "Quantity", dataKey: "quantity" },
       { header: `Rate(${templateData?.currency})`, dataKey: "rate" },
-      { header: `Amount(${templateData?.currency})`, dataKey: "amount" },
+      { header: "Amount", dataKey: "amount" },
     ],
   });
   // Table payment calculation
@@ -160,9 +196,9 @@ function TemplateFive({ getSetting, templateData, print, view, save }) {
       templateData?.taxation,
     ],
     ["Shipping", templateData?.shipping],
-    ["Discount", `(${templateData?.discount})`],
+    ["Discount", templateData?.discount],
     ["Total", templateData?.total],
-    ["Payment", `(${templateData?.payment})`],
+    ["Payment", templateData?.payment],
     ["Due", templateData?.due],
   ];
   var styles = {
@@ -171,16 +207,20 @@ function TemplateFive({ getSetting, templateData, print, view, save }) {
     textColor: 0,
     halign: "left",
   };
-  autoTable(pdf, {
+  pdf.autoTable({
     tableWidth: 70,
     margin: { left: pdf.internal.pageSize.width - 84, bottom: 40 },
     body: data,
     styles: styles,
-    theme: "grid",
+    theme: "plain",
     headStyles: {
       europe: { halign: "right" },
-      fillColor: [0, 0, 0],
-      textColor: [0, 0, 0],
+      fillColor: [
+        getSetting?.themeColor?.r,
+        getSetting?.themeColor?.g,
+        getSetting?.themeColor?.b,
+      ],
+      textColor: [255, 255, 255],
     },
     columnStyles: {
       0: { fontStyle: "normal" },
@@ -188,6 +228,7 @@ function TemplateFive({ getSetting, templateData, print, view, save }) {
   });
 
   // Footer
+  pdf.setTextColor(0, 0, 0);
   pdf.setFontSize(14);
 
   pdf.text(
@@ -211,26 +252,6 @@ function TemplateFive({ getSetting, templateData, print, view, save }) {
     pdf.internal.pageSize.width - 15
   );
   pdf.text(splitTitle, 10, pdf.internal.pageSize.height - 7);
-
-  // Your QR code content
-  const qrCodeContent = `Invoice Id #-${templateData?.invoiceID}`;
-  const typeNumber = 0;
-  const errorCorrectionLevel = "L";
-  const qr = QRCode(typeNumber, errorCorrectionLevel);
-  qr.addData(qrCodeContent);
-  qr.make();
-  const qrCodeImageUri = qr.createDataURL();
-  let qrWidth = 20; // Set the width of your image
-  let qrHeight = 20; // Set the height of your image
-  getSetting?.qrCode === "yes" &&
-    pdf.addImage(
-      qrCodeImageUri,
-      "PNG",
-      7,
-      pdf.internal.pageSize.height - 58,
-      qrWidth,
-      qrHeight
-    );
 
   let note = pdf.splitTextToSize(`Note: ${templateData?.note}`, 120);
   pdf.text(note, 10, pdf.internal.pageSize.height - 35);
@@ -276,4 +297,4 @@ function TemplateFive({ getSetting, templateData, print, view, save }) {
   save === true && pdf.save("invoice.pdf");
 }
 
-export default TemplateFive;
+export default TemplateEight;

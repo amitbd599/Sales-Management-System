@@ -2,7 +2,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import QRCode from "qrcode-generator";
 
-function TemplateFive({ getSetting, templateData, print, view, save }) {
+function TemplateSix({ getSetting, templateData, print, view, save }) {
   const pdf = new jsPDF(
     getSetting?.pageOrientation,
     "mm",
@@ -127,7 +127,7 @@ function TemplateFive({ getSetting, templateData, print, view, save }) {
   // Table Item
   autoTable(pdf, {
     startY: 82,
-    theme: "grid",
+    theme: "striped",
     headStyles: {
       halign: "left",
       fillColor: [
@@ -176,7 +176,7 @@ function TemplateFive({ getSetting, templateData, print, view, save }) {
     margin: { left: pdf.internal.pageSize.width - 84, bottom: 40 },
     body: data,
     styles: styles,
-    theme: "grid",
+    theme: "plain",
     headStyles: {
       europe: { halign: "right" },
       fillColor: [0, 0, 0],
@@ -276,4 +276,4 @@ function TemplateFive({ getSetting, templateData, print, view, save }) {
   save === true && pdf.save("invoice.pdf");
 }
 
-export default TemplateFive;
+export default TemplateSix;

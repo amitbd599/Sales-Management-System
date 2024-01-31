@@ -19,6 +19,9 @@ import TemplateTwo from "../pdf-templates/TemplateTwo";
 import TemplateThree from "../pdf-templates/TemplateThree";
 import TemplateFour from "../pdf-templates/TemplateFour";
 import TemplateFive from "../pdf-templates/TemplateFive";
+import TemplateSix from "../pdf-templates/TemplateSix";
+import TemplateSeven from "../pdf-templates/TemplateSeven";
+import TemplateEight from "../pdf-templates/TemplateEight";
 
 const HomeComponent = () => {
   let getSetting = JSON.parse(localStorage.getItem("setting"));
@@ -91,7 +94,6 @@ const HomeComponent = () => {
     setInvoiceID(`${timestamp}${random}`);
   };
 
-
   let selectedTemplate = fixNumber(toNumber(getSetting?.selectedTemplate));
 
   let subTotal = calculateSubtotal();
@@ -129,7 +131,7 @@ const HomeComponent = () => {
     accountNumber,
     branchName,
     waterMark,
-    currency
+    currency,
   };
 
   const saveInvoice = () => {
@@ -167,7 +169,7 @@ const HomeComponent = () => {
         accountName,
         accountNumber,
         branchName,
-        currency
+        currency,
       };
 
       localStorage.setItem("invoices", JSON.stringify([...getInvoices, data]));
@@ -226,6 +228,27 @@ const HomeComponent = () => {
         save: true,
       });
       setPdfDataUri(pdfDataUri);
+    } else if (getSetting?.selectedTemplate === 6) {
+      let pdfDataUri = TemplateSix({
+        templateData,
+        getSetting,
+        save: true,
+      });
+      setPdfDataUri(pdfDataUri);
+    } else if (getSetting?.selectedTemplate === 7) {
+      let pdfDataUri = TemplateSeven({
+        templateData,
+        getSetting,
+        save: true,
+      });
+      setPdfDataUri(pdfDataUri);
+    } else if (getSetting?.selectedTemplate === 8) {
+      let pdfDataUri = TemplateEight({
+        templateData,
+        getSetting,
+        save: true,
+      });
+      setPdfDataUri(pdfDataUri);
     }
     saveInvoice();
   };
@@ -248,7 +271,6 @@ const HomeComponent = () => {
         getSetting,
         view: true,
       });
-
     } else if (getSetting?.selectedTemplate === 4) {
       TemplateFour({
         templateData,
@@ -261,7 +283,24 @@ const HomeComponent = () => {
         getSetting,
         view: true,
       });
-
+    } else if (getSetting?.selectedTemplate === 6) {
+      TemplateSix({
+        templateData,
+        getSetting,
+        view: true,
+      });
+    } else if (getSetting?.selectedTemplate === 7) {
+      TemplateSeven({
+        templateData,
+        getSetting,
+        view: true,
+      });
+    } else if (getSetting?.selectedTemplate === 8) {
+      TemplateEight({
+        templateData,
+        getSetting,
+        view: true,
+      });
     }
   };
   let printPdf = async () => {
@@ -299,6 +338,27 @@ const HomeComponent = () => {
         save: true,
       });
       setPdfDataUri(pdfDataUri);
+    } else if (getSetting?.selectedTemplate === 6) {
+      let pdfDataUri = TemplateSix({
+        templateData,
+        getSetting,
+        save: true,
+      });
+      setPdfDataUri(pdfDataUri);
+    } else if (getSetting?.selectedTemplate === 7) {
+      let pdfDataUri = TemplateSeven({
+        templateData,
+        getSetting,
+        save: true,
+      });
+      setPdfDataUri(pdfDataUri);
+    } else if (getSetting?.selectedTemplate === 8) {
+      let pdfDataUri = TemplateEight({
+        templateData,
+        getSetting,
+        save: true,
+      });
+      setPdfDataUri(pdfDataUri);
     }
     saveInvoice();
   };
@@ -307,8 +367,6 @@ const HomeComponent = () => {
     setNumPages(numPages);
     setPageNumber(1);
   };
-
-
 
   return (
     <>
@@ -636,10 +694,9 @@ const HomeComponent = () => {
                     </p>
 
                     <p className="flex justify-between">
-                      {getSetting?.taxationName}: <span className="pl-3">+ {getSetting?.taxation}%</span>
+                      {getSetting?.taxationName}:{" "}
+                      <span className="pl-3">+ {getSetting?.taxation}%</span>
                     </p>
-
-
 
                     <div className="border-b border-gray-200 pb-3 flex gap-2 items-center justify-between">
                       <p>Shipping:</p>

@@ -17,12 +17,6 @@ const InitLoadData = () => {
         b: 213,
         a: 1,
       },
-      paperColor: {
-        r: 163,
-        g: 150,
-        b: 218,
-        a: 1,
-      },
       bgImg: "",
       company_address: "Laboriosam alias li",
       company_name: "Ipsum dolor dolor fu",
