@@ -84,7 +84,7 @@ function TemplateFour({ getSetting, templateData, print, view, save }) {
       align: "right",
     }
   );
-
+  pdf.setFontSize(13);
   pdf.text(`${getSetting?.company_name}`, 15, 28);
   pdf.setFontSize(10);
   pdf.text(`${getSetting?.company_address}`, 15, 33);

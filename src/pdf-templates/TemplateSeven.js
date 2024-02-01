@@ -74,11 +74,12 @@ function TemplateSeven({ getSetting, templateData, print, view, save }) {
   // Invoice id
   pdf.setTextColor(0, 0, 0);
   pdf.setFontSize(12);
-  pdf.text(`Invoice no: #${templateData?.invoiceID}`, 15, 34);
+  pdf.text(`Invoice no: # ${templateData?.invoiceID}`, 15, 36);
+  pdf.setFontSize(10);
   pdf.text(
     `Submit date: ${templateData?.startDate.toISOString().slice(0, 10)}`,
     15,
-    40
+    41
   );
   pdf.text(
     `Delivery date: ${templateData?.deliveryDate.toISOString().slice(0, 10)}`,
@@ -96,7 +97,12 @@ function TemplateSeven({ getSetting, templateData, print, view, save }) {
     getSetting?.themeColor?.b
   );
   pdf.rect(15, 52, templateTwoRightStart - 30, 8, "F");
-  pdf.setTextColor(255, 255, 255);
+  pdf.setTextColor(
+    getSetting?.themeTextColor?.r,
+    getSetting?.themeTextColor?.g,
+    getSetting?.themeTextColor?.b
+  );
+  pdf.setFontSize(12);
   pdf.text("Bill Form", 20, 57);
   pdf.setTextColor(0, 0, 0);
   // company_name
@@ -117,7 +123,11 @@ function TemplateSeven({ getSetting, templateData, print, view, save }) {
     getSetting?.themeColor?.b
   );
   pdf.rect(templateTwoRightStart + 15, 52, templateTwoRightStart - 30, 8, "F");
-  pdf.setTextColor(255, 255, 255);
+  pdf.setTextColor(
+    getSetting?.themeTextColor?.r,
+    getSetting?.themeTextColor?.g,
+    getSetting?.themeTextColor?.b
+  );
   pdf.setFontSize(12);
   pdf.text("Bill To", templateTwoRightStart + 20, 57);
   pdf.setTextColor(0, 0, 0);
@@ -141,19 +151,25 @@ function TemplateSeven({ getSetting, templateData, print, view, save }) {
         getSetting?.themeColor?.g,
         getSetting?.themeColor?.b,
       ],
+      textColor: [
+        getSetting?.themeTextColor?.r,
+        getSetting?.themeTextColor?.g,
+        getSetting?.themeTextColor?.b,
+      ],
     },
-    columnStyles: { halign: "left" },
+    columnStyles: {
+      halign: "left",
+    },
     body: templateData?.invoiceItems,
     columns: [
       { header: "Item", dataKey: "item" },
       { header: "Quantity", dataKey: "quantity" },
       { header: `Rate(${templateData?.currency})`, dataKey: "rate" },
-      { header: "Amount", dataKey: "amount" },
+      { header: `Amount(${templateData?.currency})`, dataKey: "amount" },
     ],
   });
-  // Table Calculation
+  // Table payment calculation
   let data = [
-    ["Description", `Value(${templateData?.currency})`],
     ["Subtotal", templateData?.subTotal],
     [
       `${templateData?.taxationName}(${templateData?.taxationPercent}%)`,
@@ -171,21 +187,16 @@ function TemplateSeven({ getSetting, templateData, print, view, save }) {
     textColor: 0,
     halign: "left",
   };
-  pdf.autoTable({
+  autoTable(pdf, {
     tableWidth: 70,
     margin: { left: pdf.internal.pageSize.width - 84, bottom: 40 },
-    head: [data[0]],
-    body: data.slice(1),
+    body: data,
     styles: styles,
     theme: "plain",
     headStyles: {
       europe: { halign: "right" },
-      fillColor: [
-        getSetting?.themeColor?.r,
-        getSetting?.themeColor?.g,
-        getSetting?.themeColor?.b,
-      ],
-      textColor: [255, 255, 255],
+      fillColor: [0, 0, 0],
+      textColor: [0, 0, 0],
     },
     columnStyles: {
       0: { fontStyle: "normal" },
@@ -195,16 +206,13 @@ function TemplateSeven({ getSetting, templateData, print, view, save }) {
   // Footer
   pdf.setTextColor(0, 0, 0);
   pdf.setFontSize(12);
-  let footerSingTextTemTwo = "Authorized Signature";
-  let pageSizeTemTwo = pdf.internal.pageSize;
-  let pageWidthTemTwo = pageSizeTemTwo.width;
-  let textWidthTemTwo = pdf.getStringUnitWidth(footerSingTextTemTwo);
-  let startXTemTwo = parseInt(pageWidthTemTwo) - parseInt(textWidthTemTwo) - 50;
-
   pdf.text(
-    footerSingTextTemTwo,
-    startXTemTwo,
-    pdf.internal.pageSize.height - 23
+    "Authorized Signature",
+    pdf.internal.pageSize.width - 15,
+    pdf.internal.pageSize.height - 23,
+    {
+      align: "right",
+    }
   );
 
   pdf.setFontSize(10);
@@ -268,6 +276,9 @@ function TemplateSeven({ getSetting, templateData, print, view, save }) {
     pdf.restoreGraphicsState();
   }
 
+  pdf.setProperties({
+    title: "Report view in PDF",
+  });
   // Save the PDF
 
   if (print === true) {
@@ -277,11 +288,6 @@ function TemplateSeven({ getSetting, templateData, print, view, save }) {
 
   view === true && pdf.output("dataurlnewwindow");
   save === true && pdf.save("invoice.pdf");
-
-  // Convert the PDF to a data URL
-  const pdfDataUri = pdf.output("datauristring");
-  // Set the data URL in the state to trigger a re-render
-  return pdfDataUri;
 }
 
 export default TemplateSeven;

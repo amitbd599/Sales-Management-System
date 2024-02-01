@@ -40,7 +40,7 @@ function TemplateOne({ getSetting, templateData, print, view, save }) {
   );
 
   // company_name
-  pdf.text(`${getSetting?.company_name}`, 15, 28);
+  pdf.text(`${getSetting?.company_name}`, 15, 29);
 
   pdf.setFontSize(10);
   pdf.text(`${getSetting?.company_address}`, 15, 34);

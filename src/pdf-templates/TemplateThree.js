@@ -73,7 +73,11 @@ function TemplateThree({ getSetting, templateData, print, view, save }) {
   pdf.rect(0, 50, 40, 8, "F");
 
   pdf.setFontSize(12);
-  pdf.setTextColor(255, 255, 255);
+  pdf.setTextColor(
+    getSetting?.themeTextColor?.r,
+    getSetting?.themeTextColor?.g,
+    getSetting?.themeTextColor?.b
+  );
   pdf.text("Invoice To", 15, 55);
 
   pdf.setFont("inter", "normal");
@@ -169,14 +173,21 @@ function TemplateThree({ getSetting, templateData, print, view, save }) {
         getSetting?.themeColor?.g,
         getSetting?.themeColor?.b,
       ],
+      textColor: [
+        getSetting?.themeTextColor?.r,
+        getSetting?.themeTextColor?.g,
+        getSetting?.themeTextColor?.b,
+      ],
     },
-    columnStyles: { halign: "left" },
+    columnStyles: {
+      halign: "left",
+    },
     body: templateData?.invoiceItems,
     columns: [
       { header: "Item", dataKey: "item" },
       { header: "Quantity", dataKey: "quantity" },
       { header: `Rate(${templateData?.currency})`, dataKey: "rate" },
-      { header: "Amount", dataKey: "amount" },
+      { header: `Amount(${templateData?.currency})`, dataKey: "amount" },
     ],
   });
   // Table payment calculation
@@ -187,9 +198,9 @@ function TemplateThree({ getSetting, templateData, print, view, save }) {
       templateData?.taxation,
     ],
     ["Shipping", templateData?.shipping],
-    ["Discount", templateData?.discount],
+    ["Discount", `(${templateData?.discount})`],
     ["Total", templateData?.total],
-    ["Payment", templateData?.payment],
+    ["Payment", `(${templateData?.payment})`],
     ["Due", templateData?.due],
   ];
   var styles = {
@@ -198,7 +209,7 @@ function TemplateThree({ getSetting, templateData, print, view, save }) {
     textColor: 0,
     halign: "left",
   };
-  pdf.autoTable({
+  autoTable(pdf, {
     tableWidth: 70,
     margin: { left: pdf.internal.pageSize.width - 84, bottom: 40 },
     body: data,
@@ -206,12 +217,8 @@ function TemplateThree({ getSetting, templateData, print, view, save }) {
     theme: "grid",
     headStyles: {
       europe: { halign: "right" },
-      fillColor: [
-        getSetting?.themeColor?.r,
-        getSetting?.themeColor?.g,
-        getSetting?.themeColor?.b,
-      ],
-      textColor: [255, 255, 255],
+      fillColor: [0, 0, 0],
+      textColor: [0, 0, 0],
     },
     columnStyles: {
       0: { fontStyle: "normal" },

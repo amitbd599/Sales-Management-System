@@ -205,16 +205,13 @@ function TemplateTwo({ getSetting, templateData, print, view, save }) {
   // Footer
   pdf.setTextColor(0, 0, 0);
   pdf.setFontSize(12);
-  let footerSingTextTemTwo = "Authorized Signature";
-  let pageSizeTemTwo = pdf.internal.pageSize;
-  let pageWidthTemTwo = pageSizeTemTwo.width;
-  let textWidthTemTwo = pdf.getStringUnitWidth(footerSingTextTemTwo);
-  let startXTemTwo = parseInt(pageWidthTemTwo) - parseInt(textWidthTemTwo) - 50;
-
   pdf.text(
-    footerSingTextTemTwo,
-    startXTemTwo,
-    pdf.internal.pageSize.height - 23
+    "Authorized Signature",
+    pdf.internal.pageSize.width - 15,
+    pdf.internal.pageSize.height - 23,
+    {
+      align: "right",
+    }
   );
 
   pdf.setFontSize(10);

@@ -80,11 +80,12 @@ function TemplateFive({ getSetting, templateData, print, view, save }) {
 
   // Right side data
   let templateTwoRightStart = parseInt(pdf.internal.pageSize.width) / 2;
-  pdf.setFontSize(10);
-  pdf.text("Bill To", 15, 57);
+  pdf.setFontSize(16);
+  pdf.setFont("inter", "bold");
+  pdf.text("Bill To :", 15, 55);
   // company_name
   pdf.setFontSize(12);
-  pdf.setFont("inter", "bold");
+
   pdf.text(`${templateData?.customerName}`, 15, 62);
   pdf.setFont("inter", "normal");
   pdf.setFontSize(10);
@@ -94,10 +95,10 @@ function TemplateFive({ getSetting, templateData, print, view, save }) {
 
   // Filled red square
   pdf.setDrawColor(0);
-  pdf.setFontSize(10);
-  pdf.text("Payment info", templateTwoRightStart + 20, 57);
-  pdf.setFontSize(12);
+  pdf.setFontSize(16);
   pdf.setFont("inter", "bold");
+  pdf.text("Payment Info :", templateTwoRightStart + 20, 55);
+  pdf.setFontSize(12);
   pdf.text(
     `Payment method: ${templateData?.paymentMethod}`,
     templateTwoRightStart + 20,
