@@ -255,6 +255,11 @@ function TemplateOne({ getSetting, templateData, print, view, save }) {
     pdf.restoreGraphicsState();
   }
 
+  pdf.setProperties({
+    title: "Report view in PDF",
+  });
+  // Save the PDF
+
   if (print === true) {
     pdf.autoPrint();
     pdf.output("dataurlnewwindow");
@@ -262,11 +267,6 @@ function TemplateOne({ getSetting, templateData, print, view, save }) {
 
   view === true && pdf.output("dataurlnewwindow");
   save === true && pdf.save("invoice.pdf");
-
-  // Convert the PDF to a data URL
-  const pdfDataUri = pdf.output("datauristring");
-  // Set the data URL in the state to trigger a re-render
-  return pdfDataUri;
 }
 
 export default TemplateOne;
