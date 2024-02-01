@@ -242,7 +242,6 @@ function TemplateFive({ getSetting, templateData, print, view, save }) {
     pdf.setFontSize(200);
     pdf.saveGraphicsState();
     pdf.setGState(new pdf.GState({ opacity: 0.1 }));
-    pdf.text(templateData?.waterMark, 50, 220, null, 45);
     // Bg image
     let imgWidth = 100; // Set the width of your image
     let imgHeight = 0; // Set the height of your image
@@ -260,6 +259,15 @@ function TemplateFive({ getSetting, templateData, print, view, save }) {
         imgWidth,
         imgHeight
       );
+    // water mark
+    pdf.addImage(
+      "/image/shape/demo.png",
+      "JPEG",
+      centerImgX,
+      20,
+      imgWidth,
+      imgHeight
+    );
     pdf.restoreGraphicsState();
   }
 

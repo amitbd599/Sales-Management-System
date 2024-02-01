@@ -11,7 +11,6 @@ const SettingComponent = () => {
   let [logo, setLogo] = useState(getSetting?.logo);
   let [bgImg, setBgImg] = useState(getSetting?.bgImg);
   let [currency, setCurrency] = useState(getSetting?.currency);
-  let [taxation, setTaxation] = useState(getSetting?.taxation);
   let [taxationName, setTaxationName] = useState(getSetting?.taxationName);
   let [invoiceType, setInvoiceType] = useState(getSetting?.invoiceType);
   let [qrCode, setQrCode] = useState(getSetting?.qrCode);
@@ -27,17 +26,12 @@ const SettingComponent = () => {
   let [themeTextColor, setThemeTextColor] = useState(
     getSetting?.themeTextColor
   );
-  let [paperColor, setPaperColor] = useState(getSetting?.paperColor);
 
   let handleThemeColorChange = (newColor) => {
     setThemeColor(newColor.rgb);
   };
   let handleThemeTextColorChange = (newColor) => {
     setThemeTextColor(newColor.rgb);
-  };
-
-  let handlePaperColorChange = (newColor) => {
-    setPaperColor(newColor.rgb);
   };
 
   let logoHandel = (event) => {
@@ -60,10 +54,6 @@ const SettingComponent = () => {
     { id: 6, src: "/image/6.jpg" },
     { id: 7, src: "/image/7.jpg" },
     { id: 8, src: "/image/8.jpg" },
-    { id: 9, src: "/image/9.jpg" },
-    { id: 10, src: "/image/10.jpg" },
-    { id: 11, src: "/image/11.jpg" },
-    { id: 12, src: "/image/12.jpg" },
   ];
 
   const handleImageClick = (imageId) => {
@@ -102,7 +92,6 @@ const SettingComponent = () => {
     let setting = {
       themeColor,
       themeTextColor,
-      paperColor,
       bgImg,
       company_address,
       company_name,
@@ -128,7 +117,7 @@ const SettingComponent = () => {
     };
 
     localStorage.setItem("setting", JSON.stringify(setting));
-    SuccessToast("Update success!000");
+    SuccessToast("Update success!");
   };
 
   return (
@@ -222,7 +211,6 @@ const SettingComponent = () => {
                     <Select
                       onChange={(event) => setCurrency(event)}
                       value={currency}
-                      defaultValue={currency}
                       label="Select item"
                       animate={{
                         mount: { y: 0 },
@@ -243,7 +231,7 @@ const SettingComponent = () => {
                 <div>
                   <Select
                     onChange={(event) => setTaxationName(event)}
-                    value={taxationName}
+                    value={getSetting?.taxationName}
                     label="Select item"
                     animate={{
                       mount: { y: 0 },
@@ -305,7 +293,7 @@ const SettingComponent = () => {
                     <Select
                       label="Select item"
                       onChange={(event) => setInvoiceType(event)}
-                      value={invoiceType}
+                      value={getSetting?.invoiceType}
                       animate={{
                         mount: { y: 0 },
                         unmount: { y: 25 },
@@ -324,7 +312,6 @@ const SettingComponent = () => {
                     <Select
                       onChange={(event) => setQrCode(event)}
                       value={qrCode}
-                      defaultValue={qrCode}
                       label="Select item"
                       animate={{
                         mount: { y: 0 },
@@ -343,7 +330,7 @@ const SettingComponent = () => {
                   <div>
                     <Select
                       onChange={(event) => setPageOrientation(event)}
-                      value={pageOrientation}
+                      value={getSetting?.pageOrientation}
                       label="Select item"
                       animate={{
                         mount: { y: 0 },
@@ -362,7 +349,7 @@ const SettingComponent = () => {
                   <div>
                     <Select
                       onChange={(event) => setPageSize(event)}
-                      value={pageSize}
+                      value={getSetting?.pageSize}
                       label="Select item"
                       animate={{
                         mount: { y: 0 },

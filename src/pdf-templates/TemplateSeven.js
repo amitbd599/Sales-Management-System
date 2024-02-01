@@ -223,7 +223,10 @@ function TemplateSeven({ getSetting, templateData, print, view, save }) {
     getSetting?.themeColor?.b
   );
   pdf.rect(-10, pdf.internal.pageSize.height - 15, 400, 1, "F");
-  let splitTitle = pdf.splitTextToSize(getSetting?.footerText, 180);
+  let splitTitle = pdf.splitTextToSize(
+    getSetting?.footerText,
+    pdf.internal.pageSize.width - 15
+  );
   pdf.text(splitTitle, 10, pdf.internal.pageSize.height - 7);
 
   // Your QR code content
@@ -255,7 +258,6 @@ function TemplateSeven({ getSetting, templateData, print, view, save }) {
     pdf.setFontSize(200);
     pdf.saveGraphicsState();
     pdf.setGState(new pdf.GState({ opacity: 0.1 }));
-    pdf.text(templateData?.waterMark, 50, 220, null, 45);
     // Bg image
     let imgWidth = 100; // Set the width of your image
     let imgHeight = 0; // Set the height of your image
@@ -273,6 +275,16 @@ function TemplateSeven({ getSetting, templateData, print, view, save }) {
         imgWidth,
         imgHeight
       );
+
+    // water mark
+    pdf.addImage(
+      "/image/shape/demo.png",
+      "JPEG",
+      centerImgX,
+      20,
+      imgWidth,
+      imgHeight
+    );
     pdf.restoreGraphicsState();
   }
 
