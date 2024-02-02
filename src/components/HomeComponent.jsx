@@ -43,9 +43,6 @@ const HomeComponent = () => {
   const [payment, setPayment] = useState(0);
   const [discount, setDiscount] = useState(getSetting?.discount);
   const [shipping, setShipping] = useState(getSetting?.shipping);
-  const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pdfDataUri, setPdfDataUri] = useState(null);
 
   useEffect(() => {
     generateRandomNumber();
@@ -95,7 +92,6 @@ const HomeComponent = () => {
   };
 
   let selectedTemplate = fixNumber(toNumber(getSetting?.selectedTemplate));
-
   let subTotal = calculateSubtotal();
   let taxation = parseInt((subTotal * getSetting?.taxation) / 100);
   let taxationName = getSetting?.taxationName;
@@ -194,61 +190,53 @@ const HomeComponent = () => {
 
   let savePdf = async () => {
     if (getSetting?.selectedTemplate === 1) {
-      let pdfDataUri = TemplateOne({
+      TemplateOne({
         templateData,
         getSetting,
         save: true,
       });
-      setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 2) {
-      let pdfDataUri = TemplateTwo({
+      TemplateTwo({
         templateData,
         getSetting,
         save: true,
       });
-      setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 3) {
-      let pdfDataUri = TemplateThree({
+      TemplateThree({
         templateData,
         getSetting,
         save: true,
       });
-      setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 4) {
-      let pdfDataUri = TemplateFour({
+      TemplateFour({
         templateData,
         getSetting,
         save: true,
       });
-      setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 5) {
-      let pdfDataUri = TemplateFive({
+      TemplateFive({
         templateData,
         getSetting,
         save: true,
       });
-      setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 6) {
-      let pdfDataUri = TemplateSix({
+      TemplateSix({
         templateData,
         getSetting,
         save: true,
       });
-      setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 7) {
-      let pdfDataUri = TemplateSeven({
+      TemplateSeven({
         templateData,
         getSetting,
         save: true,
       });
-      setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 8) {
-      let pdfDataUri = TemplateEight({
+      TemplateEight({
         templateData,
         getSetting,
         save: true,
       });
-      setPdfDataUri(pdfDataUri);
     }
     saveInvoice();
   };
@@ -318,54 +306,43 @@ const HomeComponent = () => {
         print: true,
       });
     } else if (getSetting?.selectedTemplate === 3) {
-      let pdfDataUri = TemplateThree({
+      TemplateThree({
         templateData,
         getSetting,
         save: true,
       });
-      setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 4) {
-      let pdfDataUri = TemplateFour({
+      TemplateFour({
         templateData,
         getSetting,
         save: true,
       });
-      setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 5) {
-      let pdfDataUri = TemplateFive({
+      TemplateFive({
         templateData,
         getSetting,
         save: true,
       });
-      setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 6) {
-      let pdfDataUri = TemplateSix({
+      TemplateSix({
         templateData,
         getSetting,
         save: true,
       });
-      setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 7) {
-      let pdfDataUri = TemplateSeven({
+      TemplateSeven({
         templateData,
         getSetting,
         save: true,
       });
-      setPdfDataUri(pdfDataUri);
     } else if (getSetting?.selectedTemplate === 8) {
-      let pdfDataUri = TemplateEight({
+      TemplateEight({
         templateData,
         getSetting,
         save: true,
       });
-      setPdfDataUri(pdfDataUri);
     }
     saveInvoice();
-  };
-
-  const onDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages);
-    setPageNumber(1);
   };
 
   return (
@@ -760,65 +737,66 @@ const HomeComponent = () => {
                 ) : (
                   <p className="mt-2">Please add some item </p>
                 )}
-
-                <div>
-                  <div className="w-full mt-[30px]">
-                    <button
-                      onClick={saveInvoice}
-                      className="px-[20px] w-full py-[8px] rounded-md bg-gray-900 text-white"
-                    >
-                      Save Invoice
-                    </button>
+                {subTotal >= 1 && (
+                  <div>
+                    <div className="w-full mt-[30px]">
+                      <button
+                        onClick={saveInvoice}
+                        className="px-[20px] w-full py-[8px] rounded-md bg-gray-900 text-white"
+                      >
+                        Save Invoice
+                      </button>
+                    </div>
+                    <p className="flex justify-center py-5">or</p>
+                    <div className="flex gap-[20px] py-[2px] justify-around border border-gray-900 rounded-md">
+                      <Tooltip
+                        content="Save & Download"
+                        placement="bottom"
+                        animate={{
+                          mount: { scale: 1, y: 0 },
+                          unmount: { scale: 0, y: 25 },
+                        }}
+                      >
+                        <button
+                          onClick={savePdf}
+                          className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
+                        >
+                          <FaDownload />
+                        </button>
+                      </Tooltip>
+                      <Tooltip
+                        content="View Invoice"
+                        placement="bottom"
+                        animate={{
+                          mount: { scale: 1, y: 0 },
+                          unmount: { scale: 0, y: 25 },
+                        }}
+                      >
+                        <button
+                          onClick={viewPdf}
+                          className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
+                        >
+                          <FaRegFilePdf className="text-[20px] hover:text-gray-900 transition-all duration-200" />
+                        </button>
+                      </Tooltip>
+                      <Tooltip
+                        content="Save & Print"
+                        placement="bottom"
+                        animate={{
+                          mount: { scale: 1, y: 0 },
+                          unmount: { scale: 0, y: 25 },
+                        }}
+                      >
+                        <button
+                          onClick={printPdf}
+                          className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
+                        >
+                          <FaPrint className="text-[20px] hover:text-gray-900 transition-all duration-200" />
+                        </button>
+                      </Tooltip>
+                    </div>
                   </div>
-                  <p className="flex justify-center py-5">or</p>
-                  <div className="flex gap-[20px] py-[2px] justify-around border border-gray-900 rounded-md">
-                    <Tooltip
-                      content="Save & Download"
-                      placement="bottom"
-                      animate={{
-                        mount: { scale: 1, y: 0 },
-                        unmount: { scale: 0, y: 25 },
-                      }}
-                    >
-                      <button
-                        onClick={savePdf}
-                        className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
-                      >
-                        <FaDownload />
-                      </button>
-                    </Tooltip>
-                    <Tooltip
-                      content="View Invoice"
-                      placement="bottom"
-                      animate={{
-                        mount: { scale: 1, y: 0 },
-                        unmount: { scale: 0, y: 25 },
-                      }}
-                    >
-                      <button
-                        onClick={viewPdf}
-                        className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
-                      >
-                        <FaRegFilePdf className="text-[20px] hover:text-gray-900 transition-all duration-200" />
-                      </button>
-                    </Tooltip>
-                    <Tooltip
-                      content="Save & Print"
-                      placement="bottom"
-                      animate={{
-                        mount: { scale: 1, y: 0 },
-                        unmount: { scale: 0, y: 25 },
-                      }}
-                    >
-                      <button
-                        onClick={printPdf}
-                        className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
-                      >
-                        <FaPrint className="text-[20px] hover:text-gray-900 transition-all duration-200" />
-                      </button>
-                    </Tooltip>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
