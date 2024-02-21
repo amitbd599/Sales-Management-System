@@ -54,7 +54,7 @@ const MasterLayout = (props) => {
         </section>
 
         {/* main body */}
-        <main className="min-h-screen">{props.children}</main>
+        <main>{props.children}</main>
 
         {/* Footer */}
         <footer className="bg-[#141C27] pt-[80px] pb-[20px] text-gray-100">

@@ -1,116 +1,310 @@
-import React from "react";
+import React, { useState } from "react";
+import TemplateOne from "../pdf-templates/TemplateOne";
+import TemplateTwo from "../pdf-templates/TemplateTwo";
+import TemplateThree from "../pdf-templates/TemplateThree";
+import TemplateFour from "../pdf-templates/TemplateFour";
+import TemplateFive from "../pdf-templates/TemplateFive";
+import TemplateSix from "../pdf-templates/TemplateSix";
+import TemplateSeven from "../pdf-templates/TemplateSeven";
+import TemplateEight from "../pdf-templates/TemplateEight";
 import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
 import {
+  FaDownload,
   FaExpand,
-  FaFilePdf,
+  FaPenToSquare,
   FaPrint,
-  FaRegPenToSquare,
-  FaRegTrashCan,
+  FaTrashCan,
 } from "react-icons/fa6";
-
+import { Link } from "react-router-dom";
 const AllInvoiceComponent = () => {
+  let [invoices, setInvoices] = useState(
+    JSON.parse(localStorage.getItem("invoices") || [])
+  );
+
+  const deleteItem = (idToDelete) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const updatedData = invoices.filter(
+          (item) => item.invoiceID !== idToDelete
+        );
+        setInvoices(updatedData);
+
+        localStorage.setItem("invoices", JSON.stringify(updatedData));
+      }
+    });
+  };
+
+  let getSetting = JSON.parse(localStorage.getItem("setting"));
+  const downloadPdf = (idToView) => {
+    let templateData = invoices.filter((item) => item.invoiceID === idToView);
+    templateData = templateData[0];
+    console.log(templateData.startDate);
+    if (getSetting?.selectedTemplate === 1) {
+      TemplateOne({
+        templateData,
+        getSetting,
+        save: true,
+      });
+    } else if (getSetting?.selectedTemplate === 2) {
+      TemplateTwo({
+        templateData,
+        getSetting,
+        save: true,
+      });
+    } else if (getSetting?.selectedTemplate === 3) {
+      TemplateThree({
+        templateData,
+        getSetting,
+        save: true,
+      });
+    } else if (getSetting?.selectedTemplate === 4) {
+      TemplateFour({
+        templateData,
+        getSetting,
+        save: true,
+      });
+    } else if (getSetting?.selectedTemplate === 5) {
+      TemplateFive({
+        templateData,
+        getSetting,
+        save: true,
+      });
+    } else if (getSetting?.selectedTemplate === 6) {
+      TemplateSix({
+        templateData,
+        getSetting,
+        save: true,
+      });
+    } else if (getSetting?.selectedTemplate === 7) {
+      TemplateSeven({
+        templateData,
+        getSetting,
+        save: true,
+      });
+    } else if (getSetting?.selectedTemplate === 8) {
+      TemplateEight({
+        templateData,
+        getSetting,
+        save: true,
+      });
+    }
+  };
+
+  let viewPdf = (idToView) => {
+    let templateData = invoices.filter((item) => item.invoiceID === idToView);
+    templateData = templateData[0];
+    if (getSetting?.selectedTemplate === 1) {
+      TemplateOne({
+        templateData,
+        getSetting,
+        view: true,
+      });
+    } else if (getSetting?.selectedTemplate === 2) {
+      TemplateTwo({
+        templateData,
+        getSetting,
+        view: true,
+      });
+    } else if (getSetting?.selectedTemplate === 3) {
+      TemplateThree({
+        templateData,
+        getSetting,
+        view: true,
+      });
+    } else if (getSetting?.selectedTemplate === 4) {
+      TemplateFour({
+        templateData,
+        getSetting,
+        view: true,
+      });
+    } else if (getSetting?.selectedTemplate === 5) {
+      TemplateFive({
+        templateData,
+        getSetting,
+        view: true,
+      });
+    } else if (getSetting?.selectedTemplate === 6) {
+      TemplateSix({
+        templateData,
+        getSetting,
+        view: true,
+      });
+    } else if (getSetting?.selectedTemplate === 7) {
+      TemplateSeven({
+        templateData,
+        getSetting,
+        view: true,
+      });
+    } else if (getSetting?.selectedTemplate === 8) {
+      TemplateEight({
+        templateData,
+        getSetting,
+        view: true,
+      });
+    }
+  };
+
+  let printPdf = (idToView) => {
+    let templateData = invoices.filter((item) => item.invoiceID === idToView);
+    templateData = templateData[0];
+    if (getSetting?.selectedTemplate === 1) {
+      TemplateOne({
+        templateData,
+        getSetting,
+        print: true,
+      });
+    } else if (getSetting?.selectedTemplate === 2) {
+      TemplateTwo({
+        templateData,
+        getSetting,
+        print: true,
+      });
+    } else if (getSetting?.selectedTemplate === 3) {
+      TemplateThree({
+        templateData,
+        getSetting,
+        save: true,
+      });
+    } else if (getSetting?.selectedTemplate === 4) {
+      TemplateFour({
+        templateData,
+        getSetting,
+        save: true,
+      });
+    } else if (getSetting?.selectedTemplate === 5) {
+      TemplateFive({
+        templateData,
+        getSetting,
+        save: true,
+      });
+    } else if (getSetting?.selectedTemplate === 6) {
+      TemplateSix({
+        templateData,
+        getSetting,
+        save: true,
+      });
+    } else if (getSetting?.selectedTemplate === 7) {
+      TemplateSeven({
+        templateData,
+        getSetting,
+        save: true,
+      });
+    } else if (getSetting?.selectedTemplate === 8) {
+      TemplateEight({
+        templateData,
+        getSetting,
+        save: true,
+      });
+    }
+  };
   const columns = [
     {
-      name: "Invoice no",
-      selector: (row) => row.invoice_no,
+      name: "Invoice ID",
+      selector: (row) => row.invoiceID,
+      width: "150px",
     },
     {
-      name: "Template id",
-      selector: (row) => row.template_id,
-    },
-    {
-      name: "Invoice date",
-      selector: (row) => row.invoice_date,
-    },
-    {
-      name: "Delivery date",
-      selector: (row) => row.delivery_date,
-    },
-    {
-      name: "Customer name",
-      selector: (row) => row.customer_name,
+      name: "Customer Name",
+      selector: (row) => row.customerName,
+      sortable: true,
+      wrap: true,
+      width: "200px",
     },
 
     {
-      name: "Writer name",
-      selector: (row) => row.invoice_writer_name,
+      name: "Date",
+      sortable: true,
+      selector: (row) => row.startDate.slice(0, 10),
+      width: "100px",
+    },
+    {
+      name: "Delivery Date",
+      sortable: true,
+      selector: (row) => row.deliveryDate.slice(0, 10),
+      width: "120px",
+    },
+    {
+      name: "Payment Method",
+      selector: (row) => row.paymentMethod,
+      width: "140px",
+    },
+    {
+      name: "Paid",
+      selector: (row) => (
+        <div>
+          <span className="bg-[#ecfdf5] text-[#10b981] px-[10px] py-[6px] rounded-full">
+            {row.payment}
+          </span>
+        </div>
+      ),
+      width: "120px",
+    },
+    {
+      name: "Due",
+      selector: (row) => (
+        <div>
+          <span className="bg-[#fff1f2] text-[#f43f5e] px-[10px] py-[6px] rounded-full">
+            {row.due}
+          </span>
+        </div>
+      ),
+      width: "100px",
     },
 
-    {
-      name: "Total",
-      selector: (row) => row.total,
-    },
     {
       name: "Action",
+      with: "500px",
+
       selector: (row) => (
-        <>
-          <AllInvoiceComponent />
-        </>
+        <div className="flex gap-4 ">
+          <FaDownload
+            className="p-1 cursor-pointer text-[25px] text-gray-700"
+            onClick={() => downloadPdf(row.invoiceID)}
+          />
+          <Link to={`/update?id=${row.invoiceID}`}>
+            <FaPenToSquare className="p-1 cursor-pointer text-[25px] text-gray-700" />
+          </Link>
+
+          <FaExpand
+            className="p-1 cursor-pointer text-[25px] text-gray-700"
+            onClick={() => viewPdf(row.invoiceID)}
+          />
+          <FaPrint
+            className="p-1 cursor-pointer text-[25px] text-gray-700"
+            onClick={() => printPdf(row.invoiceID)}
+          />
+          <FaTrashCan
+            className="p-1 cursor-pointer text-[25px] text-gray-700"
+            onClick={() => deleteItem(row.invoiceID)}
+          />
+        </div>
       ),
     },
   ];
 
-  const data = [
-    {
-      invoice_no: "215",
-      invoice_date: "22/02/2023",
-      delivery_date: "22/02/2023",
-      customer_name: "Beetlejuice",
-      address: "Beetlejuice dsf fds dsfgs sdfg dfs",
-      invoice_writer_name: "Amit",
-      template_id: 2,
-      total: 2500,
-    },
-    {
-      invoice_no: "215",
-      invoice_date: "22/02/2023",
-      delivery_date: "22/02/2023",
-      customer_name: "Beetlejuice",
-      address: "Beetlejuice",
-      invoice_writer_name: "Amit",
-      template_id: 2,
-      total: 2500,
-    },
-    {
-      invoice_no: "215",
-      invoice_date: "22/02/2023",
-      delivery_date: "22/02/2023",
-      customer_name: "Beetlejuice",
-      address: "Beetlejuice",
-      invoice_writer_name: "Amit",
-      template_id: 2,
-      total: 2500,
-    },
-  ];
-
-  function AllInvoiceComponent() {
-    return (
-      <div className="flex gap-4 justify-center">
-        <button className="p-1">
-          <FaExpand className="text-[18px]" />
-        </button>
-        <button className="p-1">
-          <FaPrint className="text-[18px]" />
-        </button>
-        <button className="p-1">
-          <FaRegPenToSquare className="text-[18px]" />
-        </button>
-        <button className="p-1">
-          <FaRegTrashCan className="text-[18px]" />
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <section className="p-[16px]">
-      <div className="container">
-        <div className="grid grid-cols-12 gap-[20px]">
-          <div className="col-span-12 bg-white rounded-md p-[20px]">
-            <h2 className="font-semibold">List of invoice data:</h2>
-            <br />
-            <DataTable columns={columns} data={data} pagination />
-          </div>
+    <section className="container mx-auto py-[80px]">
+      <div className="bg-white shadow-lg p-[20px] rounded-lg">
+        <div className="rounded-xl bg-white m-[30px]">
+          <h2 className="text-slate-700 text-2xl font-semibold mb-2">
+            All Invoice file
+          </h2>
+          <DataTable
+            fixedHeader
+            fixedHeaderScrollHeight="600px"
+            columns={columns}
+            data={invoices}
+            pagination
+          />
         </div>
       </div>
     </section>

@@ -51,7 +51,7 @@ function TemplateOne({ getSetting, templateData, print, view, save }) {
   );
   pdf.rect(15, 41, 80, 0.1);
   pdf.text(
-    `Date: ${templateData?.startDate.toISOString().slice(0, 10)}`,
+    `Date: ${templateData?.startDate?.slice(0, 10)}`,
     pdf.internal.pageSize.width - 15,
     21,
     {
@@ -59,7 +59,7 @@ function TemplateOne({ getSetting, templateData, print, view, save }) {
     }
   );
   pdf.text(
-    `Delivery date: ${templateData?.deliveryDate.toISOString().slice(0, 10)}`,
+    `Delivery date: ${templateData?.deliveryDate?.slice(0, 10)}`,
     pdf.internal.pageSize.width - 15,
     26,
     {
