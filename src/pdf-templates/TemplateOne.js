@@ -173,8 +173,8 @@ function TemplateOne({ getSetting, templateData, print, view, save }) {
   let data = [
     ["Subtotal", templateData?.subTotal],
     [
-      `${templateData?.taxationName}(${templateData?.taxationPercent}%)`,
-      templateData?.taxation,
+      `${templateData?.taxationName}(${templateData?.taxation}%)`,
+      templateData?.taxationAmount,
     ],
     ["Shipping", templateData?.shipping],
     ["Discount", `(${templateData?.discount})`],

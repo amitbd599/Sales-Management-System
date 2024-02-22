@@ -76,16 +76,8 @@ function TemplateSeven({ getSetting, templateData, print, view, save }) {
   pdf.setFontSize(12);
   pdf.text(`Invoice no: # ${templateData?.invoiceID}`, 15, 36);
   pdf.setFontSize(10);
-  pdf.text(
-    `Submit date: ${templateData?.startDate.toISOString().slice(0, 10)}`,
-    15,
-    41
-  );
-  pdf.text(
-    `Delivery date: ${templateData?.deliveryDate.toISOString().slice(0, 10)}`,
-    15,
-    46
-  );
+  pdf.text(`Submit date: ${templateData?.startDate.slice(0, 10)}`, 15, 41);
+  pdf.text(`Delivery date: ${templateData?.deliveryDate.slice(0, 10)}`, 15, 46);
 
   // Right side data
   let templateTwoRightStart = parseInt(pdf.internal.pageSize.width) / 2;
@@ -172,8 +164,8 @@ function TemplateSeven({ getSetting, templateData, print, view, save }) {
   let data = [
     ["Subtotal", templateData?.subTotal],
     [
-      `${templateData?.taxationName}(${templateData?.taxationPercent}%)`,
-      templateData?.taxation,
+      `${templateData?.taxationName}(${templateData?.taxation}%)`,
+      templateData?.taxationAmount,
     ],
     ["Shipping", templateData?.shipping],
     ["Discount", `(${templateData?.discount})`],

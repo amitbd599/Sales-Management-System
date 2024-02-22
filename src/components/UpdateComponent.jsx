@@ -18,35 +18,35 @@ import TemplateSix from "../pdf-templates/TemplateSix";
 import TemplateSeven from "../pdf-templates/TemplateSeven";
 import TemplateEight from "../pdf-templates/TemplateEight";
 
-const UpdateComponent = () => {
-  const location = useLocation();
+let UpdateComponent = () => {
+  let location = useLocation();
   let getSetting = JSON.parse(localStorage.getItem("setting"));
   let getInvoices = JSON.parse(localStorage.getItem("invoices"));
-  const [startDate, setStartDate] = useState(new Date());
-  const [deliveryDate, setDeliveryDate] = useState(new Date());
-  const [invoiceID, setInvoiceID] = useState("");
-  const [customerName, setCustomerName] = useState("");
-  const [address, setAddress] = useState("");
-  const [invoiceWriter, setInvoiceWriter] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [note, setNote] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("");
-  const [accountName, setAccountName] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
-  const [branchName, setBranchName] = useState("");
-  const [invoiceItems, setInvoiceItems] = useState([]);
-  const [payment, setPayment] = useState(0);
-  const [taxation, setTaxation] = useState(0);
-  const [taxationName, setTaxationName] = useState(0);
-  const [taxationAmount, setTaxationAmount] = useState(0);
-  const [discount, setDiscount] = useState(0);
-  const [shipping, setShipping] = useState(0);
+  let [startDate, setStartDate] = useState(new Date());
+  let [deliveryDate, setDeliveryDate] = useState(new Date());
+  let [invoiceID, setInvoiceID] = useState("");
+  let [customerName, setCustomerName] = useState("");
+  let [address, setAddress] = useState("");
+  let [invoiceWriter, setInvoiceWriter] = useState("");
+  let [phone, setPhone] = useState("");
+  let [email, setEmail] = useState("");
+  let [note, setNote] = useState("");
+  let [paymentMethod, setPaymentMethod] = useState("");
+  let [accountName, setAccountName] = useState("");
+  let [accountNumber, setAccountNumber] = useState("");
+  let [branchName, setBranchName] = useState("");
+  let [invoiceItems, setInvoiceItems] = useState([]);
+  let [payment, setPayment] = useState(0);
+  let [taxation, setTaxation] = useState(0);
+  let [taxationName, setTaxationName] = useState(0);
+  let [taxationAmount, setTaxationAmount] = useState(0);
+  let [discount, setDiscount] = useState(0);
+  let [shipping, setShipping] = useState(0);
 
   useEffect(() => {
     // Parse the query parameters from the location object
-    const searchParams = new URLSearchParams(location.search);
-    const id = searchParams.get("id");
+    let searchParams = new URLSearchParams(location.search);
+    let id = searchParams.get("id");
     let filterData = getInvoices.filter((item) => item.invoiceID === id);
     filterData = filterData[0];
     // Set update data
@@ -67,46 +67,45 @@ const UpdateComponent = () => {
     setPayment(filterData?.payment);
     setTaxation(filterData?.taxation);
     setTaxationName(filterData?.taxationName);
-    setTaxationAmount(filterData?.taxationPercent);
+    setTaxationAmount(filterData?.taxationAmount);
     setDiscount(filterData?.discount);
     setShipping(filterData?.shipping);
   }, [location.search]);
 
-  const handleAddItem = () => {
+  let handleAddItem = () => {
     setInvoiceItems([
       ...invoiceItems,
       { item: "", quantity: 0, rate: 0, amount: 0 },
     ]);
   };
 
-  const handleDeleteItem = (index) => {
-    const updatedItems = [...invoiceItems];
+  let handleDeleteItem = (index) => {
+    let updatedItems = [...invoiceItems];
     updatedItems.splice(index, 1);
     setInvoiceItems(updatedItems);
   };
 
-  const handleItemChange = (index, field, value) => {
-    const updatedItems = [...invoiceItems];
+  let handleItemChange = (index, field, value) => {
+    let updatedItems = [...invoiceItems];
     updatedItems[index][field] = value;
     setInvoiceItems(updatedItems);
   };
 
-  const calculateSubtotal = () => {
+  let calculateSubtotal = () => {
     return invoiceItems.reduce(
       (total, item) => total + item.quantity * item.rate,
       0
     );
   };
 
-  const calculateTotal = () => {
-    const subtotal = calculateSubtotal();
+  let calculateTotal = () => {
+    let subtotal = calculateSubtotal();
     let taxationCal = parseInt((subtotal * taxation) / 100);
-    console.log(subtotal, taxationCal, shipping, discount);
     return subtotal + taxationCal + shipping - discount;
   };
 
-  const calculateDue = () => {
-    const total = calculateTotal();
+  let calculateDue = () => {
+    let total = calculateTotal();
     return total - payment;
   };
 
@@ -115,6 +114,8 @@ const UpdateComponent = () => {
   let subTotal = calculateSubtotal();
   let total = calculateTotal();
   let due = calculateDue();
+  let currency = getSetting?.currency;
+  taxationAmount = parseInt((subTotal * taxation) / 100);
 
   let templateData = {
     invoiceID,
@@ -141,9 +142,10 @@ const UpdateComponent = () => {
     accountName,
     accountNumber,
     branchName,
+    currency,
   };
 
-  const saveInvoice = (id) => {
+  let saveInvoice = (id) => {
     let data = {
       invoiceID,
       customerName,
@@ -169,9 +171,10 @@ const UpdateComponent = () => {
       accountName,
       accountNumber,
       branchName,
+      currency,
     };
 
-    const prevValue = getInvoices.filter((item) => item.invoiceID !== id);
+    let prevValue = getInvoices.filter((item) => item.invoiceID !== id);
     localStorage.setItem("invoices", JSON.stringify([...prevValue, data]));
     SuccessToast("Update success!");
   };

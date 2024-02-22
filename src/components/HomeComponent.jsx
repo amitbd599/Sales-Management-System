@@ -96,7 +96,6 @@ const HomeComponent = () => {
   let taxationAmount = parseInt((subTotal * getSetting?.taxation) / 100);
   let taxationName = getSetting?.taxationName;
   let taxation = getSetting?.taxation;
-  let waterMark = getSetting?.waterMark;
   let currency = getSetting?.currency;
   let total = calculateTotal();
   let due = calculateDue();
@@ -126,7 +125,6 @@ const HomeComponent = () => {
     accountName,
     accountNumber,
     branchName,
-    waterMark,
     currency,
   };
 

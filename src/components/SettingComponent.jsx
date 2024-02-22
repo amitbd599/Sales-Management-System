@@ -4,7 +4,13 @@ import { currencyData } from "../script/currency";
 import { ChromePicker } from "react-color";
 import { page_size } from "../script/page_size";
 import { taxation_data } from "../script/taxation";
-import { SuccessToast, fixNumber, getBase64, toNumber } from "../helper/helper";
+import {
+  ErrorToast,
+  SuccessToast,
+  fixNumber,
+  getBase64,
+  toNumber,
+} from "../helper/helper";
 import { FaXmark } from "react-icons/fa6";
 const SettingComponent = () => {
   let getSetting = JSON.parse(localStorage.getItem("setting"));
@@ -34,15 +40,31 @@ const SettingComponent = () => {
     setThemeTextColor(newColor.rgb);
   };
 
-  let logoHandel = (event) => {
-    getBase64(event.target.files[0]).then((base64Img) => {
-      setLogo(base64Img);
-    });
+  const logoHandel = (event) => {
+    const file = event.target.files[0];
+    if (file.size > 50 * 1024) {
+      ErrorToast("File size exceeds 50KB.");
+    } else if (file && file.type !== "image/png") {
+      ErrorToast("Please select a valid PNG file.");
+      event.target.value = null;
+    } else {
+      getBase64(event.target.files[0]).then((base64Img) => {
+        setLogo(base64Img);
+      });
+    }
   };
-  let bgHandel = (event) => {
-    getBase64(event.target.files[0]).then((base64Img) => {
-      setBgImg(base64Img);
-    });
+  const bgHandel = (event) => {
+    const file = event.target.files[0];
+    if (file.size > 100 * 1024) {
+      ErrorToast("File size exceeds 100KB.");
+    } else if (file && file.type !== "image/png") {
+      ErrorToast("Please select a valid PNG file.");
+      event.target.value = null;
+    } else {
+      getBase64(event.target.files[0]).then((base64Img) => {
+        setBgImg(base64Img);
+      });
+    }
   };
 
   const templates = [
@@ -67,7 +89,6 @@ const SettingComponent = () => {
     faxRef,
     emailRef,
     websiteRef,
-    waterMarkRef,
     discountRef,
     taxationRef,
     shippingRef,
@@ -83,7 +104,6 @@ const SettingComponent = () => {
     let footerText = footerTextRef.value;
     let email = emailRef.value;
     let website = websiteRef.value;
-    let waterMark = waterMarkRef.value;
     let invoiceWriter = invoiceWriterRef.value;
     let taxation = fixNumber(toNumber(taxationRef.value));
     let discount = fixNumber(toNumber(discountRef.value));
@@ -113,7 +133,6 @@ const SettingComponent = () => {
       shipping,
       selectedTemplate,
       website,
-      waterMark,
     };
 
     localStorage.setItem("setting", JSON.stringify(setting));
@@ -409,17 +428,7 @@ const SettingComponent = () => {
                       />
                     </div>
                   </div>
-                  <div className="grid gap-1">
-                    <label>Water mark:</label>
-                    <div>
-                      <input
-                        type="text"
-                        className="input_box"
-                        defaultValue={getSetting?.waterMark}
-                        ref={(input) => (waterMarkRef = input)}
-                      />
-                    </div>
-                  </div>
+
                   <div className="grid gap-1">
                     <label>Footer text:</label>
                     <div>
@@ -430,7 +439,7 @@ const SettingComponent = () => {
                         name=""
                         id=""
                         cols="30"
-                        rows="5"
+                        rows="8"
                       ></textarea>
                     </div>
                   </div>
@@ -479,8 +488,9 @@ const SettingComponent = () => {
                       Change logo
                     </h2>
                     <p className="mt-2 text-gray-500 tracking-wide">
-                      Upload file PNG, JPG.
+                      Upload file PNG only.
                     </p>
+                    <p className="text-red-500">Max 50kb</p>
                     <input
                       id="logo"
                       type="file"
@@ -535,8 +545,9 @@ const SettingComponent = () => {
                       Change image
                     </h2>
                     <p className="mt-2 text-gray-500 tracking-wide">
-                      Upload file PNG, JPG.
+                      Upload file PNG only.
                     </p>
+                    <p className="text-red-500">Max 100kb</p>
                     <input
                       id="bg"
                       type="file"

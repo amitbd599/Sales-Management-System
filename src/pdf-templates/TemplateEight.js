@@ -100,7 +100,7 @@ function TemplateEight({ getSetting, templateData, print, view, save }) {
     }
   );
   pdf.text(
-    `Submit Date  ${templateData?.startDate.toISOString().slice(0, 10)}`,
+    `Submit Date  ${templateData?.startDate.slice(0, 10)}`,
     pdf.internal.pageSize.width - 15,
     60,
     {
@@ -108,7 +108,7 @@ function TemplateEight({ getSetting, templateData, print, view, save }) {
     }
   );
   pdf.text(
-    `Delivery date  ${templateData?.deliveryDate.toISOString().slice(0, 10)}`,
+    `Delivery date  ${templateData?.deliveryDate.slice(0, 10)}`,
     pdf.internal.pageSize.width - 15,
     65,
     {
@@ -192,8 +192,8 @@ function TemplateEight({ getSetting, templateData, print, view, save }) {
   let data = [
     ["Subtotal", templateData?.subTotal],
     [
-      `${templateData?.taxationName}(${templateData?.taxationPercent}%)`,
-      templateData?.taxation,
+      `${templateData?.taxationName}(${templateData?.taxation}%)`,
+      templateData?.taxationAmount,
     ],
     ["Shipping", templateData?.shipping],
     ["Discount", templateData?.discount],
