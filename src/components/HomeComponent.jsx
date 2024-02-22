@@ -93,9 +93,9 @@ const HomeComponent = () => {
 
   let selectedTemplate = fixNumber(toNumber(getSetting?.selectedTemplate));
   let subTotal = calculateSubtotal();
-  let taxation = parseInt((subTotal * getSetting?.taxation) / 100);
+  let taxationAmount = parseInt((subTotal * getSetting?.taxation) / 100);
   let taxationName = getSetting?.taxationName;
-  let taxationPercent = getSetting?.taxation;
+  let taxation = getSetting?.taxation;
   let waterMark = getSetting?.waterMark;
   let currency = getSetting?.currency;
   let total = calculateTotal();
@@ -120,7 +120,7 @@ const HomeComponent = () => {
     note,
     taxation,
     taxationName,
-    taxationPercent,
+    taxationAmount,
     selectedTemplate,
     paymentMethod,
     accountName,
@@ -159,7 +159,7 @@ const HomeComponent = () => {
         note,
         taxation,
         taxationName,
-        taxationPercent,
+        taxationAmount,
         selectedTemplate,
         paymentMethod,
         accountName,

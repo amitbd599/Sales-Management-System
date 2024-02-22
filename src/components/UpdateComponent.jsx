@@ -39,6 +39,7 @@ const UpdateComponent = () => {
   const [payment, setPayment] = useState(0);
   const [taxation, setTaxation] = useState(0);
   const [taxationName, setTaxationName] = useState(0);
+  const [taxationAmount, setTaxationAmount] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [shipping, setShipping] = useState(0);
 
@@ -48,7 +49,6 @@ const UpdateComponent = () => {
     const id = searchParams.get("id");
     let filterData = getInvoices.filter((item) => item.invoiceID === id);
     filterData = filterData[0];
-    console.log(filterData.taxation);
     // Set update data
     setStartDate(filterData?.startDate);
     setDeliveryDate(filterData?.deliveryDate);
@@ -67,6 +67,7 @@ const UpdateComponent = () => {
     setPayment(filterData?.payment);
     setTaxation(filterData?.taxation);
     setTaxationName(filterData?.taxationName);
+    setTaxationAmount(filterData?.taxationPercent);
     setDiscount(filterData?.discount);
     setShipping(filterData?.shipping);
   }, [location.search]);
@@ -133,6 +134,8 @@ const UpdateComponent = () => {
     deliveryDate,
     note,
     taxation,
+    taxationName,
+    taxationAmount,
     selectedTemplate,
     paymentMethod,
     accountName,
@@ -159,6 +162,8 @@ const UpdateComponent = () => {
       deliveryDate,
       note,
       taxation,
+      taxationName,
+      taxationAmount,
       selectedTemplate,
       paymentMethod,
       accountName,
@@ -652,12 +657,10 @@ const UpdateComponent = () => {
                       Subtotal:{" "}
                       <span className="pl-3">{calculateSubtotal()}</span>
                     </p>
-                    {getSetting?.taxation !== 0 && (
-                      <p className="flex justify-between">
-                        {taxationName} :{" "}
-                        <span className="pl-3">+ {getSetting?.taxation}%</span>
-                      </p>
-                    )}
+                    <p className="flex justify-between">
+                      {taxationName} :{" "}
+                      <span className="pl-3">+ {taxation}%</span>
+                    </p>
 
                     <div className="border-b border-gray-200 pb-3 flex gap-2 items-center justify-between">
                       <p>Shipping:</p>
