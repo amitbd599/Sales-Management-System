@@ -68,14 +68,14 @@ const SettingComponent = () => {
   };
 
   const templates = [
-    { id: 1, src: "/image/1.jpg" },
-    { id: 2, src: "/image/2.jpg" },
-    { id: 3, src: "/image/3.jpg" },
-    { id: 4, src: "/image/4.jpg" },
-    { id: 5, src: "/image/5.jpg" },
-    { id: 6, src: "/image/6.jpg" },
-    { id: 7, src: "/image/7.jpg" },
-    { id: 8, src: "/image/8.jpg" },
+    { id: 1, src: "/image/1.png" },
+    { id: 2, src: "/image/2.png" },
+    { id: 3, src: "/image/3.png" },
+    { id: 4, src: "/image/4.png" },
+    { id: 5, src: "/image/5.png" },
+    { id: 6, src: "/image/6.png" },
+    { id: 7, src: "/image/7.png" },
+    { id: 8, src: "/image/8.png" },
   ];
 
   const handleImageClick = (imageId) => {
@@ -140,8 +140,8 @@ const SettingComponent = () => {
   };
 
   return (
-    <section className="p-[16px]">
-      <div className="container">
+    <section>
+      <div className="container py-[60px]">
         <div className="grid grid-cols-12 gap-[20px] ">
           <div className="col-span-9 p-[20px] bg-white rounded-md">
             <h2 className="font-semibold mb-3">Setting your company info:</h2>

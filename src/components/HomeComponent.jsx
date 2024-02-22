@@ -346,8 +346,8 @@ const HomeComponent = () => {
 
   return (
     <>
-      <section className="p-[16px] ">
-        <div className="container py-[30px]">
+      <section>
+        <div className="container py-[60px]">
           <div className="grid grid-cols-12 gap-[20px]">
             <div className="col-span-9 bg-white rounded-md p-[20px]">
               <div className="grid gap-[20px]">
