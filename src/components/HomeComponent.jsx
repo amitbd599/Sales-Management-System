@@ -347,12 +347,12 @@ const HomeComponent = () => {
   return (
     <>
       <section>
-        <div className="container py-[60px]">
+        <div className="container py-[60px] px-[10px]">
           <div className="grid grid-cols-12 gap-[20px]">
-            <div className="col-span-9 bg-white rounded-md p-[20px]">
-              <div className="grid gap-[20px]">
+            <div className="col-span-12 lg:col-span-9 bg-white rounded-md p-[20px]">
+              <div>
                 <div className="grid grid-cols-12 gap-[20px]">
-                  <div className="col-span-3">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Invoice no:</label>
                       {getSetting?.invoiceType === "random" ? (
@@ -371,7 +371,7 @@ const HomeComponent = () => {
                       )}
                     </div>
                   </div>
-                  <div className="col-span-2">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-2 ">
                     <div className="grid gap-1">
                       <label htmlFor="invoice_date">Invoice date:</label>
 
@@ -384,7 +384,7 @@ const HomeComponent = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="col-span-2">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-2">
                     <div className="grid gap-1">
                       <label htmlFor="delivery_date">Delivery date:</label>
                       <span className="input_box">
@@ -397,7 +397,7 @@ const HomeComponent = () => {
                     </div>
                   </div>
 
-                  <div className="col-span-5">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-5">
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Invoice writer name:</label>
                       <input
@@ -408,7 +408,7 @@ const HomeComponent = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-3">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer name:</label>
                       <input
@@ -419,7 +419,7 @@ const HomeComponent = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-3">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer Address:</label>
                       <input
@@ -430,7 +430,7 @@ const HomeComponent = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-3">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer Phone no:</label>
                       <input
@@ -441,7 +441,7 @@ const HomeComponent = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-3">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer email:</label>
                       <input
@@ -452,7 +452,7 @@ const HomeComponent = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-3">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                     <div className="grid gap-1">
                       <label>Payment method:</label>
                       <div>
@@ -473,7 +473,7 @@ const HomeComponent = () => {
                     </div>
                   </div>
                   {paymentMethod === "Bank" && (
-                    <div className="col-span-3">
+                    <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                       <div className="grid gap-1">
                         <label htmlFor="invoice">Account Name:</label>
                         <input
@@ -486,7 +486,7 @@ const HomeComponent = () => {
                     </div>
                   )}
                   {paymentMethod === "Bank" && (
-                    <div className="col-span-3">
+                    <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                       <div className="grid gap-1">
                         <label htmlFor="invoice">Account number:</label>
                         <input
@@ -499,7 +499,7 @@ const HomeComponent = () => {
                     </div>
                   )}
                   {paymentMethod === "Bank" && (
-                    <div className="col-span-3">
+                    <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                       <div className="grid gap-1">
                         <label htmlFor="invoice">Branch name:</label>
                         <input
@@ -513,7 +513,7 @@ const HomeComponent = () => {
                   )}
                 </div>
 
-                <div className="flex gap-[20px]">
+                <div className="flex gap-[20px] mt-[40px] ">
                   <div className="w-full">
                     {/* Table */}
                     <div className="w-full  mx-auto bg-white  rounded-sm border border-gray-200">
@@ -525,27 +525,27 @@ const HomeComponent = () => {
                           <table className=" w-full">
                             <thead className="text-xs font-semibold uppercase rounded-md text-gray-800 bg-gray-100">
                               <tr>
-                                <th className="p-2 ">
+                                <th className="p-2 min-w-[500px]">
                                   <div className="font-semibold text-left">
                                     Item
                                   </div>
                                 </th>
-                                <th className="p-2 ">
+                                <th className="p-2 min-w-[60px]">
                                   <div className="font-semibold text-center">
                                     Quantity
                                   </div>
                                 </th>
-                                <th className="p-2 ">
+                                <th className="p-2 min-w-[100px]">
                                   <div className="font-semibold text-center">
                                     Rate ({getSetting?.currency})
                                   </div>
                                 </th>
-                                <th className="p-2 ">
+                                <th className="p-2 min-w-[60px]">
                                   <div className="font-semibold text-center">
                                     Amount
                                   </div>
                                 </th>
-                                <th className="p-2 ">
+                                <th className="p-2 min-w-[60px]">
                                   <div className="font-semibold text-center">
                                     Action
                                   </div>
@@ -568,7 +568,7 @@ const HomeComponent = () => {
                                           e.target.value
                                         )
                                       }
-                                      className="input_box "
+                                      className="input_box  min-w-[500px]"
                                     />
                                   </td>
                                   <td className="py-2 pr-2 w-[100px]">
@@ -583,7 +583,7 @@ const HomeComponent = () => {
                                           fixNumber(toNumber(e.target.value))
                                         )
                                       }
-                                      className="input_box w-full text-center"
+                                      className="input_box w-full text-center min-w-[60px]"
                                     />
                                   </td>
                                   <td className="py-2 pr-2 w-[100px] ">
@@ -605,7 +605,7 @@ const HomeComponent = () => {
                                           )
                                         );
                                       }}
-                                      className="input_box w-full text-center"
+                                      className="input_box w-full text-center min-w-[60px]"
                                     />
                                   </td>
                                   <td className="py-2 pr-2 w-[100px] text-center">
@@ -637,7 +637,7 @@ const HomeComponent = () => {
                   </div>
                 </div>
 
-                <div className="flex gap-[20px]">
+                <div className="flex gap-[20px] mt-[40px]">
                   <div className="grid grid-cols-12 gap-[30px] w-full">
                     <div className="col-span-12 w-full">
                       <div className="grid gap-1">
@@ -657,7 +657,7 @@ const HomeComponent = () => {
                 </div>
               </div>
             </div>
-            <div className="col-span-3  ">
+            <div className="col-span-12 lg:col-span-3  ">
               <div className="bg-white rounded-md py-[40px] px-[20px]">
                 <h2 className="font-semibold border-b border-gray-200 pb-2">
                   Calculation flow:

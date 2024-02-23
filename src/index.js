@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import InitLoadingData from "./childComponents/InitLoadingData";
+import InitLoadingData from "./helper/InitLoadingData";
 import { Toaster } from "react-hot-toast";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
