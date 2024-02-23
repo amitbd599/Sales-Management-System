@@ -148,9 +148,9 @@ const MasterLayout = (props) => {
               <div className="col-span-4">
                 <div className="flex gap-[30px]">
                   <div>
-                    <div className="border-[#55E6A5] border-2 w-[80px] h-[80px] flex justify-center items-center rounded-full">
+                    <div className="border-[#55E6A5] border-2 w-[60px] h-[60px] flex justify-center items-center rounded-full">
                       <span>
-                        <FaMapMarkerAlt className="text-[30px]" />
+                        <FaMapMarkerAlt className="text-[20px]" />
                       </span>
                     </div>
                   </div>
@@ -169,9 +169,9 @@ const MasterLayout = (props) => {
               <div className="col-span-4">
                 <div className="flex gap-[30px]">
                   <div>
-                    <div className="border-[#55E6A5] border-2 w-[80px] h-[80px] flex justify-center items-center rounded-full">
+                    <div className="border-[#55E6A5] border-2 w-[60px] h-[60px] flex justify-center items-center rounded-full">
                       <span>
-                        <FaPhoneAlt className="text-[30px]" />
+                        <FaPhoneAlt className="text-[20px]" />
                       </span>
                     </div>
                   </div>
@@ -189,9 +189,9 @@ const MasterLayout = (props) => {
               <div className="col-span-4">
                 <div className="flex gap-[30px]">
                   <div>
-                    <div className="border-[#55E6A5] border-2 w-[80px] h-[80px] flex justify-center items-center rounded-full">
+                    <div className="border-[#55E6A5] border-2 w-[60px] h-[60px] flex justify-center items-center rounded-full">
                       <span>
-                        <FaEnvelopeOpenText className="text-[30px]" />
+                        <FaEnvelopeOpenText className="text-[20px]" />
                       </span>
                     </div>
                   </div>
@@ -200,8 +200,8 @@ const MasterLayout = (props) => {
                       <h3 className="font-semibold text-[18px] text-white">
                         Send us email
                       </h3>
-                      <p className="mt-2">ostadpdfmaker@gmail.com</p>
-                      <p className="mt-1">pdfmaker@amitjs.com</p>
+                      <p className="mt-2">admin@invoiceboot.com</p>
+                      <p className="mt-1">support@invoiceboot.com</p>
                     </div>
                   </div>
                 </div>
@@ -209,9 +209,9 @@ const MasterLayout = (props) => {
             </div>
             <div className="flex justify-center pt-[20px]">
               <p className="text-sm">
-                © PDF Maker 2023 ||{" "}
-                <span className="text-[#55E6A5]">Ostad MERN Stack Batch 5</span>{" "}
-                || All Rights Reserved
+                © React invoice-generator 2024 ||{" "}
+                <span className="text-[#55E6A5]">Invoice Boot</span> || All
+                Rights Reserved
               </p>
             </div>
           </div>
