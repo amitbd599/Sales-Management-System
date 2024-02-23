@@ -342,13 +342,13 @@ let UpdateComponent = () => {
       <section className="container mx-auto py-[80px]">
         <div>
           <div className="grid grid-cols-12 gap-[20px]">
-            <div className="col-span-9 bg-white shadow-lg rounded-md p-[26px]">
+            <div className="col-span-12 xl:col-span-9 bg-white shadow-lg rounded-md p-[26px]">
               <h2 className="pb-4 text-[20px] text-gray-900 font-semibold">
                 Update Invoice:
               </h2>
-              <div className="grid gap-[20px]">
+              <div>
                 <div className="grid grid-cols-12 gap-[20px]">
-                  <div className="col-span-4">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Invoice no:</label>
 
@@ -360,7 +360,7 @@ let UpdateComponent = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-2">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-2">
                     <div className="grid gap-1">
                       <label htmlFor="invoice_date">Invoice date:</label>
 
@@ -373,7 +373,7 @@ let UpdateComponent = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="col-span-2">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-2">
                     <div className="grid gap-1">
                       <label htmlFor="delivery_date">Delivery date:</label>
                       <span className="input_box">
@@ -386,7 +386,7 @@ let UpdateComponent = () => {
                     </div>
                   </div>
 
-                  <div className="col-span-4">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-5">
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Invoice writer name:</label>
                       <input
@@ -397,7 +397,7 @@ let UpdateComponent = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-3">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer name:</label>
                       <input
@@ -408,7 +408,7 @@ let UpdateComponent = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-3">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer Address:</label>
                       <input
@@ -419,7 +419,7 @@ let UpdateComponent = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-3">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer Phone no:</label>
                       <input
@@ -430,7 +430,7 @@ let UpdateComponent = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-3">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer email:</label>
                       <input
@@ -441,7 +441,7 @@ let UpdateComponent = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-3">
+                  <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                     <div className="grid gap-1">
                       <label>Payment method:</label>
                       <div>
@@ -463,7 +463,7 @@ let UpdateComponent = () => {
                     </div>
                   </div>
                   {paymentMethod === "Bank" && (
-                    <div className="col-span-3">
+                    <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                       <div className="grid gap-1">
                         <label htmlFor="invoice">Account Name:</label>
                         <input
@@ -476,7 +476,7 @@ let UpdateComponent = () => {
                     </div>
                   )}
                   {paymentMethod === "Bank" && (
-                    <div className="col-span-3">
+                    <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                       <div className="grid gap-1">
                         <label htmlFor="invoice">Account number:</label>
                         <input
@@ -489,7 +489,7 @@ let UpdateComponent = () => {
                     </div>
                   )}
                   {paymentMethod === "Bank" && (
-                    <div className="col-span-3">
+                    <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                       <div className="grid gap-1">
                         <label htmlFor="invoice">Branch name:</label>
                         <input
@@ -503,41 +503,39 @@ let UpdateComponent = () => {
                   )}
                 </div>
 
-                <div className="flex gap-[20px]">
+                <div className="flex gap-[20px] mt-[40px]">
                   <div className="w-full">
                     {/* Table */}
-                    <div className="w-full  mx-auto bg-transparent  rounded-sm border border-gray-50">
-                      <div className="px-5 py-4 border-b border-gray-50 bg-white">
-                        <h3 className="font-semibold text-gray-900">
-                          Item table
-                        </h3>
+                    <div className="w-full  mx-auto bg-white  rounded-sm border border-gray-200">
+                      <div className="px-5 py-4 border-b border-gray-50">
+                        <h3 className="font-semibold">Item table</h3>
                       </div>
                       <div className="p-3">
                         <div className="overflow-x-auto">
                           <table className=" w-full">
-                            <thead className="text-xs font-semibold uppercase rounded-md text-gray-700 bg-gray-100">
+                            <thead className="text-xs font-semibold uppercase rounded-md text-gray-800 bg-gray-100">
                               <tr>
-                                <th className="p-2 ">
+                                <th className="p-2 min-w-[500px]">
                                   <div className="font-semibold text-left">
                                     Item
                                   </div>
                                 </th>
-                                <th className="p-2 ">
+                                <th className="p-2 min-w-[60px]">
                                   <div className="font-semibold text-center">
                                     Quantity
                                   </div>
                                 </th>
-                                <th className="p-2 ">
+                                <th className="p-2 min-w-[100px]">
                                   <div className="font-semibold text-center">
                                     Rate ({getSetting?.currency})
                                   </div>
                                 </th>
-                                <th className="p-2 ">
+                                <th className="p-2 min-w-[60px]">
                                   <div className="font-semibold text-center">
                                     Amount
                                   </div>
                                 </th>
-                                <th className="p-2 ">
+                                <th className="p-2 min-w-[60px]">
                                   <div className="font-semibold text-center">
                                     Action
                                   </div>
@@ -547,7 +545,7 @@ let UpdateComponent = () => {
                             <div className="p-1"></div>
                             <tbody className="text-sm  ">
                               {invoiceItems.map((item, index) => (
-                                <tr key={index}>
+                                <tr>
                                   <td className="py-2 pr-2">
                                     <input
                                       type="text"
@@ -560,7 +558,7 @@ let UpdateComponent = () => {
                                           e.target.value
                                         )
                                       }
-                                      className="input_box "
+                                      className="input_box  min-w-[500px]"
                                     />
                                   </td>
                                   <td className="py-2 pr-2 w-[100px]">
@@ -575,7 +573,7 @@ let UpdateComponent = () => {
                                           fixNumber(toNumber(e.target.value))
                                         )
                                       }
-                                      className="input_box w-full text-center"
+                                      className="input_box w-full text-center min-w-[60px]"
                                     />
                                   </td>
                                   <td className="py-2 pr-2 w-[100px] ">
@@ -597,7 +595,7 @@ let UpdateComponent = () => {
                                           )
                                         );
                                       }}
-                                      className="input_box w-full text-center"
+                                      className="input_box w-full text-center min-w-[60px]"
                                     />
                                   </td>
                                   <td className="py-2 pr-2 w-[100px] text-center">
@@ -618,7 +616,7 @@ let UpdateComponent = () => {
                         </div>
                         <div className="mt-2">
                           <button
-                            className="px-[20px] py-[8px] rounded-md bg-[#55E6A5] text-gray-900  hover:bg-[#4cd497]  transition-all duration-300"
+                            className="px-[20px] py-[8px] rounded-md bg-gray-900 text-white"
                             onClick={handleAddItem}
                           >
                             Add item
@@ -629,8 +627,8 @@ let UpdateComponent = () => {
                   </div>
                 </div>
 
-                <div className="flex gap-[20px]">
-                  <div className="grid grid-cols-12 gap-[30px] w-full">
+                <div className="flex gap-[20px] mt-[40px]">
+                  <div className="grid grid-cols-12  w-full">
                     <div className="col-span-12 w-full">
                       <div className="grid gap-1">
                         <label htmlFor="invoice">Note:</label>
@@ -649,7 +647,7 @@ let UpdateComponent = () => {
                 </div>
               </div>
             </div>
-            <div className="col-span-3  ">
+            <div className="col-span-12 xl:col-span-3  ">
               <div className="bg-white rounded-md shadow-lg py-[40px] px-[20px]">
                 <h2 className="font-semibold border-b border-gray-200 pb-2">
                   Calculation flow:

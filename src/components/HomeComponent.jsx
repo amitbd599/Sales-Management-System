@@ -349,7 +349,7 @@ const HomeComponent = () => {
       <section>
         <div className="container py-[60px] px-[10px]">
           <div className="grid grid-cols-12 gap-[20px]">
-            <div className="col-span-12 lg:col-span-9 bg-white rounded-md p-[20px]">
+            <div className="col-span-12 xl:col-span-9 bg-white rounded-md p-[20px]">
               <div>
                 <div className="grid grid-cols-12 gap-[20px]">
                   <div className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
@@ -638,7 +638,7 @@ const HomeComponent = () => {
                 </div>
 
                 <div className="flex gap-[20px] mt-[40px]">
-                  <div className="grid grid-cols-12 gap-[30px] w-full">
+                  <div className="grid grid-cols-12  w-full">
                     <div className="col-span-12 w-full">
                       <div className="grid gap-1">
                         <label htmlFor="invoice">Note:</label>
@@ -657,7 +657,7 @@ const HomeComponent = () => {
                 </div>
               </div>
             </div>
-            <div className="col-span-12 lg:col-span-3  ">
+            <div className="col-span-12 xl:col-span-3  ">
               <div className="bg-white rounded-md py-[40px] px-[20px]">
                 <h2 className="font-semibold border-b border-gray-200 pb-2">
                   Calculation flow:

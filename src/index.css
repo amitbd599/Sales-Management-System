@@ -71,3 +71,11 @@ th {
   border: 1px solid #ccc;
   text-align: left;
 }
+
+@media only screen and (max-width: 767px) {
+  .sc-bYEuID,
+  .sc-lmoLKH,
+  .sc-cxFKTC {
+    display: none;
+  }
+}

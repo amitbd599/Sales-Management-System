@@ -30,7 +30,7 @@ function TemplateSix({ getSetting, templateData, print, view, save }) {
   pdf.text(
     `INVOICE # ${templateData?.invoiceID}`,
     pdf.internal.pageSize.width - 15,
-    25,
+    15,
     {
       align: "right",
     }

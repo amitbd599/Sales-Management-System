@@ -143,10 +143,10 @@ const SettingComponent = () => {
     <section>
       <div className="container py-[60px]">
         <div className="grid grid-cols-12 gap-[20px] ">
-          <div className="col-span-9 p-[20px] bg-white rounded-md">
+          <div className="col-span-12 md:col-span-9 p-[20px] bg-white rounded-md">
             <h2 className="font-semibold mb-3">Setting your company info:</h2>
             <div className="grid grid-cols-12 gap-[20px]">
-              <div className="w-full col-span-4">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-4">
                 <div className="grid gap-1">
                   <label>Company name:</label>
                   <input
@@ -157,7 +157,7 @@ const SettingComponent = () => {
                   />
                 </div>
               </div>
-              <div className="w-full col-span-8">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-8">
                 <div className="grid gap-1">
                   <label>Address:</label>
                   <input
@@ -168,7 +168,7 @@ const SettingComponent = () => {
                   />
                 </div>
               </div>
-              <div className="w-full col-span-4">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-4">
                 <div className="grid gap-1">
                   <label>Mobile no:</label>
                   <input
@@ -179,7 +179,7 @@ const SettingComponent = () => {
                   />
                 </div>
               </div>
-              <div className="w-full col-span-4">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-4">
                 <div className="grid gap-1">
                   <label>Phone no:</label>
                   <input
@@ -190,7 +190,7 @@ const SettingComponent = () => {
                   />
                 </div>
               </div>
-              <div className="w-full col-span-4">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-4">
                 <div className="grid gap-1">
                   <label>Fax no:</label>
                   <input
@@ -201,7 +201,7 @@ const SettingComponent = () => {
                   />
                 </div>
               </div>
-              <div className="w-full col-span-4">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-4">
                 <div className="grid gap-1">
                   <label>Email:</label>
                   <input
@@ -212,7 +212,7 @@ const SettingComponent = () => {
                   />
                 </div>
               </div>
-              <div className="w-full col-span-4">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-4">
                 <div className="grid gap-1">
                   <label>Website:</label>
                   <input
@@ -223,7 +223,7 @@ const SettingComponent = () => {
                   />
                 </div>
               </div>
-              <div className="w-full col-span-4">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-4">
                 <div className="grid gap-1">
                   <label>Currency:</label>
                   <div>
@@ -245,7 +245,7 @@ const SettingComponent = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-full col-span-4">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-4">
                 <label>Taxable cost:</label>
                 <div>
                   <Select
@@ -265,7 +265,7 @@ const SettingComponent = () => {
                   </Select>
                 </div>
               </div>
-              <div className="w-full col-span-4">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-4">
                 <div className="grid gap-1">
                   <label>{taxationName} (%):</label>
                   <input
@@ -277,7 +277,7 @@ const SettingComponent = () => {
                   />
                 </div>
               </div>
-              <div className="w-full col-span-2">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-2">
                 <div className="grid gap-1">
                   <label>Discounts:</label>
                   <span className="flex gap-2 justify-center items-center">
@@ -291,7 +291,7 @@ const SettingComponent = () => {
                   </span>
                 </div>
               </div>
-              <div className="w-full col-span-2">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-2">
                 <div className="grid gap-1">
                   <label>Shipping:</label>
                   <span className="flex gap-2 justify-center items-center">
@@ -305,7 +305,7 @@ const SettingComponent = () => {
                   </span>
                 </div>
               </div>
-              <div className="w-full col-span-3">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                 <div className="grid gap-1">
                   <label>Invoice No type:</label>
                   <div>
@@ -324,7 +324,7 @@ const SettingComponent = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-full col-span-3">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                 <div className="grid gap-1">
                   <label>QRCode:</label>
                   <div>
@@ -343,7 +343,7 @@ const SettingComponent = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-full col-span-3">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                 <div className="grid gap-1">
                   <label>Page Orientation:</label>
                   <div>
@@ -362,7 +362,7 @@ const SettingComponent = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-full col-span-3">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3">
                 <div className="grid gap-1">
                   <label>Page Size :</label>
                   <div>
@@ -384,7 +384,7 @@ const SettingComponent = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-full col-span-4">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-4">
                 <div className="grid gap-1 ">
                   <label>Change theme color:</label>
                   <div className="pt-2">
@@ -399,7 +399,7 @@ const SettingComponent = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-full col-span-4">
+              <div className="w-full col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-4">
                 <div className="grid gap-1 ">
                   <label>Change theme text color:</label>
                   <div className="pt-2">
@@ -415,7 +415,7 @@ const SettingComponent = () => {
                 </div>
               </div>
 
-              <div className="w-full col-span-4">
+              <div className="w-full col-span-12 lg:col-span-4 xl:col-span-4">
                 <div className="grid gap-[14px]">
                   <div className="grid gap-1">
                     <label>Invoice writer name:</label>
@@ -447,13 +447,11 @@ const SettingComponent = () => {
               </div>
             </div>
           </div>
-          <div className="col-span-3  ">
+          <div className="col-span-12 md:col-span-3  ">
             <div className="p-[20px] bg-white rounded-md">
               <div className="flex gap-[30px]">
                 <div className="w-[300px] relative">
-                  <h2 className="font-semibold pb-2">
-                    Upload your company logo
-                  </h2>
+                  <h2 className="font-semibold pb-2">Upload logo</h2>
                   <label
                     htmlFor="logo"
                     className=" cursor-pointer flex w-full  max-w-lg flex-col items-center rounded-xl border-2 border-dashed border-blue-400 bg-white p-6 text-center "
@@ -510,7 +508,7 @@ const SettingComponent = () => {
               </div>
               <div className="flex gap-[30px] mt-[40px]">
                 <div className="w-[300px] relative">
-                  <h2 className="font-semibold pb-2">Add background image</h2>
+                  <h2 className="font-semibold pb-2">Background image</h2>
                   <label
                     htmlFor="bg"
                     className=" cursor-pointer flex w-full  max-w-lg flex-col items-center rounded-xl border-2 border-dashed border-blue-400 bg-white p-6 text-center"
@@ -565,7 +563,7 @@ const SettingComponent = () => {
                   )}
                 </div>
               </div>
-              <div className="mt-5">
+              <div className="mt-5 hidden lg:block">
                 <button
                   className="px-[20px] py-[8px] w-full rounded-md bg-purple-500 text-white"
                   onClick={saveData}
@@ -578,11 +576,14 @@ const SettingComponent = () => {
         </div>
         <div className=" pt-[30px]">
           <div className="grid grid-cols-12 gap-[20px]">
-            <div className="col-span-9 bg-white p-[20px] rounded-md">
+            <div className="col-span-12 md:col-span-9 bg-white p-[20px] rounded-md">
               <h2 className="font-semibold">Choose a template</h2>
               <div className="grid grid-cols-12 gap-4">
                 {templates.map((item, index) => (
-                  <div key={index} className="col-span-3">
+                  <div
+                    key={index}
+                    className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3"
+                  >
                     <img
                       src={item?.src}
                       alt=""
@@ -603,6 +604,14 @@ const SettingComponent = () => {
                     />
                   </div>
                 ))}
+              </div>
+              <div className="mt-5 block lg:hidden">
+                <button
+                  className="px-[20px] py-[8px] w-full rounded-md bg-purple-500 text-white"
+                  onClick={saveData}
+                >
+                  Save global setting
+                </button>
               </div>
             </div>
           </div>

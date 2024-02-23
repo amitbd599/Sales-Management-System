@@ -294,7 +294,7 @@ const AllInvoiceComponent = () => {
   return (
     <section className="container mx-auto py-[60px]">
       <div className="bg-white shadow-lg p-[20px] rounded-lg">
-        <div className="rounded-xl bg-white m-[30px]">
+        <div className="rounded-xl bg-white md:m-[30px]">
           <h2 className="text-slate-700 text-2xl font-semibold mb-2">
             All Invoice file
           </h2>

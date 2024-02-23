@@ -59,19 +59,21 @@ const MasterLayout = (props) => {
 
             <div className="block lg:hidden">
               <div className="flex justify-between items-center">
-                <div>
-                  <img
-                    src="/image/logo-dark.png"
-                    alt=""
-                    className="w-[200px]"
-                  />
-                </div>
+                <Link to="/">
+                  <div className="logo w-[200px]">
+                    <img
+                      src="/image/logo-dark.png"
+                      alt=""
+                      className="w-[200px]"
+                    />
+                  </div>
+                </Link>
                 <div className="flex items-center justify-end gap-4	 px-[10px]">
                   <span
                     onClick={sidebarControl}
-                    className="rounded-full border border-[#919295] p-[10px] text-[25px] "
+                    className="rounded-full border border-white p-[10px] text-[25px] "
                   >
-                    <BiMenuAltRight className="text-text " />
+                    <BiMenuAltRight className="text-white" />
                   </span>
                 </div>
               </div>
@@ -81,15 +83,15 @@ const MasterLayout = (props) => {
             <div
               className={`sidebar fixed ${
                 sidebar ? "left-0" : "left-[100%]"
-              } bg-[#33333359]  top-0 z-[999]  h-full w-full bg-btn/60 transition-all duration-500`}
+              } bg-[#333333ab]  top-0 z-[999]  h-full w-full bg-btn/60 transition-all duration-500`}
             >
-              <div className="ml-auto h-full min-h-[750px] w-[300px] bg-card  px-[30px] pt-[60px] md:min-h-[700px] bg-[#333]">
+              <div className="ml-auto h-full min-h-[750px] w-[300px] bg-card  px-[30px] pt-[60px] md:min-h-[700px] bg-[#141C27]">
                 <div className="relative flex justify-center">
                   <span
                     onClick={sidebarControl}
-                    className="group absolute left-[-78px] rounded-lg bg-card   px-[15px] py-[10px] text-[26px]"
+                    className="group absolute left-[-69px] top-[-50px] rounded-lg bg-card   px-[15px] py-[10px] text-[26px]"
                   >
-                    <FaXmark className="text-white  transition-all duration-500  group-hover:rotate-90 group-hover:text-theme" />
+                    <FaXmark className="text-white border-2 border-white  rounded-full p-[10px] text-[50px] transition-all duration-500  group-hover:rotate-90 group-hover:text-theme" />
                   </span>
                   <div>
                     <img src="/image/logo-dark.png" alt="" />
