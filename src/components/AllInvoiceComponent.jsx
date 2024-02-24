@@ -18,6 +18,7 @@ import {
 } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 const AllInvoiceComponent = () => {
+  let getSetting = JSON.parse(localStorage.getItem("setting"));
   let [invoices, setInvoices] = useState(
     JSON.parse(localStorage.getItem("invoices") || [])
   );
@@ -43,11 +44,9 @@ const AllInvoiceComponent = () => {
     });
   };
 
-  let getSetting = JSON.parse(localStorage.getItem("setting"));
   const downloadPdf = (idToView) => {
     let templateData = invoices.filter((item) => item.invoiceID === idToView);
     templateData = templateData[0];
-    console.log(templateData.startDate);
     if (getSetting?.selectedTemplate === 1) {
       TemplateOne({
         templateData,
@@ -215,20 +214,20 @@ const AllInvoiceComponent = () => {
     {
       name: "Customer Name",
       selector: (row) => row.customerName,
-      sortable: true,
+
       wrap: true,
       width: "200px",
     },
 
     {
       name: "Date",
-      sortable: true,
+
       selector: (row) => row.startDate.slice(0, 10),
       width: "100px",
     },
     {
       name: "Delivery Date",
-      sortable: true,
+
       selector: (row) => row.deliveryDate.slice(0, 10),
       width: "120px",
     },

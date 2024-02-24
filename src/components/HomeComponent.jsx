@@ -239,7 +239,6 @@ const HomeComponent = () => {
     saveInvoice();
   };
   let viewPdf = async () => {
-    console.log(templateData);
     if (getSetting?.selectedTemplate === 1) {
       TemplateOne({
         templateData,
@@ -526,36 +525,36 @@ const HomeComponent = () => {
                             <thead className="text-xs font-semibold uppercase rounded-md text-gray-800 bg-gray-100">
                               <tr>
                                 <th className="p-2 min-w-[500px]">
-                                  <div className="font-semibold text-left">
+                                  <span className="font-semibold text-left">
                                     Item
-                                  </div>
+                                  </span>
                                 </th>
                                 <th className="p-2 min-w-[60px]">
-                                  <div className="font-semibold text-center">
+                                  <span className="font-semibold text-center">
                                     Quantity
-                                  </div>
+                                  </span>
                                 </th>
                                 <th className="p-2 min-w-[100px]">
-                                  <div className="font-semibold text-center">
+                                  <span className="font-semibold text-center">
                                     Rate ({getSetting?.currency})
-                                  </div>
+                                  </span>
                                 </th>
                                 <th className="p-2 min-w-[60px]">
-                                  <div className="font-semibold text-center">
+                                  <span className="font-semibold text-center">
                                     Amount
-                                  </div>
+                                  </span>
                                 </th>
                                 <th className="p-2 min-w-[60px]">
-                                  <div className="font-semibold text-center">
+                                  <span className="font-semibold text-center">
                                     Action
-                                  </div>
+                                  </span>
                                 </th>
                               </tr>
                             </thead>
-                            <div className="p-1"></div>
+
                             <tbody className="text-sm  ">
                               {invoiceItems.map((item, index) => (
-                                <tr>
+                                <tr key={index}>
                                   <td className="py-2 pr-2">
                                     <input
                                       type="text"
@@ -624,7 +623,7 @@ const HomeComponent = () => {
                             </tbody>
                           </table>
                         </div>
-                        <div className="mt-2">
+                        <div className="mt-4">
                           <button
                             className="px-[20px] py-[8px] rounded-md bg-gray-900 text-white"
                             onClick={handleAddItem}
