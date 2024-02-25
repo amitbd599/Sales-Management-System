@@ -127,6 +127,26 @@ const HomeComponent = () => {
     branchName,
     currency,
   };
+  let saveLocalStorage = () => {
+    localStorage.setItem(
+      "invoices",
+      JSON.stringify([...getInvoices, templateData])
+    );
+    SuccessToast("Success");
+    // After save action
+    generateRandomNumber();
+    setStartDate(new Date());
+    setCustomerName("");
+    setAddress("");
+    setPhone("");
+    setEmail("");
+    setNote("");
+    setAccountName("");
+    setAccountNumber("");
+    setBranchName("");
+    setInvoiceItems([]);
+    setPayment(0);
+  };
 
   const saveInvoice = () => {
     if (IsEmpty(invoiceID)) {
@@ -138,105 +158,77 @@ const HomeComponent = () => {
     } else if (IsEmpty(invoiceWriter)) {
       ErrorToast("Invoice Writer is empty");
     } else {
-      let data = {
-        invoiceID,
-        customerName,
-        phone,
-        email,
-        address,
-        invoiceWriter,
-        invoiceItems,
-        subTotal,
-        total,
-        due,
-        payment,
-        discount,
-        shipping,
-        startDate,
-        deliveryDate,
-        note,
-        taxation,
-        taxationName,
-        taxationAmount,
-        selectedTemplate,
-        paymentMethod,
-        accountName,
-        accountNumber,
-        branchName,
-        currency,
-      };
-
-      localStorage.setItem("invoices", JSON.stringify([...getInvoices, data]));
-      SuccessToast("Success");
-      // After save action
-      generateRandomNumber();
-      setStartDate(new Date());
-      setCustomerName("");
-      setAddress("");
-      setPhone("");
-      setEmail("");
-      setNote("");
-      setAccountName("");
-      setAccountNumber("");
-      setBranchName("");
-      setInvoiceItems([]);
-      setPayment(0);
-
+      saveLocalStorage();
       // navigate("/all-invoice");
     }
   };
 
   let savePdf = async () => {
-    if (getSetting?.selectedTemplate === 1) {
+    if (IsEmpty(invoiceID)) {
+      ErrorToast("Invoice is empty");
+    } else if (IsEmpty(customerName)) {
+      ErrorToast("Customer Name is empty");
+    } else if (IsEmpty(address)) {
+      ErrorToast("Address is empty");
+    } else if (IsEmpty(invoiceWriter)) {
+      ErrorToast("Invoice Writer is empty");
+    } else if (getSetting?.selectedTemplate === 1) {
       TemplateOne({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage();
     } else if (getSetting?.selectedTemplate === 2) {
       TemplateTwo({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage();
     } else if (getSetting?.selectedTemplate === 3) {
       TemplateThree({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage();
     } else if (getSetting?.selectedTemplate === 4) {
       TemplateFour({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage();
     } else if (getSetting?.selectedTemplate === 5) {
       TemplateFive({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage();
     } else if (getSetting?.selectedTemplate === 6) {
       TemplateSix({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage();
     } else if (getSetting?.selectedTemplate === 7) {
       TemplateSeven({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage();
     } else if (getSetting?.selectedTemplate === 8) {
       TemplateEight({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage();
     }
-    saveInvoice();
   };
   let viewPdf = async () => {
     if (getSetting?.selectedTemplate === 1) {
@@ -290,57 +282,71 @@ const HomeComponent = () => {
     }
   };
   let printPdf = async () => {
-    // saveInvoice();
-    if (getSetting?.selectedTemplate === 1) {
+    if (IsEmpty(invoiceID)) {
+      ErrorToast("Invoice is empty");
+    } else if (IsEmpty(customerName)) {
+      ErrorToast("Customer Name is empty");
+    } else if (IsEmpty(address)) {
+      ErrorToast("Address is empty");
+    } else if (IsEmpty(invoiceWriter)) {
+      ErrorToast("Invoice Writer is empty");
+    } else if (getSetting?.selectedTemplate === 1) {
       TemplateOne({
         templateData,
         getSetting,
         print: true,
       });
+      saveLocalStorage();
     } else if (getSetting?.selectedTemplate === 2) {
       TemplateTwo({
         templateData,
         getSetting,
         print: true,
       });
+      saveLocalStorage();
     } else if (getSetting?.selectedTemplate === 3) {
       TemplateThree({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage();
     } else if (getSetting?.selectedTemplate === 4) {
       TemplateFour({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage();
     } else if (getSetting?.selectedTemplate === 5) {
       TemplateFive({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage();
     } else if (getSetting?.selectedTemplate === 6) {
       TemplateSix({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage();
     } else if (getSetting?.selectedTemplate === 7) {
       TemplateSeven({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage();
     } else if (getSetting?.selectedTemplate === 8) {
       TemplateEight({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage();
     }
-    saveInvoice();
   };
 
   return (
