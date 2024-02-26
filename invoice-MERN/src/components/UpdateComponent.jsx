@@ -6,7 +6,13 @@ import {
   FaDownload,
 } from "react-icons/fa6";
 import DatePicker from "react-datepicker";
-import { SuccessToast, fixNumber, toNumber } from "../helper/helper.js";
+import {
+  ErrorToast,
+  IsEmpty,
+  SuccessToast,
+  fixNumber,
+  toNumber,
+} from "../helper/helper.js";
 import { Option, Select, Tooltip } from "@material-tailwind/react";
 import { useLocation } from "react-router-dom";
 import TemplateOne from "../pdf-templates/TemplateOne";
@@ -70,7 +76,7 @@ let UpdateComponent = () => {
     setTaxationAmount(filterData?.taxationAmount);
     setDiscount(filterData?.discount);
     setShipping(filterData?.shipping);
-  }, [location.search]);
+  }, []);
 
   let handleAddItem = () => {
     setInvoiceItems([
@@ -145,91 +151,94 @@ let UpdateComponent = () => {
     currency,
   };
 
-  let saveInvoice = (id) => {
-    let data = {
-      invoiceID,
-      customerName,
-      phone,
-      email,
-      address,
-      invoiceWriter,
-      invoiceItems,
-      subTotal,
-      total,
-      due,
-      payment,
-      discount,
-      shipping,
-      startDate,
-      deliveryDate,
-      note,
-      taxation,
-      taxationName,
-      taxationAmount,
-      selectedTemplate,
-      paymentMethod,
-      accountName,
-      accountNumber,
-      branchName,
-      currency,
-    };
-
+  let saveLocalStorage = (id) => {
     let prevValue = getInvoices.filter((item) => item.invoiceID !== id);
-    localStorage.setItem("invoices", JSON.stringify([...prevValue, data]));
+    localStorage.setItem(
+      "invoices",
+      JSON.stringify([...prevValue, templateData])
+    );
     SuccessToast("Update success!");
   };
 
-  let downloadPdf = async () => {
-    if (getSetting?.selectedTemplate === 1) {
+  let saveInvoice = (id) => {
+    if (IsEmpty(invoiceID)) {
+      ErrorToast("Invoice is empty");
+    } else if (IsEmpty(customerName)) {
+      ErrorToast("Customer Name is empty");
+    } else if (IsEmpty(address)) {
+      ErrorToast("Address is empty");
+    } else if (IsEmpty(invoiceWriter)) {
+      ErrorToast("Invoice Writer is empty");
+    } else {
+      saveLocalStorage(id);
+    }
+  };
+  let downloadPdf = async (id) => {
+    if (IsEmpty(invoiceID)) {
+      ErrorToast("Invoice is empty");
+    } else if (IsEmpty(customerName)) {
+      ErrorToast("Customer Name is empty");
+    } else if (IsEmpty(address)) {
+      ErrorToast("Address is empty");
+    } else if (IsEmpty(invoiceWriter)) {
+      ErrorToast("Invoice Writer is empty");
+    } else if (getSetting?.selectedTemplate === 1) {
       TemplateOne({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage(id);
     } else if (getSetting?.selectedTemplate === 2) {
       TemplateTwo({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage(id);
     } else if (getSetting?.selectedTemplate === 3) {
       TemplateThree({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage(id);
     } else if (getSetting?.selectedTemplate === 4) {
       TemplateFour({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage(id);
     } else if (getSetting?.selectedTemplate === 5) {
       TemplateFive({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage(id);
     } else if (getSetting?.selectedTemplate === 6) {
       TemplateSix({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage(id);
     } else if (getSetting?.selectedTemplate === 7) {
       TemplateSeven({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage(id);
     } else if (getSetting?.selectedTemplate === 8) {
       TemplateEight({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage(id);
     }
-    saveInvoice();
   };
   let viewPdf = async () => {
     if (getSetting?.selectedTemplate === 1) {
@@ -282,58 +291,72 @@ let UpdateComponent = () => {
       });
     }
   };
-  let printPdf = async () => {
-    // saveInvoice();
-    if (getSetting?.selectedTemplate === 1) {
+  let printPdf = async (id) => {
+    if (IsEmpty(invoiceID)) {
+      ErrorToast("Invoice is empty");
+    } else if (IsEmpty(customerName)) {
+      ErrorToast("Customer Name is empty");
+    } else if (IsEmpty(address)) {
+      ErrorToast("Address is empty");
+    } else if (IsEmpty(invoiceWriter)) {
+      ErrorToast("Invoice Writer is empty");
+    } else if (getSetting?.selectedTemplate === 1) {
       TemplateOne({
         templateData,
         getSetting,
         print: true,
       });
+      saveLocalStorage(id);
     } else if (getSetting?.selectedTemplate === 2) {
       TemplateTwo({
         templateData,
         getSetting,
         print: true,
       });
+      saveLocalStorage(id);
     } else if (getSetting?.selectedTemplate === 3) {
       TemplateThree({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage(id);
     } else if (getSetting?.selectedTemplate === 4) {
       TemplateFour({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage(id);
     } else if (getSetting?.selectedTemplate === 5) {
       TemplateFive({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage(id);
     } else if (getSetting?.selectedTemplate === 6) {
       TemplateSix({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage(id);
     } else if (getSetting?.selectedTemplate === 7) {
       TemplateSeven({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage(id);
     } else if (getSetting?.selectedTemplate === 8) {
       TemplateEight({
         templateData,
         getSetting,
         save: true,
       });
+      saveLocalStorage(id);
     }
-    saveInvoice();
   };
 
   return (
@@ -352,7 +375,7 @@ let UpdateComponent = () => {
                       <label htmlFor="invoice">Invoice no:</label>
 
                       <input
-                        defaultValue={invoiceID}
+                        value={invoiceID}
                         type="text"
                         className="input_box"
                         disabled
@@ -389,7 +412,7 @@ let UpdateComponent = () => {
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Invoice writer name:</label>
                       <input
-                        defaultValue={invoiceWriter}
+                        value={invoiceWriter}
                         onChange={(e) => setInvoiceWriter(e.target.value)}
                         type="text"
                         className="input_box"
@@ -400,7 +423,7 @@ let UpdateComponent = () => {
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer name:</label>
                       <input
-                        defaultValue={customerName}
+                        value={customerName}
                         onChange={(e) => setCustomerName(e.target.value)}
                         type="text"
                         className="input_box"
@@ -411,7 +434,7 @@ let UpdateComponent = () => {
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer Address:</label>
                       <input
-                        defaultValue={address}
+                        value={address}
                         onChange={(e) => setAddress(e.target.value)}
                         type="text"
                         className="input_box"
@@ -422,7 +445,7 @@ let UpdateComponent = () => {
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer Phone no:</label>
                       <input
-                        defaultValue={phone}
+                        value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         type="text"
                         className="input_box"
@@ -433,7 +456,7 @@ let UpdateComponent = () => {
                     <div className="grid gap-1">
                       <label htmlFor="invoice">Customer email:</label>
                       <input
-                        defaultValue={email}
+                        value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         type="text"
                         className="input_box"
@@ -466,7 +489,7 @@ let UpdateComponent = () => {
                       <div className="grid gap-1">
                         <label htmlFor="invoice">Account Name:</label>
                         <input
-                          defaultValue={accountName}
+                          value={accountName}
                           onChange={(e) => setAccountName(e.target.value)}
                           type="text"
                           className="input_box"
@@ -479,7 +502,7 @@ let UpdateComponent = () => {
                       <div className="grid gap-1">
                         <label htmlFor="invoice">Account number:</label>
                         <input
-                          defaultValue={accountNumber}
+                          value={accountNumber}
                           onChange={(e) => setAccountNumber(e.target.value)}
                           type="text"
                           className="input_box"
@@ -492,7 +515,7 @@ let UpdateComponent = () => {
                       <div className="grid gap-1">
                         <label htmlFor="invoice">Branch name:</label>
                         <input
-                          defaultValue={branchName}
+                          value={branchName}
                           onChange={(e) => setBranchName(e.target.value)}
                           type="text"
                           className="input_box"
@@ -744,7 +767,7 @@ let UpdateComponent = () => {
                       }}
                     >
                       <button
-                        onClick={downloadPdf}
+                        onClick={() => downloadPdf(invoiceID)}
                         className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
                       >
                         <FaDownload className="text-[20px] hover:text-[#55E6A5] transition-all duration-200" />
@@ -774,7 +797,7 @@ let UpdateComponent = () => {
                       }}
                     >
                       <button
-                        onClick={printPdf}
+                        onClick={() => printPdf(invoiceID)}
                         className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
                       >
                         <FaPrint className="text-[20px] hover:text-[#55E6A5] transition-all duration-200" />

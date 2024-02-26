@@ -1,0 +1,83 @@
+/*
+Author       : themesoft69
+Template Name: Documentation For Pucu - React Portfolio Template
+Version      : 0.1.0
+*/
+
+/* ============ Google Fonts ============ */
+
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800;900&display=swap");
+
+/* ============ Reset CSS ============ */
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  color: #666;
+  background: #edf0f0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Poppins", sans-serif;
+  color: #333;
+}
+pre {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+/* ============ Menu Control ============ */
+
+#nav-serialscrolling .sub-link {
+  position: relative;
+  display: block;
+  font-size: 15px;
+  cursor: pointer;
+  opacity: 0.5;
+  -webkit-transition: 300ms;
+  -o-transition: 300ms;
+  transition: 300ms;
+  color: #ddd;
+}
+
+#nav-serialscrolling .sub-link:hover,
+#nav-serialscrolling .is-current {
+  opacity: 1;
+  background: #373d4d;
+}
+.collapse__icon {
+  visibility: hidden;
+}
+
+/* ============ Media Query Responsive ============ */
+
+@media screen and (max-width: 786px) {
+  .menu {
+    -webkit-transform: translateX(-248px);
+    -ms-transform: translateX(-248px);
+    transform: translateX(-248px);
+    -webkit-transition: all 0.3s linear;
+    -o-transition: all 0.3s linear;
+    transition: all 0.3s linear;
+  }
+  .menu.show {
+    opacity: 1;
+    -webkit-transform: translateX(0);
+    -ms-transform: translateX(0);
+    transform: translateX(0);
+  }
+  .collapse__icon {
+    visibility: visible;
+  }
+}
