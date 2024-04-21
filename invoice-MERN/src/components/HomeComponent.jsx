@@ -763,9 +763,9 @@ const HomeComponent = () => {
                       >
                         <button
                           onClick={savePdf}
-                          className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
+                          className="px-[20px] flex justify-center items-center gap-3 py-[8px]"
                         >
-                          <FaDownload />
+                          <FaDownload className="text-[20px] " />
                         </button>
                       </Tooltip>
                       <Tooltip
@@ -780,7 +780,7 @@ const HomeComponent = () => {
                           onClick={viewPdf}
                           className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
                         >
-                          <FaRegFilePdf className="text-[20px] hover:text-gray-900 transition-all duration-200" />
+                          <FaRegFilePdf className="text-[20px] " />
                         </button>
                       </Tooltip>
                       <Tooltip
@@ -795,7 +795,7 @@ const HomeComponent = () => {
                           onClick={printPdf}
                           className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
                         >
-                          <FaPrint className="text-[20px] hover:text-gray-900 transition-all duration-200" />
+                          <FaPrint className="text-[20px] " />
                         </button>
                       </Tooltip>
                     </div>

@@ -15,7 +15,7 @@ const MasterLayout = (props) => {
           <div className="container mx-auto">
             {/* Header sectoion */}
             <header className="lg:flex justify-between hidden ">
-              <Link to="/">
+              <Link to="https://www.invoice-mern.themesoft69.com">
                 <div className="logo w-[200px]">
                   <img src="image/logo-dark.png" alt="" />
                 </div>
@@ -25,7 +25,7 @@ const MasterLayout = (props) => {
                 <ul className="flex gap-10">
                   <li>
                     <NavLink
-                      to="/"
+                      to="https://www.invoice-mern.themesoft69.com"
                       className={(navData) =>
                         navData.isActive ? "navActive" : "navNotActive"
                       }
@@ -59,7 +59,7 @@ const MasterLayout = (props) => {
 
             <div className="block lg:hidden">
               <div className="flex justify-between items-center">
-                <Link to="/">
+                <Link to="https://www.invoice-mern.themesoft69.com">
                   <div className="logo w-[200px]">
                     <img
                       src="/image/logo-dark.png"
@@ -102,7 +102,7 @@ const MasterLayout = (props) => {
                   <ul className="grid gap-[16px]">
                     <li className="text-[18px] font-semibold">
                       <NavLink
-                        to="/"
+                        to="https://www.invoice-mern.themesoft69.com"
                         className={(navData) =>
                           navData.isActive ? "navActive" : "navNotActive"
                         }

@@ -205,6 +205,7 @@ const AllInvoiceComponent = () => {
       });
     }
   };
+
   const columns = [
     {
       name: "Invoice ID",
@@ -224,12 +225,14 @@ const AllInvoiceComponent = () => {
 
       selector: (row) => row.startDate.slice(0, 10),
       width: "100px",
+      sortable: true,
     },
     {
       name: "Delivery Date",
 
       selector: (row) => row.deliveryDate.slice(0, 10),
       width: "120px",
+      sortable: true,
     },
     {
       name: "Payment Method",
@@ -290,6 +293,66 @@ const AllInvoiceComponent = () => {
     },
   ];
 
+  const FilterComponent = ({ filterText, onFilter, onClear }) => (
+    <div className="flex gap-3">
+      <input
+        id="search"
+        type="text"
+        placeholder="Filter By Customer Name"
+        aria-label="Search Input"
+        value={filterText}
+        onChange={onFilter}
+        className="input_box w-auto md:w-[400px]"
+      />
+      <button
+        type="button"
+        className="px-[20px] py-[8px]  rounded-md bg-red-500 text-white"
+        onClick={onClear}
+      >
+        X
+      </button>
+    </div>
+  );
+
+  const Filtering = () => {
+    const [filterText, setFilterText] = React.useState("");
+    const [resetPaginationToggle, setResetPaginationToggle] =
+      React.useState(false);
+    const filteredItems = invoices.filter(
+      (item) =>
+        item.customerName &&
+        item.customerName.toLowerCase().includes(filterText.toLowerCase())
+    );
+
+    const subHeaderComponentMemo = React.useMemo(() => {
+      const handleClear = () => {
+        if (filterText) {
+          setResetPaginationToggle(!resetPaginationToggle);
+          setFilterText("");
+        }
+      };
+
+      return (
+        <FilterComponent
+          onFilter={(e) => setFilterText(e.target.value)}
+          onClear={handleClear}
+          filterText={filterText}
+        />
+      );
+    }, [filterText, resetPaginationToggle]);
+
+    return (
+      <DataTable
+        columns={columns}
+        data={filteredItems.reverse()}
+        pagination
+        paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
+        subHeader
+        subHeaderComponent={subHeaderComponentMemo}
+        persistTableHead
+      />
+    );
+  };
   return (
     <section className="container mx-auto py-[60px]">
       <div className="bg-white shadow-lg p-[20px] rounded-lg">
@@ -297,13 +360,15 @@ const AllInvoiceComponent = () => {
           <h2 className="text-slate-700 text-2xl font-semibold mb-2">
             All Invoice file
           </h2>
-          <DataTable
+          {/* <DataTable
             fixedHeader
             fixedHeaderScrollHeight="600px"
             columns={columns}
             data={invoices}
             pagination
-          />
+          /> */}
+
+          <Filtering />
         </div>
       </div>
     </section>

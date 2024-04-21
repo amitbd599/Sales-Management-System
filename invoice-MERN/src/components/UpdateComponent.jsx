@@ -751,7 +751,7 @@ let UpdateComponent = () => {
                   <div className="w-full mt-[30px]">
                     <button
                       onClick={() => saveInvoice(invoiceID)}
-                      className="px-[20px] w-full py-[8px] rounded-md text-[16px] font-medium bg-[#55E6A5] text-gray-900 hover:bg-[#4cd497]  transition-all duration-300"
+                      className="px-[20px] w-full py-[8px] rounded-md bg-gray-900 text-white"
                     >
                       Update Invoice
                     </button>
@@ -768,9 +768,9 @@ let UpdateComponent = () => {
                     >
                       <button
                         onClick={() => downloadPdf(invoiceID)}
-                        className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
+                        className="px-[20px] flex justify-center items-center gap-3 py-[8px]"
                       >
-                        <FaDownload className="text-[20px] hover:text-[#55E6A5] transition-all duration-200" />
+                        <FaDownload className="text-[20px] " />
                       </button>
                     </Tooltip>
                     <Tooltip
@@ -783,9 +783,9 @@ let UpdateComponent = () => {
                     >
                       <button
                         onClick={viewPdf}
-                        className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
+                        className="px-[20px] flex justify-center items-center gap-3 py-[8px]"
                       >
-                        <FaRegFilePdf className="text-[20px] hover:text-[#55E6A5] transition-all duration-200" />
+                        <FaRegFilePdf className="text-[20px] " />
                       </button>
                     </Tooltip>
                     <Tooltip
@@ -798,9 +798,9 @@ let UpdateComponent = () => {
                     >
                       <button
                         onClick={() => printPdf(invoiceID)}
-                        className="px-[20px] flex justify-center items-center gap-3 py-[8px]   text-purple"
+                        className="px-[20px] flex justify-center items-center gap-3 py-[8px]"
                       >
-                        <FaPrint className="text-[20px] hover:text-[#55E6A5] transition-all duration-200" />
+                        <FaPrint className="text-[20px] " />
                       </button>
                     </Tooltip>
                   </div>
