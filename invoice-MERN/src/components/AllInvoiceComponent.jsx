@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TemplateOne from "../pdf-templates/TemplateOne";
 import TemplateTwo from "../pdf-templates/TemplateTwo";
 import TemplateThree from "../pdf-templates/TemplateThree";
@@ -17,11 +17,33 @@ import {
   FaTrashCan,
 } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import {
+  invoice_all__get__Request__API,
+  setting__get__Request__API,
+} from "../api/Api";
+import Loading from "./Loading";
 const AllInvoiceComponent = () => {
-  let getSetting = JSON.parse(localStorage.getItem("setting"));
-  let [invoices, setInvoices] = useState(
-    JSON.parse(localStorage.getItem("invoices") || [])
-  );
+  let [loading, setLoading] = useState(false);
+  let [invoices, setInvoices] = useState([]);
+  let [getSetting, getSetSetting] = useState([]);
+  useEffect(() => {
+    setLoading(true);
+    invoice_all__get__Request__API().then((result) => {
+      if (result.status === "success") {
+        let response = result["data"];
+        setInvoices(response);
+        setLoading(false);
+      }
+    });
+
+    setting__get__Request__API().then((result) => {
+      if (result.status === "success") {
+        let response = result["data"];
+        getSetSetting(response);
+        setLoading(false);
+      }
+    });
+  }, []);
 
   const deleteItem = (idToDelete) => {
     Swal.fire({
@@ -34,8 +56,8 @@ const AllInvoiceComponent = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        const updatedData = invoices.filter(
-          (item) => item.invoiceID !== idToDelete
+        const updatedData = invoices?.filter(
+          (item) => item?.invoiceID !== idToDelete
         );
         setInvoices(updatedData);
 
@@ -45,7 +67,7 @@ const AllInvoiceComponent = () => {
   };
 
   const downloadPdf = (idToView) => {
-    let templateData = invoices.filter((item) => item.invoiceID === idToView);
+    let templateData = invoices?.filter((item) => item?.invoiceID === idToView);
     templateData = templateData[0];
     if (getSetting?.selectedTemplate === 1) {
       TemplateOne({
@@ -99,8 +121,9 @@ const AllInvoiceComponent = () => {
   };
 
   let viewPdf = (idToView) => {
-    let templateData = invoices.filter((item) => item.invoiceID === idToView);
+    let templateData = invoices?.filter((item) => item?.invoiceID === idToView);
     templateData = templateData[0];
+    console.log(templateData);
     if (getSetting?.selectedTemplate === 1) {
       TemplateOne({
         templateData,
@@ -153,7 +176,7 @@ const AllInvoiceComponent = () => {
   };
 
   let printPdf = (idToView) => {
-    let templateData = invoices.filter((item) => item.invoiceID === idToView);
+    let templateData = invoices?.filter((item) => item?.invoiceID === idToView);
     templateData = templateData[0];
     if (getSetting?.selectedTemplate === 1) {
       TemplateOne({
@@ -209,12 +232,12 @@ const AllInvoiceComponent = () => {
   const columns = [
     {
       name: "Invoice ID",
-      selector: (row) => row.invoiceID,
+      selector: (row) => row?.invoiceID,
       width: "150px",
     },
     {
       name: "Customer Name",
-      selector: (row) => row.customerName,
+      selector: (row) => row?.customerName,
 
       wrap: true,
       width: "200px",
@@ -223,20 +246,20 @@ const AllInvoiceComponent = () => {
     {
       name: "Date",
 
-      selector: (row) => row.startDate.slice(0, 10),
+      selector: (row) => row?.startDate?.slice(0, 10),
       width: "100px",
       sortable: true,
     },
     {
       name: "Delivery Date",
 
-      selector: (row) => row.deliveryDate.slice(0, 10),
+      selector: (row) => row?.deliveryDate?.slice(0, 10),
       width: "120px",
       sortable: true,
     },
     {
       name: "Payment Method",
-      selector: (row) => row.paymentMethod,
+      selector: (row) => row?.paymentMethod,
       width: "140px",
     },
     {
@@ -244,7 +267,7 @@ const AllInvoiceComponent = () => {
       selector: (row) => (
         <div>
           <span className="bg-[#ecfdf5] text-[#10b981] px-[10px] py-[6px] rounded-full">
-            {row.payment}
+            {row?.payment}
           </span>
         </div>
       ),
@@ -255,7 +278,7 @@ const AllInvoiceComponent = () => {
       selector: (row) => (
         <div>
           <span className="bg-[#fff1f2] text-[#f43f5e] px-[10px] py-[6px] rounded-full">
-            {row.due}
+            {row?.due}
           </span>
         </div>
       ),
@@ -270,23 +293,23 @@ const AllInvoiceComponent = () => {
         <div className="flex gap-4 ">
           <FaDownload
             className="p-1 cursor-pointer text-[25px] text-gray-700"
-            onClick={() => downloadPdf(row.invoiceID)}
+            onClick={() => downloadPdf(row?.invoiceID)}
           />
-          <Link to={`/update?id=${row.invoiceID}`}>
+          <Link to={`/update?id=${row?.invoiceID}`}>
             <FaPenToSquare className="p-1 cursor-pointer text-[25px] text-gray-700" />
           </Link>
 
           <FaExpand
             className="p-1 cursor-pointer text-[25px] text-gray-700"
-            onClick={() => viewPdf(row.invoiceID)}
+            onClick={() => viewPdf(row?.invoiceID)}
           />
           <FaPrint
             className="p-1 cursor-pointer text-[25px] text-gray-700"
-            onClick={() => printPdf(row.invoiceID)}
+            onClick={() => printPdf(row?.invoiceID)}
           />
           <FaTrashCan
             className="p-1 cursor-pointer text-[25px] text-gray-700"
-            onClick={() => deleteItem(row.invoiceID)}
+            onClick={() => deleteItem(row?.invoiceID)}
           />
         </div>
       ),
@@ -318,10 +341,10 @@ const AllInvoiceComponent = () => {
     const [filterText, setFilterText] = React.useState("");
     const [resetPaginationToggle, setResetPaginationToggle] =
       React.useState(false);
-    const filteredItems = invoices.filter(
+    const filteredItems = invoices?.filter(
       (item) =>
         item.customerName &&
-        item.customerName.toLowerCase().includes(filterText.toLowerCase())
+        item.customerName.toLowerCase().includes(filterText?.toLowerCase())
     );
 
     const subHeaderComponentMemo = React.useMemo(() => {
@@ -344,7 +367,7 @@ const AllInvoiceComponent = () => {
     return (
       <DataTable
         columns={columns}
-        data={filteredItems.reverse()}
+        data={filteredItems?.reverse()}
         pagination
         paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
         subHeader
@@ -354,24 +377,19 @@ const AllInvoiceComponent = () => {
     );
   };
   return (
-    <section className="container mx-auto py-[60px]">
-      <div className="bg-white shadow-lg p-[20px] rounded-lg">
-        <div className="rounded-xl bg-white md:m-[30px]">
-          <h2 className="text-slate-700 text-2xl font-semibold mb-2">
-            All Invoice file
-          </h2>
-          {/* <DataTable
-            fixedHeader
-            fixedHeaderScrollHeight="600px"
-            columns={columns}
-            data={invoices}
-            pagination
-          /> */}
-
-          <Filtering />
+    <>
+      {loading === true && <Loading />}
+      <section className="container mx-auto py-[60px]">
+        <div className="bg-white shadow-lg p-[20px] rounded-lg">
+          <div className="rounded-xl bg-white md:m-[30px]">
+            <h2 className="text-slate-700 text-2xl font-semibold mb-2">
+              All Invoice file
+            </h2>
+            <Filtering />
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 

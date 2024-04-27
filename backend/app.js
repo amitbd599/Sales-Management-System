@@ -11,11 +11,16 @@ const hpp = require("hpp");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
-const path = require("path");
+const dotENV = require("dotenv");
+dotENV.config();
 
 let URL =
-  "mongodb+srv://<username>:<password>@cluster0.fsp0qs4.mongodb.net/e-commerce?retryWrites=true&w=majority";
-let option = { user: "admin", pass: "admin@123", autoIndex: true };
+  "mongodb+srv://<username>:<password>@cluster0.fsp0qs4.mongodb.net/invoice-mern?retryWrites=true&w=majority";
+let option = {
+  user: process.env.DB_USER,
+  pass: process.env.DB_PASS,
+  autoIndex: true,
+};
 mongoose
   .connect(URL, option)
   .then((res) => {
@@ -26,7 +31,12 @@ mongoose
   });
 
 app.use(cookieParser());
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: process.env.Origin_HOST,
+  })
+);
 app.use(helmet());
 app.use(mongoSanitize());
 app.use(xss());

@@ -1,10 +1,39 @@
-import React from "react";
+import React, { useRef } from "react";
+import { ErrorToast, IsEmpty } from "../helper/helper";
+import { login__Request__API } from "../api/Api";
+import Loading from "./Loading";
+import { useState } from "react";
 
 const LoginComponent = () => {
+  let [loading, setLoading] = useState(false);
+  let emailRef,
+    passwordRef = useRef();
+
+  const loginRequestAPI__Fun = () => {
+    setLoading(true);
+    let email = emailRef.value;
+    let password = passwordRef.value;
+    if (IsEmpty(email)) {
+      ErrorToast("Email Required!");
+      setLoading(false);
+    } else if (IsEmpty(password)) {
+      ErrorToast("Password Required!");
+      setLoading(false);
+    } else {
+      login__Request__API({ email, password }).then((result) => {
+        setLoading(false);
+        if (result === true) {
+          window.location.href = "/";
+        }
+      });
+    }
+  };
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-      <div
-        className="
+    <>
+      {loading === true && <Loading />}
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+        <div
+          className="
       flex flex-col
       bg-white
       shadow-md
@@ -17,25 +46,25 @@ const LoginComponent = () => {
       w-50
       max-w-md
     "
-      >
-        <div className="font-medium self-center text-xl sm:text-3xl text-gray-800">
-          Welcome Back
-        </div>
-        <div className="mt-4 self-center text-xl sm:text-sm text-gray-800">
-          Enter your credentials to access your account
-        </div>
-        <div className="mt-10">
-          <form action="#">
-            <div className="flex flex-col mb-5">
-              <label
-                htmlFor="email"
-                className="mb-1 text-xs tracking-wide text-gray-600"
-              >
-                E-Mail Address:
-              </label>
-              <div className="relative">
-                <div
-                  className="
+        >
+          <div className="font-medium self-center text-xl sm:text-3xl text-gray-800">
+            Welcome Back
+          </div>
+          <div className="mt-4 self-center text-xl sm:text-sm text-gray-800">
+            Enter your credentials to access your account
+          </div>
+          <div className="mt-10">
+            <div action="#">
+              <div className="flex flex-col mb-5">
+                <label
+                  htmlFor="email"
+                  className="mb-1 text-xs tracking-wide text-gray-600"
+                >
+                  E-Mail Address:
+                </label>
+                <div className="relative">
+                  <div
+                    className="
                 inline-flex
                 items-center
                 justify-center
@@ -46,14 +75,15 @@ const LoginComponent = () => {
                 w-10
                 text-gray-400
               "
-                >
-                  <i className="fas fa-at text-blue-500" />
-                </div>
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  className="
+                  >
+                    <i className="fas fa-at text-blue-500" />
+                  </div>
+                  <input
+                    ref={(input) => (emailRef = input)}
+                    id="email"
+                    type="email"
+                    name="email"
+                    className="
                 text-sm
                 placeholder-gray-500
                 pl-10
@@ -64,20 +94,20 @@ const LoginComponent = () => {
                 py-2
                 focus:outline-none focus:border-blue-400
               "
-                  placeholder="Enter your email"
-                />
+                    placeholder="Enter your email"
+                  />
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col mb-6">
-              <label
-                htmlFor="password"
-                className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"
-              >
-                Password:
-              </label>
-              <div className="relative">
-                <div
-                  className="
+              <div className="flex flex-col mb-6">
+                <label
+                  htmlFor="password"
+                  className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"
+                >
+                  Password:
+                </label>
+                <div className="relative">
+                  <div
+                    className="
                 inline-flex
                 items-center
                 justify-center
@@ -88,16 +118,17 @@ const LoginComponent = () => {
                 w-10
                 text-gray-400
               "
-                >
-                  <span>
-                    <i className="fas fa-lock text-blue-500" />
-                  </span>
-                </div>
-                <input
-                  id="password"
-                  type="password"
-                  name="password"
-                  className="
+                  >
+                    <span>
+                      <i className="fas fa-lock text-blue-500" />
+                    </span>
+                  </div>
+                  <input
+                    ref={(input) => (passwordRef = input)}
+                    id="password"
+                    type="password"
+                    name="password"
+                    className="
                 text-sm
                 placeholder-gray-500
                 pl-10
@@ -108,14 +139,14 @@ const LoginComponent = () => {
                 py-2
                 focus:outline-none focus:border-blue-400
               "
-                  placeholder="Enter your password"
-                />
+                    placeholder="Enter your password"
+                  />
+                </div>
               </div>
-            </div>
-            <div className="flex w-full">
-              <button
-                type="submit"
-                className="
+              <div className="flex w-full">
+                <button
+                  onClick={loginRequestAPI__Fun}
+                  className="
               flex
               mt-2
               items-center
@@ -132,45 +163,46 @@ const LoginComponent = () => {
               duration-150
               ease-in
             "
-              >
-                <span className="mr-2 uppercase">Sign In</span>
-                <span>
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </span>
-              </button>
+                >
+                  <span className="mr-2 uppercase">Sign In</span>
+                  <span>
+                    <svg
+                      className="h-6 w-6"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </span>
+                </button>
+              </div>
             </div>
-          </form>
+          </div>
         </div>
-      </div>
-      <div className="flex justify-center items-center mt-6">
-        <a
-          href="#"
-          target="_blank"
-          className="
+        <div className="flex justify-center items-center mt-6">
+          <a
+            href="#"
+            target="_blank"
+            className="
         inline-flex
         items-center
         text-gray-700
         font-medium
         text-xs text-center
       "
-        >
-          <span className="ml-2">You don't have an account?</span>
-        </a>
-        <a href="#" className="text-xs ml-2 text-blue-500 font-semibold">
-          Register now
-        </a>
+          >
+            <span className="ml-2">You don't have an account?</span>
+          </a>
+          <a href="#" className="text-xs ml-2 text-blue-500 font-semibold">
+            Register now
+          </a>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

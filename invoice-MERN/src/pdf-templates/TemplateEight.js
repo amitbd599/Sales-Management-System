@@ -18,18 +18,18 @@ function TemplateEight({ getSetting, templateData, print, view, save }) {
 
   pdf.setDrawColor(0);
   pdf.setFillColor(
-    getSetting?.themeColor?.r,
-    getSetting?.themeColor?.g,
-    getSetting?.themeColor?.b
+    getSetting?.themeColor[0]?.r,
+    getSetting?.themeColor[0]?.g,
+    getSetting?.themeColor[0]?.b
   );
   pdf.rect(-10, 44, 400, 1, "F");
 
   pdf.setFontSize(40);
   pdf.setFont("inter", "bold");
   pdf.setTextColor(
-    getSetting?.themeColor?.r,
-    getSetting?.themeColor?.g,
-    getSetting?.themeColor?.b
+    getSetting?.themeColor[0]?.r,
+    getSetting?.themeColor[0]?.g,
+    getSetting?.themeColor[0]?.b
   );
   // Your QR code content
   const qrCodeContent = `Invoice Id #-${templateData?.invoiceID}`;
@@ -66,17 +66,17 @@ function TemplateEight({ getSetting, templateData, print, view, save }) {
   // Filled red square
   pdf.setDrawColor(0);
   pdf.setFillColor(
-    getSetting?.themeColor?.r,
-    getSetting?.themeColor?.g,
-    getSetting?.themeColor?.b
+    getSetting?.themeColor[0]?.r,
+    getSetting?.themeColor[0]?.g,
+    getSetting?.themeColor[0]?.b
   );
   pdf.rect(0, 50, 40, 8, "F");
 
   pdf.setFontSize(12);
   pdf.setTextColor(
-    getSetting?.themeTextColor?.r,
-    getSetting?.themeTextColor?.g,
-    getSetting?.themeTextColor?.b
+    getSetting?.themeTextColor[0]?.r,
+    getSetting?.themeTextColor[0]?.g,
+    getSetting?.themeTextColor[0]?.b
   );
   pdf.text("Invoice To", 15, 55);
 
@@ -169,14 +169,14 @@ function TemplateEight({ getSetting, templateData, print, view, save }) {
     headStyles: {
       halign: "left",
       fillColor: [
-        getSetting?.themeColor?.r,
-        getSetting?.themeColor?.g,
-        getSetting?.themeColor?.b,
+        getSetting?.themeColor[0]?.r,
+        getSetting?.themeColor[0]?.g,
+        getSetting?.themeColor[0]?.b,
       ],
       textColor: [
-        getSetting?.themeTextColor?.r,
-        getSetting?.themeTextColor?.g,
-        getSetting?.themeTextColor?.b,
+        getSetting?.themeTextColor[0]?.r,
+        getSetting?.themeTextColor[0]?.g,
+        getSetting?.themeTextColor[0]?.b,
       ],
     },
     columnStyles: { halign: "left" },
@@ -216,9 +216,9 @@ function TemplateEight({ getSetting, templateData, print, view, save }) {
     headStyles: {
       europe: { halign: "right" },
       fillColor: [
-        getSetting?.themeColor?.r,
-        getSetting?.themeColor?.g,
-        getSetting?.themeColor?.b,
+        getSetting?.themeColor[0]?.r,
+        getSetting?.themeColor[0]?.g,
+        getSetting?.themeColor[0]?.b,
       ],
       textColor: [255, 255, 255],
     },
@@ -242,9 +242,9 @@ function TemplateEight({ getSetting, templateData, print, view, save }) {
   pdf.setFontSize(10);
   pdf.setDrawColor(0);
   pdf.setFillColor(
-    getSetting?.themeColor?.r,
-    getSetting?.themeColor?.g,
-    getSetting?.themeColor?.b
+    getSetting?.themeColor[0]?.r,
+    getSetting?.themeColor[0]?.g,
+    getSetting?.themeColor[0]?.b
   );
   pdf.rect(-10, pdf.internal.pageSize.height - 15, 400, 1, "F");
   let splitTitle = pdf.splitTextToSize(

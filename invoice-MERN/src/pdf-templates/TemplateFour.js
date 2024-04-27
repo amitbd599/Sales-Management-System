@@ -16,18 +16,18 @@ function TemplateFour({ getSetting, templateData, print, view, save }) {
 
   pdf.setDrawColor(0);
   pdf.setFillColor(
-    getSetting?.themeColor?.r,
-    getSetting?.themeColor?.g,
-    getSetting?.themeColor?.b
+    getSetting?.themeColor[0]?.r,
+    getSetting?.themeColor[0]?.g,
+    getSetting?.themeColor[0]?.b
   );
   pdf.rect(-10, 44, 400, 1, "F");
 
   pdf.setFontSize(40);
   pdf.setFont("inter", "bold");
   pdf.setTextColor(
-    getSetting?.themeColor?.r,
-    getSetting?.themeColor?.g,
-    getSetting?.themeColor?.b
+    getSetting?.themeColor[0]?.r,
+    getSetting?.themeColor[0]?.g,
+    getSetting?.themeColor[0]?.b
   );
 
   // Your QR code content
@@ -99,15 +99,15 @@ function TemplateFour({ getSetting, templateData, print, view, save }) {
   // Filled red square
   pdf.setDrawColor(0);
   pdf.setFillColor(
-    getSetting?.themeColor?.r,
-    getSetting?.themeColor?.g,
-    getSetting?.themeColor?.b
+    getSetting?.themeColor[0]?.r,
+    getSetting?.themeColor[0]?.g,
+    getSetting?.themeColor[0]?.b
   );
   pdf.rect(15, 52, templateTwoRightStart - 30, 8, "F");
   pdf.setTextColor(
-    getSetting?.themeTextColor?.r,
-    getSetting?.themeTextColor?.g,
-    getSetting?.themeTextColor?.b
+    getSetting?.themeTextColor[0]?.r,
+    getSetting?.themeTextColor[0]?.g,
+    getSetting?.themeTextColor[0]?.b
   );
   pdf.setFontSize(12);
   pdf.text("Client information", 20, 57);
@@ -125,15 +125,15 @@ function TemplateFour({ getSetting, templateData, print, view, save }) {
   // Filled red square
   pdf.setDrawColor(0);
   pdf.setFillColor(
-    getSetting?.themeColor?.r,
-    getSetting?.themeColor?.g,
-    getSetting?.themeColor?.b
+    getSetting?.themeColor[0]?.r,
+    getSetting?.themeColor[0]?.g,
+    getSetting?.themeColor[0]?.b
   );
   pdf.rect(templateTwoRightStart + 15, 52, templateTwoRightStart - 30, 8, "F");
   pdf.setTextColor(
-    getSetting?.themeTextColor?.r,
-    getSetting?.themeTextColor?.g,
-    getSetting?.themeTextColor?.b
+    getSetting?.themeTextColor[0]?.r,
+    getSetting?.themeTextColor[0]?.g,
+    getSetting?.themeTextColor[0]?.b
   );
   pdf.setFontSize(12);
   pdf.text("Payment info", templateTwoRightStart + 20, 57);
@@ -178,14 +178,14 @@ function TemplateFour({ getSetting, templateData, print, view, save }) {
     headStyles: {
       halign: "left",
       fillColor: [
-        getSetting?.themeColor?.r,
-        getSetting?.themeColor?.g,
-        getSetting?.themeColor?.b,
+        getSetting?.themeColor[0]?.r,
+        getSetting?.themeColor[0]?.g,
+        getSetting?.themeColor[0]?.b,
       ],
       textColor: [
-        getSetting?.themeTextColor?.r,
-        getSetting?.themeTextColor?.g,
-        getSetting?.themeTextColor?.b,
+        getSetting?.themeTextColor[0]?.r,
+        getSetting?.themeTextColor[0]?.g,
+        getSetting?.themeTextColor[0]?.b,
       ],
     },
     columnStyles: {
@@ -249,9 +249,9 @@ function TemplateFour({ getSetting, templateData, print, view, save }) {
   pdf.setFontSize(10);
   pdf.setDrawColor(0);
   pdf.setFillColor(
-    getSetting?.themeColor?.r,
-    getSetting?.themeColor?.g,
-    getSetting?.themeColor?.b
+    getSetting?.themeColor[0]?.r,
+    getSetting?.themeColor[0]?.g,
+    getSetting?.themeColor[0]?.b
   );
   pdf.rect(-10, pdf.internal.pageSize.height - 15, 400, 1, "F");
   let splitTitle = pdf.splitTextToSize(

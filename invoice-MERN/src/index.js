@@ -11,13 +11,13 @@ import { Toaster } from "react-hot-toast";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  <>
     <ThemeProvider>
       <Toaster position="bottom-center" reverseOrder={false} />
       <App />
       <InitLoadingData />
     </ThemeProvider>
-  </React.StrictMode>
+  </>
 );
 
 reportWebVitals();

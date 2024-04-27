@@ -22,6 +22,7 @@ import TemplateFive from "../pdf-templates/TemplateFive";
 import TemplateSix from "../pdf-templates/TemplateSix";
 import TemplateSeven from "../pdf-templates/TemplateSeven";
 import TemplateEight from "../pdf-templates/TemplateEight";
+import { create__invoice__Request__API } from "../api/Api";
 
 const HomeComponent = () => {
   let getSetting = JSON.parse(localStorage.getItem("setting"));
@@ -128,24 +129,23 @@ const HomeComponent = () => {
     currency,
   };
   let saveLocalStorage = () => {
-    localStorage.setItem(
-      "invoices",
-      JSON.stringify([...getInvoices, templateData])
-    );
-    SuccessToast("Success");
-    // After save action
-    generateRandomNumber();
-    setStartDate(new Date());
-    setCustomerName("");
-    setAddress("");
-    setPhone("");
-    setEmail("");
-    setNote("");
-    setAccountName("");
-    setAccountNumber("");
-    setBranchName("");
-    setInvoiceItems([]);
-    setPayment(0);
+    create__invoice__Request__API(templateData).then((result) => {
+      if (result) {
+        // After save action
+        generateRandomNumber();
+        setStartDate(new Date());
+        setCustomerName("");
+        setAddress("");
+        setPhone("");
+        setEmail("");
+        setNote("");
+        setAccountName("");
+        setAccountNumber("");
+        setBranchName("");
+        setInvoiceItems([]);
+        setPayment(0);
+      }
+    });
   };
 
   const saveInvoice = () => {

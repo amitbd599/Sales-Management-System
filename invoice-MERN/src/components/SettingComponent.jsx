@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Select, Option } from "@material-tailwind/react";
 import { currencyData } from "../script/currency";
 import { ChromePicker } from "react-color";
@@ -12,26 +12,45 @@ import {
   toNumber,
 } from "../helper/helper";
 import { FaXmark } from "react-icons/fa6";
+import {
+  setting__get__Request__API,
+  setting__update__Request__API,
+} from "../api/Api";
+import Loading from "./Loading";
 const SettingComponent = () => {
-  let getSetting = JSON.parse(localStorage.getItem("setting"));
-  let [logo, setLogo] = useState(getSetting?.logo);
-  let [bgImg, setBgImg] = useState(getSetting?.bgImg);
-  let [currency, setCurrency] = useState(getSetting?.currency);
-  let [taxationName, setTaxationName] = useState(getSetting?.taxationName);
-  let [invoiceType, setInvoiceType] = useState(getSetting?.invoiceType);
-  let [qrCode, setQrCode] = useState(getSetting?.qrCode);
-  let [pageSize, setPageSize] = useState(getSetting?.pageSize);
-  let [pageOrientation, setPageOrientation] = useState(
-    getSetting?.pageOrientation
-  );
+  let [loading, setLoading] = useState(false);
+  let [getSetting, getSetSetting] = useState([]);
+  let [logo, setLogo] = useState("");
+  let [bgImg, setBgImg] = useState("");
+  let [currency, setCurrency] = useState("");
+  let [taxationName, setTaxationName] = useState("");
+  let [invoiceType, setInvoiceType] = useState("");
+  let [qrCode, setQrCode] = useState("");
+  let [pageSize, setPageSize] = useState("");
+  let [pageOrientation, setPageOrientation] = useState("");
 
-  let [selectedTemplate, setTemplateImage] = useState(
-    getSetting?.selectedTemplate
-  );
-  let [themeColor, setThemeColor] = useState(getSetting?.themeColor);
-  let [themeTextColor, setThemeTextColor] = useState(
-    getSetting?.themeTextColor
-  );
+  let [selectedTemplate, setTemplateImage] = useState("");
+  let [themeColor, setThemeColor] = useState([]);
+  let [themeTextColor, setThemeTextColor] = useState([]);
+  useEffect(() => {
+    setting__get__Request__API().then((result) => {
+      if (result.status === "success") {
+        let response = result["data"];
+        getSetSetting(response);
+        setLogo(response?.logo);
+        setBgImg(response?.bgImg);
+        setCurrency(response?.currency);
+        setTaxationName(response?.taxationName);
+        setInvoiceType(response?.invoiceType);
+        setQrCode(response?.qrCode);
+        setPageSize(response?.pageSize);
+        setPageOrientation(response?.pageOrientation);
+        setTemplateImage(response?.selectedTemplate);
+        setThemeColor(response?.themeColor[0]);
+        setThemeTextColor(response?.themeTextColor[0]);
+      }
+    });
+  }, []);
 
   let handleThemeColorChange = (newColor) => {
     setThemeColor(newColor.rgb);
@@ -96,6 +115,7 @@ const SettingComponent = () => {
     invoiceWriterRef = useRef();
 
   const saveData = () => {
+    setLoading(true);
     let company_name = company_nameRef.value;
     let company_address = company_addressRef.value;
     let mobile = mobileRef.value;
@@ -135,12 +155,16 @@ const SettingComponent = () => {
       website,
     };
 
-    localStorage.setItem("setting", JSON.stringify(setting));
-    SuccessToast("Update success!");
+    setting__update__Request__API(setting).then((result) => {
+      if (result === true) {
+        setLoading(false);
+      }
+    });
   };
 
   return (
     <section>
+      {loading === true && <Loading />}
       <div className="container py-[60px]">
         <div className="grid grid-cols-12 gap-[20px] ">
           <div className="col-span-12 md:col-span-9 p-[20px] bg-white rounded-md">
@@ -464,6 +488,7 @@ const SettingComponent = () => {
                             alt="Selected"
                             className="w-[100px] rounded-xl"
                           />
+                          logooooo
                         </div>
                       ) : (
                         <svg

@@ -1,17 +1,31 @@
 const mongoose = require("mongoose");
 const DataSchema = mongoose.Schema(
   {
-    userID: { type: mongoose.Schema.Types.ObjectId, required: true },
-    payable: { type: String, required: true },
-    cus_details: { type: String, required: true },
-    ship_details: { type: String, required: true },
-    ship_details: { type: String, required: true },
-    tran_id: { type: String, required: true },
-    val_id: { type: String, required: true },
-    deliver_status: { type: String, required: true },
-    payment_status: { type: String, required: true },
-    vat: { type: String, required: true },
-    total: { type: String, required: true },
+    accountName: { type: String },
+    accountNumber: { type: String },
+    address: { type: String },
+    branchName: { type: String },
+    currency: { type: String },
+    customerName: { type: String },
+    deliveryDate: { type: String },
+    discount: { type: Number },
+    due: { type: Number },
+    email: { type: String },
+    invoiceID: { type: String },
+    invoiceItems: { type: Array },
+    invoiceWriter: { type: String },
+    note: { type: String },
+    payment: { type: Number },
+    paymentMethod: { type: String },
+    phone: { type: String },
+    selectedTemplate: { type: Number },
+    shipping: { type: Number },
+    startDate: { type: String },
+    subTotal: { type: Number },
+    taxation: { type: Number },
+    taxationAmount: { type: Number },
+    taxationName: { type: String },
+    total: { type: Number },
   },
   {
     timestamps: true,
@@ -19,6 +33,6 @@ const DataSchema = mongoose.Schema(
   }
 );
 
-const InvoiceModel = mongoose.model("invoices", DataSchema);
+const InvoiceModel = mongoose.model("Invoices", DataSchema);
 
 module.exports = InvoiceModel;

@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply text-gray-700;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-gray-900;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+}
+
+@layer components {
+  .input_box {
+    @apply p-2 border border-gray-200 focus:outline-none rounded-md w-full;
+  }
+  .navActive {
+    @apply font-normal text-[18px] text-primary p-2;
+  }
+  .navNotActive {
+    @apply font-normal text-[18px] text-[#ffff] p-2 hover:text-primary transition-all duration-300;
+  }
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+  display: block !important;
+}
+
+.mobile-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.react-pdf__Page__canvas {
+  border: 1px solid #333;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+/* Zebra striping */
+tr:nth-of-type(odd) {
+  background: #eee;
+}
+th {
+  background: #333;
+  color: white;
+  font-weight: bold;
+}
+td,
+th {
+  padding: 6px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+@media only screen and (max-width: 767px) {
+  .sc-bYEuID,
+  .sc-lmoLKH,
+  .sc-cxFKTC {
+    display: none;
+  }
+}
