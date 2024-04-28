@@ -93,6 +93,28 @@ export const create__invoice__Request__API = async (postBody) => {
   }
 };
 
+export const invoice_read_single__get__Request__API = async (id) => {
+  let URL = BaseURL + `/read-single/${id}`;
+
+  try {
+    const result = await axios.get(URL, { withCredentials: true });
+    if (result.status === 200) {
+      if (result.data["status"] === "success") {
+        return result.data;
+      } else {
+        ErrorToast("Invoice Get Fail!-1");
+        return false;
+      }
+    } else {
+      ErrorToast("Invoice Get Fail!-2");
+      return false;
+    }
+  } catch (err) {
+    ErrorToast("Invoice Get Fail!");
+    return false;
+  }
+};
+
 export const invoice_all__get__Request__API = async () => {
   let URL = BaseURL + "/read-all";
 
@@ -111,6 +133,29 @@ export const invoice_all__get__Request__API = async () => {
     }
   } catch (err) {
     ErrorToast("Setting Get Fail!");
+    return false;
+  }
+};
+
+export const invoice_single_delete__Request__API = async (id) => {
+  let URL = BaseURL + `/delete_single/${id}`;
+
+  try {
+    const result = await axios.delete(URL, { withCredentials: true });
+    if (result.status === 200) {
+      if (result.data["status"] === "success") {
+        SuccessToast("Delete Success!");
+        return true;
+      } else {
+        ErrorToast("Delete Fail!-1");
+        return false;
+      }
+    } else {
+      ErrorToast("Delete Fail!-2");
+      return false;
+    }
+  } catch (err) {
+    ErrorToast("Delete Fail!");
     return false;
   }
 };

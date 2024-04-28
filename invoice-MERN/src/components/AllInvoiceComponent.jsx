@@ -19,6 +19,8 @@ import {
 import { Link } from "react-router-dom";
 import {
   invoice_all__get__Request__API,
+  invoice_read_single__get__Request__API,
+  invoice_single_delete__Request__API,
   setting__get__Request__API,
 } from "../api/Api";
 import Loading from "./Loading";
@@ -40,7 +42,6 @@ const AllInvoiceComponent = () => {
       if (result.status === "success") {
         let response = result["data"];
         getSetSetting(response);
-        setLoading(false);
       }
     });
   }, []);
@@ -56,177 +57,191 @@ const AllInvoiceComponent = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        const updatedData = invoices?.filter(
-          (item) => item?.invoiceID !== idToDelete
-        );
-        setInvoices(updatedData);
-
-        localStorage.setItem("invoices", JSON.stringify(updatedData));
+        invoice_single_delete__Request__API(idToDelete).then((result) => {
+          setLoading(true);
+          if (result) {
+            invoice_all__get__Request__API().then((result) => {
+              if (result.status === "success") {
+                let response = result["data"];
+                setInvoices(response);
+                setLoading(false);
+              }
+            });
+          }
+        });
       }
     });
   };
 
   const downloadPdf = (idToView) => {
-    let templateData = invoices?.filter((item) => item?.invoiceID === idToView);
-    templateData = templateData[0];
-    if (getSetting?.selectedTemplate === 1) {
-      TemplateOne({
-        templateData,
-        getSetting,
-        save: true,
-      });
-    } else if (getSetting?.selectedTemplate === 2) {
-      TemplateTwo({
-        templateData,
-        getSetting,
-        save: true,
-      });
-    } else if (getSetting?.selectedTemplate === 3) {
-      TemplateThree({
-        templateData,
-        getSetting,
-        save: true,
-      });
-    } else if (getSetting?.selectedTemplate === 4) {
-      TemplateFour({
-        templateData,
-        getSetting,
-        save: true,
-      });
-    } else if (getSetting?.selectedTemplate === 5) {
-      TemplateFive({
-        templateData,
-        getSetting,
-        save: true,
-      });
-    } else if (getSetting?.selectedTemplate === 6) {
-      TemplateSix({
-        templateData,
-        getSetting,
-        save: true,
-      });
-    } else if (getSetting?.selectedTemplate === 7) {
-      TemplateSeven({
-        templateData,
-        getSetting,
-        save: true,
-      });
-    } else if (getSetting?.selectedTemplate === 8) {
-      TemplateEight({
-        templateData,
-        getSetting,
-        save: true,
-      });
-    }
+    invoice_read_single__get__Request__API(idToView).then((result) => {
+      if (result.status === "success") {
+        let templateData = result?.data;
+        if (getSetting?.selectedTemplate === 1) {
+          TemplateOne({
+            templateData,
+            getSetting,
+            save: true,
+          });
+        } else if (getSetting?.selectedTemplate === 2) {
+          TemplateTwo({
+            templateData,
+            getSetting,
+            save: true,
+          });
+        } else if (getSetting?.selectedTemplate === 3) {
+          TemplateThree({
+            templateData,
+            getSetting,
+            save: true,
+          });
+        } else if (getSetting?.selectedTemplate === 4) {
+          TemplateFour({
+            templateData,
+            getSetting,
+            save: true,
+          });
+        } else if (getSetting?.selectedTemplate === 5) {
+          TemplateFive({
+            templateData,
+            getSetting,
+            save: true,
+          });
+        } else if (getSetting?.selectedTemplate === 6) {
+          TemplateSix({
+            templateData,
+            getSetting,
+            save: true,
+          });
+        } else if (getSetting?.selectedTemplate === 7) {
+          TemplateSeven({
+            templateData,
+            getSetting,
+            save: true,
+          });
+        } else if (getSetting?.selectedTemplate === 8) {
+          TemplateEight({
+            templateData,
+            getSetting,
+            save: true,
+          });
+        }
+      }
+    });
   };
 
   let viewPdf = (idToView) => {
-    let templateData = invoices?.filter((item) => item?.invoiceID === idToView);
-    templateData = templateData[0];
-    console.log(templateData);
-    if (getSetting?.selectedTemplate === 1) {
-      TemplateOne({
-        templateData,
-        getSetting,
-        view: true,
-      });
-    } else if (getSetting?.selectedTemplate === 2) {
-      TemplateTwo({
-        templateData,
-        getSetting,
-        view: true,
-      });
-    } else if (getSetting?.selectedTemplate === 3) {
-      TemplateThree({
-        templateData,
-        getSetting,
-        view: true,
-      });
-    } else if (getSetting?.selectedTemplate === 4) {
-      TemplateFour({
-        templateData,
-        getSetting,
-        view: true,
-      });
-    } else if (getSetting?.selectedTemplate === 5) {
-      TemplateFive({
-        templateData,
-        getSetting,
-        view: true,
-      });
-    } else if (getSetting?.selectedTemplate === 6) {
-      TemplateSix({
-        templateData,
-        getSetting,
-        view: true,
-      });
-    } else if (getSetting?.selectedTemplate === 7) {
-      TemplateSeven({
-        templateData,
-        getSetting,
-        view: true,
-      });
-    } else if (getSetting?.selectedTemplate === 8) {
-      TemplateEight({
-        templateData,
-        getSetting,
-        view: true,
-      });
-    }
+    invoice_read_single__get__Request__API(idToView).then((result) => {
+      if (result.status === "success") {
+        let templateData = result?.data;
+        if (getSetting?.selectedTemplate === 1) {
+          TemplateOne({
+            templateData,
+            getSetting,
+            view: true,
+          });
+        } else if (getSetting?.selectedTemplate === 2) {
+          TemplateTwo({
+            templateData,
+            getSetting,
+            view: true,
+          });
+        } else if (getSetting?.selectedTemplate === 3) {
+          TemplateThree({
+            templateData,
+            getSetting,
+            view: true,
+          });
+        } else if (getSetting?.selectedTemplate === 4) {
+          TemplateFour({
+            templateData,
+            getSetting,
+            view: true,
+          });
+        } else if (getSetting?.selectedTemplate === 5) {
+          TemplateFive({
+            templateData,
+            getSetting,
+            view: true,
+          });
+        } else if (getSetting?.selectedTemplate === 6) {
+          TemplateSix({
+            templateData,
+            getSetting,
+            view: true,
+          });
+        } else if (getSetting?.selectedTemplate === 7) {
+          TemplateSeven({
+            templateData,
+            getSetting,
+            view: true,
+          });
+        } else if (getSetting?.selectedTemplate === 8) {
+          TemplateEight({
+            templateData,
+            getSetting,
+            view: true,
+          });
+        }
+      }
+    });
   };
 
   let printPdf = (idToView) => {
-    let templateData = invoices?.filter((item) => item?.invoiceID === idToView);
-    templateData = templateData[0];
-    if (getSetting?.selectedTemplate === 1) {
-      TemplateOne({
-        templateData,
-        getSetting,
-        print: true,
-      });
-    } else if (getSetting?.selectedTemplate === 2) {
-      TemplateTwo({
-        templateData,
-        getSetting,
-        print: true,
-      });
-    } else if (getSetting?.selectedTemplate === 3) {
-      TemplateThree({
-        templateData,
-        getSetting,
-        save: true,
-      });
-    } else if (getSetting?.selectedTemplate === 4) {
-      TemplateFour({
-        templateData,
-        getSetting,
-        save: true,
-      });
-    } else if (getSetting?.selectedTemplate === 5) {
-      TemplateFive({
-        templateData,
-        getSetting,
-        save: true,
-      });
-    } else if (getSetting?.selectedTemplate === 6) {
-      TemplateSix({
-        templateData,
-        getSetting,
-        save: true,
-      });
-    } else if (getSetting?.selectedTemplate === 7) {
-      TemplateSeven({
-        templateData,
-        getSetting,
-        save: true,
-      });
-    } else if (getSetting?.selectedTemplate === 8) {
-      TemplateEight({
-        templateData,
-        getSetting,
-        save: true,
-      });
-    }
+    invoice_read_single__get__Request__API(idToView).then((result) => {
+      if (result.status === "success") {
+        let templateData = result?.data;
+        if (getSetting?.selectedTemplate === 1) {
+          TemplateOne({
+            templateData,
+            getSetting,
+            print: true,
+          });
+        } else if (getSetting?.selectedTemplate === 2) {
+          TemplateTwo({
+            templateData,
+            getSetting,
+            print: true,
+          });
+        } else if (getSetting?.selectedTemplate === 3) {
+          TemplateThree({
+            templateData,
+            getSetting,
+            save: true,
+          });
+        } else if (getSetting?.selectedTemplate === 4) {
+          TemplateFour({
+            templateData,
+            getSetting,
+            save: true,
+          });
+        } else if (getSetting?.selectedTemplate === 5) {
+          TemplateFive({
+            templateData,
+            getSetting,
+            save: true,
+          });
+        } else if (getSetting?.selectedTemplate === 6) {
+          TemplateSix({
+            templateData,
+            getSetting,
+            save: true,
+          });
+        } else if (getSetting?.selectedTemplate === 7) {
+          TemplateSeven({
+            templateData,
+            getSetting,
+            save: true,
+          });
+        } else if (getSetting?.selectedTemplate === 8) {
+          TemplateEight({
+            templateData,
+            getSetting,
+            save: true,
+          });
+        }
+      }
+    });
   };
 
   const columns = [
@@ -240,28 +255,24 @@ const AllInvoiceComponent = () => {
       selector: (row) => row?.customerName,
 
       wrap: true,
-      width: "200px",
+      width: "250px",
     },
 
     {
-      name: "Date",
+      name: "Create date",
 
       selector: (row) => row?.startDate?.slice(0, 10),
-      width: "100px",
+      width: "150px",
       sortable: true,
     },
     {
-      name: "Delivery Date",
+      name: "Delivery date",
 
       selector: (row) => row?.deliveryDate?.slice(0, 10),
-      width: "120px",
+      width: "150px",
       sortable: true,
     },
-    {
-      name: "Payment Method",
-      selector: (row) => row?.paymentMethod,
-      width: "140px",
-    },
+
     {
       name: "Paid",
       selector: (row) => (
@@ -271,7 +282,7 @@ const AllInvoiceComponent = () => {
           </span>
         </div>
       ),
-      width: "120px",
+      width: "150px",
     },
     {
       name: "Due",
@@ -282,7 +293,7 @@ const AllInvoiceComponent = () => {
           </span>
         </div>
       ),
-      width: "100px",
+      width: "150px",
     },
 
     {
@@ -293,23 +304,23 @@ const AllInvoiceComponent = () => {
         <div className="flex gap-4 ">
           <FaDownload
             className="p-1 cursor-pointer text-[25px] text-gray-700"
-            onClick={() => downloadPdf(row?.invoiceID)}
+            onClick={() => downloadPdf(row?._id)}
           />
-          <Link to={`/update?id=${row?.invoiceID}`}>
+          <Link to={`/update?id=${row?._id}`}>
             <FaPenToSquare className="p-1 cursor-pointer text-[25px] text-gray-700" />
           </Link>
 
           <FaExpand
             className="p-1 cursor-pointer text-[25px] text-gray-700"
-            onClick={() => viewPdf(row?.invoiceID)}
+            onClick={() => viewPdf(row?._id)}
           />
           <FaPrint
             className="p-1 cursor-pointer text-[25px] text-gray-700"
-            onClick={() => printPdf(row?.invoiceID)}
+            onClick={() => printPdf(row?._id)}
           />
           <FaTrashCan
             className="p-1 cursor-pointer text-[25px] text-gray-700"
-            onClick={() => deleteItem(row?.invoiceID)}
+            onClick={() => deleteItem(row?._id)}
           />
         </div>
       ),

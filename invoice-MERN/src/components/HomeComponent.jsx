@@ -6,13 +6,7 @@ import {
   FaDownload,
 } from "react-icons/fa6";
 import DatePicker from "react-datepicker";
-import {
-  ErrorToast,
-  IsEmpty,
-  SuccessToast,
-  fixNumber,
-  toNumber,
-} from "../helper/helper";
+import { ErrorToast, IsEmpty, fixNumber, toNumber } from "../helper/helper";
 import { Option, Select, Tooltip } from "@material-tailwind/react";
 import TemplateOne from "../pdf-templates/TemplateOne";
 import TemplateTwo from "../pdf-templates/TemplateTwo";
@@ -22,17 +16,21 @@ import TemplateFive from "../pdf-templates/TemplateFive";
 import TemplateSix from "../pdf-templates/TemplateSix";
 import TemplateSeven from "../pdf-templates/TemplateSeven";
 import TemplateEight from "../pdf-templates/TemplateEight";
-import { create__invoice__Request__API } from "../api/Api";
+import {
+  create__invoice__Request__API,
+  setting__get__Request__API,
+} from "../api/Api";
+import Loading from "./Loading";
 
 const HomeComponent = () => {
-  let getSetting = JSON.parse(localStorage.getItem("setting"));
-  let getInvoices = JSON.parse(localStorage.getItem("invoices"));
+  let [loading, setLoading] = useState(false);
+  let [getSetting, getSetSetting] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   const [deliveryDate, setDeliveryDate] = useState(new Date());
   const [invoiceID, setInvoiceID] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [address, setAddress] = useState("");
-  const [invoiceWriter, setInvoiceWriter] = useState(getSetting?.invoiceWriter);
+  const [invoiceWriter, setInvoiceWriter] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [note, setNote] = useState("");
@@ -42,11 +40,20 @@ const HomeComponent = () => {
   const [branchName, setBranchName] = useState("");
   const [invoiceItems, setInvoiceItems] = useState([]);
   const [payment, setPayment] = useState(0);
-  const [discount, setDiscount] = useState(getSetting?.discount);
-  const [shipping, setShipping] = useState(getSetting?.shipping);
+  const [discount, setDiscount] = useState(0);
+  const [shipping, setShipping] = useState(0);
 
   useEffect(() => {
     generateRandomNumber();
+    setting__get__Request__API().then((result) => {
+      if (result.status === "success") {
+        let response = result["data"];
+        getSetSetting(response);
+        setDiscount(response?.discount);
+        setShipping(response?.shipping);
+        setInvoiceWriter(response?.invoiceWriter);
+      }
+    });
   }, []);
 
   const handleAddItem = () => {
@@ -128,7 +135,8 @@ const HomeComponent = () => {
     branchName,
     currency,
   };
-  let saveLocalStorage = () => {
+  let saveStorage = () => {
+    setLoading(true);
     create__invoice__Request__API(templateData).then((result) => {
       if (result) {
         // After save action
@@ -144,6 +152,7 @@ const HomeComponent = () => {
         setBranchName("");
         setInvoiceItems([]);
         setPayment(0);
+        setLoading(false);
       }
     });
   };
@@ -158,7 +167,7 @@ const HomeComponent = () => {
     } else if (IsEmpty(invoiceWriter)) {
       ErrorToast("Invoice Writer is empty");
     } else {
-      saveLocalStorage();
+      saveStorage();
       // navigate("/all-invoice");
     }
   };
@@ -178,56 +187,56 @@ const HomeComponent = () => {
         getSetting,
         save: true,
       });
-      saveLocalStorage();
+      saveStorage();
     } else if (getSetting?.selectedTemplate === 2) {
       TemplateTwo({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage();
+      saveStorage();
     } else if (getSetting?.selectedTemplate === 3) {
       TemplateThree({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage();
+      saveStorage();
     } else if (getSetting?.selectedTemplate === 4) {
       TemplateFour({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage();
+      saveStorage();
     } else if (getSetting?.selectedTemplate === 5) {
       TemplateFive({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage();
+      saveStorage();
     } else if (getSetting?.selectedTemplate === 6) {
       TemplateSix({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage();
+      saveStorage();
     } else if (getSetting?.selectedTemplate === 7) {
       TemplateSeven({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage();
+      saveStorage();
     } else if (getSetting?.selectedTemplate === 8) {
       TemplateEight({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage();
+      saveStorage();
     }
   };
   let viewPdf = async () => {
@@ -296,61 +305,62 @@ const HomeComponent = () => {
         getSetting,
         print: true,
       });
-      saveLocalStorage();
+      saveStorage();
     } else if (getSetting?.selectedTemplate === 2) {
       TemplateTwo({
         templateData,
         getSetting,
         print: true,
       });
-      saveLocalStorage();
+      saveStorage();
     } else if (getSetting?.selectedTemplate === 3) {
       TemplateThree({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage();
+      saveStorage();
     } else if (getSetting?.selectedTemplate === 4) {
       TemplateFour({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage();
+      saveStorage();
     } else if (getSetting?.selectedTemplate === 5) {
       TemplateFive({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage();
+      saveStorage();
     } else if (getSetting?.selectedTemplate === 6) {
       TemplateSix({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage();
+      saveStorage();
     } else if (getSetting?.selectedTemplate === 7) {
       TemplateSeven({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage();
+      saveStorage();
     } else if (getSetting?.selectedTemplate === 8) {
       TemplateEight({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage();
+      saveStorage();
     }
   };
 
   return (
     <>
+      {loading === true && <Loading />}
       <section>
         <div className="container py-[60px] px-[10px]">
           <div className="grid grid-cols-12 gap-[20px]">

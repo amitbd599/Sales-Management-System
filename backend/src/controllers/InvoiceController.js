@@ -16,7 +16,12 @@ exports.read_all = async (req, res) => {
   try {
     let projectionStage = {
       $project: {
-        _id: 0,
+        invoiceID: 1,
+        customerName: 1,
+        deliveryDate: 1,
+        startDate: 1,
+        due: 1,
+        payment: 1,
       },
     };
     let data = await InvoiceModel.aggregate([projectionStage]);
