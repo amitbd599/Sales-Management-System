@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FaRegFilePdf,
   FaPrint,
@@ -6,13 +7,7 @@ import {
   FaDownload,
 } from "react-icons/fa6";
 import DatePicker from "react-datepicker";
-import {
-  ErrorToast,
-  IsEmpty,
-  SuccessToast,
-  fixNumber,
-  toNumber,
-} from "../helper/helper.js";
+import { ErrorToast, IsEmpty, fixNumber, toNumber } from "../helper/helper.js";
 import { Option, Select, Tooltip } from "@material-tailwind/react";
 import { useLocation } from "react-router-dom";
 import TemplateOne from "../pdf-templates/TemplateOne";
@@ -23,11 +18,16 @@ import TemplateFive from "../pdf-templates/TemplateFive";
 import TemplateSix from "../pdf-templates/TemplateSix";
 import TemplateSeven from "../pdf-templates/TemplateSeven";
 import TemplateEight from "../pdf-templates/TemplateEight";
+import {
+  invoice_read_single__get__Request__API,
+  invoice_update__Request__API,
+  setting__get__Request__API,
+} from "../api/Api.js";
 
 let UpdateComponent = () => {
   let location = useLocation();
-  let getSetting = JSON.parse(localStorage.getItem("setting"));
-  let getInvoices = JSON.parse(localStorage.getItem("invoices"));
+  let navigate = useNavigate();
+  let [getSetting, getSetSetting] = useState([]);
   let [startDate, setStartDate] = useState(new Date());
   let [deliveryDate, setDeliveryDate] = useState(new Date());
   let [invoiceID, setInvoiceID] = useState("");
@@ -48,34 +48,41 @@ let UpdateComponent = () => {
   let [taxationAmount, setTaxationAmount] = useState(0);
   let [discount, setDiscount] = useState(0);
   let [shipping, setShipping] = useState(0);
-
+  let searchParams = new URLSearchParams(location.search);
+  let id = searchParams.get("id");
   useEffect(() => {
-    // Parse the query parameters from the location object
-    let searchParams = new URLSearchParams(location.search);
-    let id = searchParams.get("id");
-    let filterData = getInvoices.filter((item) => item.invoiceID === id);
-    filterData = filterData[0];
-    // Set update data
-    setStartDate(filterData?.startDate);
-    setDeliveryDate(filterData?.deliveryDate);
-    setInvoiceID(filterData?.invoiceID);
-    setCustomerName(filterData?.customerName);
-    setAddress(filterData?.address);
-    setInvoiceWriter(filterData?.invoiceWriter);
-    setPhone(filterData?.phone);
-    setEmail(filterData?.email);
-    setNote(filterData?.note);
-    setPaymentMethod(filterData?.paymentMethod);
-    setAccountName(filterData?.accountName);
-    setAccountNumber(filterData?.accountNumber);
-    setBranchName(filterData?.branchName);
-    setInvoiceItems(filterData?.invoiceItems);
-    setPayment(filterData?.payment);
-    setTaxation(filterData?.taxation);
-    setTaxationName(filterData?.taxationName);
-    setTaxationAmount(filterData?.taxationAmount);
-    setDiscount(filterData?.discount);
-    setShipping(filterData?.shipping);
+    setting__get__Request__API().then((result) => {
+      if (result.status === "success") {
+        let response = result["data"];
+        getSetSetting(response);
+      }
+    });
+
+    invoice_read_single__get__Request__API(id).then((result) => {
+      if (result.status === "success") {
+        let filterData = result?.data;
+        setStartDate(filterData?.startDate);
+        setDeliveryDate(filterData?.deliveryDate);
+        setInvoiceID(filterData?.invoiceID);
+        setCustomerName(filterData?.customerName);
+        setAddress(filterData?.address);
+        setInvoiceWriter(filterData?.invoiceWriter);
+        setPhone(filterData?.phone);
+        setEmail(filterData?.email);
+        setNote(filterData?.note);
+        setPaymentMethod(filterData?.paymentMethod);
+        setAccountName(filterData?.accountName);
+        setAccountNumber(filterData?.accountNumber);
+        setBranchName(filterData?.branchName);
+        setInvoiceItems(filterData?.invoiceItems);
+        setPayment(filterData?.payment);
+        setTaxation(filterData?.taxation);
+        setTaxationName(filterData?.taxationName);
+        setTaxationAmount(filterData?.taxationAmount);
+        setDiscount(filterData?.discount);
+        setShipping(filterData?.shipping);
+      }
+    });
   }, []);
 
   let handleAddItem = () => {
@@ -151,13 +158,12 @@ let UpdateComponent = () => {
     currency,
   };
 
-  let saveLocalStorage = (id) => {
-    let prevValue = getInvoices.filter((item) => item.invoiceID !== id);
-    localStorage.setItem(
-      "invoices",
-      JSON.stringify([...prevValue, templateData])
-    );
-    SuccessToast("Update success!");
+  let saveLocalStorage = () => {
+    invoice_update__Request__API(id, templateData).then((result) => {
+      if (result) {
+        navigate("/all-invoice");
+      }
+    });
   };
 
   let saveInvoice = (id) => {
@@ -750,7 +756,7 @@ let UpdateComponent = () => {
                 <div>
                   <div className="w-full mt-[30px]">
                     <button
-                      onClick={() => saveInvoice(invoiceID)}
+                      onClick={() => saveInvoice()}
                       className="px-[20px] w-full py-[8px] rounded-md bg-gray-900 text-white"
                     >
                       Update Invoice
@@ -767,7 +773,7 @@ let UpdateComponent = () => {
                       }}
                     >
                       <button
-                        onClick={() => downloadPdf(invoiceID)}
+                        onClick={() => downloadPdf()}
                         className="px-[20px] flex justify-center items-center gap-3 py-[8px]"
                       >
                         <FaDownload className="text-[20px] " />
@@ -797,7 +803,7 @@ let UpdateComponent = () => {
                       }}
                     >
                       <button
-                        onClick={() => printPdf(invoiceID)}
+                        onClick={() => printPdf()}
                         className="px-[20px] flex justify-center items-center gap-3 py-[8px]"
                       >
                         <FaPrint className="text-[20px] " />

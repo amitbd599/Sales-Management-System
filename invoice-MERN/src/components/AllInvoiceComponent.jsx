@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import TemplateOne from "../pdf-templates/TemplateOne";
 import TemplateTwo from "../pdf-templates/TemplateTwo";
 import TemplateThree from "../pdf-templates/TemplateThree";
@@ -25,7 +27,7 @@ import {
 } from "../api/Api";
 import Loading from "./Loading";
 const AllInvoiceComponent = () => {
-  let [loading, setLoading] = useState(false);
+  let [loading, setLoading] = useState(true);
   let [invoices, setInvoices] = useState([]);
   let [getSetting, getSetSetting] = useState([]);
   useEffect(() => {
@@ -247,8 +249,16 @@ const AllInvoiceComponent = () => {
   const columns = [
     {
       name: "Invoice ID",
-      selector: (row) => row?.invoiceID,
-      width: "150px",
+      // selector: (row) => row?.invoiceID,
+      selector: (row) => (
+        <div className="flex gap-[10px] justify-center items-center">
+          <span
+            className={`w-[11px] h-[11px] ${parseInt(row?.due) > 0 ? "bg-red-500" : "bg-green-500"}  block`}
+          ></span>
+          <span>{row?.invoiceID}</span>
+        </div>
+      ),
+      width: "200px",
     },
     {
       name: "Customer Name",
@@ -380,16 +390,28 @@ const AllInvoiceComponent = () => {
         columns={columns}
         data={filteredItems?.reverse()}
         pagination
-        paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
+        paginationResetDefaultPage={resetPaginationToggle}
         subHeader
         subHeaderComponent={subHeaderComponentMemo}
         persistTableHead
+        progressPending={loading}
+        progressComponent={
+          <SkeletonTheme
+            baseColor="#ebebeb"
+            highlightColor="#f5f5f5"
+            className="w-100vw"
+          >
+            <div className="w-full block mt-[30px]">
+              <Skeleton count={20} />
+            </div>
+          </SkeletonTheme>
+        }
       />
     );
   };
   return (
     <>
-      {loading === true && <Loading />}
+      {/* {loading === true && <Loading />} */}
       <section className="container mx-auto py-[60px]">
         <div className="bg-white shadow-lg p-[20px] rounded-lg">
           <div className="rounded-xl bg-white md:m-[30px]">

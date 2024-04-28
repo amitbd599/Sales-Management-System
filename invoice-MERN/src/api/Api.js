@@ -159,3 +159,29 @@ export const invoice_single_delete__Request__API = async (id) => {
     return false;
   }
 };
+
+export const invoice_update__Request__API = async (id, postBody) => {
+  let URL = BaseURL + `/update_single/${id}`;
+
+  try {
+    const result = await axios.post(URL, postBody, { withCredentials: true });
+    if (result.status === 200) {
+      if (
+        result.data["status"] === "success" &&
+        result.data?.data["modifiedCount"] === 1
+      ) {
+        SuccessToast("Update Success!");
+        return true;
+      } else {
+        ErrorToast("Update Fail!-1");
+        return false;
+      }
+    } else {
+      ErrorToast("Update Fail!-2");
+      return false;
+    }
+  } catch (err) {
+    ErrorToast("Update Fail!");
+    return false;
+  }
+};
