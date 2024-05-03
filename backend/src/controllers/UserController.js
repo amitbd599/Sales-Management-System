@@ -48,20 +48,10 @@ exports.login = async (req, res) => {
 
 exports.EmailVerifyData = async (req, res) => {
   try {
-    let reqBody = req.body;
+    res.status(200).json({ status: "success" });
 
-    let data = await UserModel.aggregate([
-      { $match: reqBody },
-      { $project: { email: 1, password: 1 } },
-    ]);
-
-    if (data.length > 0) {
-      res.status(200).json({ status: "success", data: data[0] });
-    } else {
-      res.status(200).json({ status: "unauthorized", data: data });
-    }
   } catch (e) {
-    res.status(200).json({ status: "error", error: e });
+    res.status(200).json({ status: "error", error: e.toString() });
   }
 };
 
@@ -141,15 +131,15 @@ exports.ResetPassword = async (req, res) => {
   let email = req.params.email;
   let otp = req.params.otp;
   otp = parseInt(otp);
-  let NewPass = req.body["password"];
-
+  let reqBody = req.body;
+  reqBody.password = md5(req.body.password);
   try {
     let OTPUsedCount = await OTPModel.aggregate([
       { $match: { email, otp, status: 1 } },
       { $count: "total" },
     ]);
     if (OTPUsedCount.length > 0) {
-      let PassUpdate = await UserModel.updateOne({ password: NewPass });
+      let PassUpdate = await UserModel.updateOne(reqBody);
       res.status(200).json({ status: "success", data: PassUpdate });
     } else {
       res.status(200).json({ status: "error", data: "Something is Wrong!" });

@@ -3,6 +3,25 @@ import { ErrorToast, SuccessToast } from "../helper/helper";
 
 const BaseURL = "http://localhost:5000/api/v1";
 
+export const verify__Request__API = async () => {
+  let URL = BaseURL + "/verify";
+
+  try {
+    const result = await axios.get(URL, { withCredentials: true });
+    if (result.status === 200) {
+      if (result.data["status"] === "success") {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } catch (err) {
+    ErrorToast("Token expired! Please sign in again.");
+    return false;
+  }
+};
 export const login__Request__API = async (postBody) => {
   let URL = BaseURL + "/login";
 
@@ -12,12 +31,12 @@ export const login__Request__API = async (postBody) => {
       if (result.data["status"] === "success") {
         SuccessToast("Login Success!");
         return true;
-      } else {
-        ErrorToast("Login Fail!-1");
+      } else if (result.data["status"] === "unauthorized") {
+        ErrorToast("Email or password not match!");
         return false;
       }
     } else {
-      ErrorToast("Login Fail!-2");
+      console.log("Login Fail!-2");
       return false;
     }
   } catch (err) {
@@ -36,11 +55,11 @@ export const forgot_password__Request__API = async (email) => {
         SuccessToast("OTP send success!");
         return true;
       } else {
-        ErrorToast("OTP send Fail!-1");
+        console.log("OTP send Fail!-1");
         return false;
       }
     } else {
-      ErrorToast("OTP send Fail!-2");
+      console.log("OTP send Fail!-2");
       return false;
     }
   } catch (err) {
@@ -58,11 +77,11 @@ export const otp__Request__API = async (email, otp) => {
         SuccessToast("OTP send success!");
         return true;
       } else {
-        ErrorToast("OTP send Fail!-1");
+        console.log("OTP send Fail!-1");
         return false;
       }
     } else {
-      ErrorToast("OTP send Fail!-2");
+      console.log("OTP send Fail!-2");
       return false;
     }
   } catch (err) {
@@ -81,11 +100,11 @@ export const reset_password__Request__API = async (email, otp, password) => {
         SuccessToast("Password change success!");
         return true;
       } else {
-        ErrorToast("Password change Fail!-1");
+        console.log("Password change Fail!-1");
         return false;
       }
     } else {
-      ErrorToast("Password change Fail!-2");
+      console.log("Password change Fail!-2");
       return false;
     }
   } catch (err) {
@@ -104,15 +123,15 @@ export const setting__update__Request__API = async (postBody) => {
         SuccessToast("Setting Update Success!");
         return true;
       } else {
-        ErrorToast("Setting Update Fail!-1");
+        console.log("Setting Update Fail!-1");
         return false;
       }
     } else {
-      ErrorToast("Setting Update Fail!-2");
+      console.log("Setting Update Fail!-2");
       return false;
     }
   } catch (err) {
-    ErrorToast("Setting Update Fail!");
+    console.log("Setting Update Fail!");
     return false;
   }
 };
@@ -125,15 +144,15 @@ export const setting__get__Request__API = async () => {
       if (result.data["status"] === "success") {
         return result.data;
       } else {
-        ErrorToast("Setting Get Fail!-1");
+        console.log("Setting Get Fail!-1");
         return false;
       }
     } else {
-      ErrorToast("Setting Get Fail!-2");
+      console.log("Setting Get Fail!-2");
       return false;
     }
   } catch (err) {
-    ErrorToast("Setting Get Fail!");
+    console.log("Setting Get Fail!");
     return false;
   }
 };
@@ -148,15 +167,15 @@ export const create__invoice__Request__API = async (postBody) => {
         SuccessToast("Invoice Create Success!");
         return true;
       } else {
-        ErrorToast("Invoice Create Fail!-1");
+        console.log("Invoice Create Fail!-1");
         return false;
       }
     } else {
-      ErrorToast("Invoice Create Fail!-2");
+      console.log("Invoice Create Fail!-2");
       return false;
     }
   } catch (err) {
-    ErrorToast("Invoice Create Fail!");
+    console.log("Invoice Create Fail!");
     return false;
   }
 };
@@ -170,15 +189,15 @@ export const invoice_read_single__get__Request__API = async (id) => {
       if (result.data["status"] === "success") {
         return result.data;
       } else {
-        ErrorToast("Invoice Get Fail!-1");
+        console.log("Invoice Get Fail!-1");
         return false;
       }
     } else {
-      ErrorToast("Invoice Get Fail!-2");
+      console.log("Invoice Get Fail!-2");
       return false;
     }
   } catch (err) {
-    ErrorToast("Invoice Get Fail!");
+    console.log("Invoice Get Fail!");
     return false;
   }
 };
@@ -192,15 +211,15 @@ export const invoice_all__get__Request__API = async () => {
       if (result.data["status"] === "success") {
         return result.data;
       } else {
-        ErrorToast("Invoice Get Fail!-1");
+        console.log("Invoice Get Fail!-1");
         return false;
       }
     } else {
-      ErrorToast("Setting Get Fail!-2");
+      console.log("Setting Get Fail!-2");
       return false;
     }
   } catch (err) {
-    ErrorToast("Setting Get Fail!");
+    console.log("Setting Get Fail!");
     return false;
   }
 };
@@ -219,11 +238,11 @@ export const invoice_single_delete__Request__API = async (id) => {
         return false;
       }
     } else {
-      ErrorToast("Delete Fail!-2");
+      console.log("Delete Fail!-2");
       return false;
     }
   } catch (err) {
-    ErrorToast("Delete Fail!");
+    console.log("Delete Fail!");
     return false;
   }
 };

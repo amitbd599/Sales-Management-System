@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import { ErrorToast, IsEmpty } from "../helper/helper";
 import { reset_password__Request__API } from "../api/Api";
 import Loading from "./Loading";
@@ -22,8 +22,11 @@ const ChangePasswordComponent = () => {
     } else if (IsEmpty(otp)) {
       ErrorToast("Params otp not found!");
       setLoading(false);
-    } else if (IsEmpty(password || confPassword)) {
+    } else if (IsEmpty(password)) {
       ErrorToast("Password required!");
+      setLoading(false);
+    } else if (IsEmpty(confPassword)) {
+      ErrorToast("Confirm password required!");
       setLoading(false);
     } else if (password !== confPassword) {
       ErrorToast("Password not match!");

@@ -3,14 +3,15 @@ import { ErrorToast, IsEmpty } from "../helper/helper";
 import { login__Request__API } from "../api/Api";
 import Loading from "./Loading";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 const LoginComponent = () => {
+  const navigate = useNavigate();
   let [loading, setLoading] = useState(false);
   let emailRef,
     passwordRef = useRef();
 
   const loginRequestAPI__Fun = () => {
+
     setLoading(true);
     let email = emailRef.value;
     let password = passwordRef.value;
@@ -24,7 +25,7 @@ const LoginComponent = () => {
       login__Request__API({ email, password }).then((result) => {
         setLoading(false);
         if (result === true) {
-          window.location.href = "/";
+          navigate("/");
         }
       });
     }
