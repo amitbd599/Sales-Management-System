@@ -26,6 +26,74 @@ export const login__Request__API = async (postBody) => {
   }
 };
 
+export const forgot_password__Request__API = async (email) => {
+  let URL = BaseURL + `/forgot-password/${email}`;
+
+  try {
+    const result = await axios.post(URL, { withCredentials: true });
+    if (result.status === 200) {
+      if (result.data["status"] === "success") {
+        SuccessToast("OTP send success!");
+        return true;
+      } else {
+        ErrorToast("OTP send Fail!-1");
+        return false;
+      }
+    } else {
+      ErrorToast("OTP send Fail!-2");
+      return false;
+    }
+  } catch (err) {
+    ErrorToast("OTP send Fail!");
+    return false;
+  }
+};
+export const otp__Request__API = async (email, otp) => {
+  let URL = BaseURL + `/otp-verify/${email}/${otp}`;
+
+  try {
+    const result = await axios.post(URL, { withCredentials: true });
+    if (result.status === 200) {
+      if (result.data["status"] === "success") {
+        SuccessToast("OTP send success!");
+        return true;
+      } else {
+        ErrorToast("OTP send Fail!-1");
+        return false;
+      }
+    } else {
+      ErrorToast("OTP send Fail!-2");
+      return false;
+    }
+  } catch (err) {
+    ErrorToast("OTP send Fail!");
+    return false;
+  }
+};
+
+export const reset_password__Request__API = async (email, otp, password) => {
+  let URL = BaseURL + `/reset-password/${email}/${otp}`;
+
+  try {
+    const result = await axios.post(URL, { password }, { withCredentials: true });
+    if (result.status === 200) {
+      if (result.data["status"] === "success") {
+        SuccessToast("Password change success!");
+        return true;
+      } else {
+        ErrorToast("Password change Fail!-1");
+        return false;
+      }
+    } else {
+      ErrorToast("Password change Fail!-2");
+      return false;
+    }
+  } catch (err) {
+    ErrorToast("Password change Fail!");
+    return false;
+  }
+};
+
 export const setting__update__Request__API = async (postBody) => {
   let URL = BaseURL + "/setting";
 

@@ -8,6 +8,7 @@ function TemplateOne({ getSetting, templateData, print, view, save }) {
     "mm",
     getSetting?.pageSize
   );
+
   pdf.setFont("inter", "normal");
   pdf.setTextColor(0, 0, 0);
   // Your QR code content

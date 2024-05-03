@@ -158,7 +158,7 @@ let UpdateComponent = () => {
     currency,
   };
 
-  let saveLocalStorage = () => {
+  let saveStorage = () => {
     invoice_update__Request__API(id, templateData).then((result) => {
       if (result) {
         navigate("/all-invoice");
@@ -176,7 +176,7 @@ let UpdateComponent = () => {
     } else if (IsEmpty(invoiceWriter)) {
       ErrorToast("Invoice Writer is empty");
     } else {
-      saveLocalStorage(id);
+      saveStorage(id);
     }
   };
   let downloadPdf = async (id) => {
@@ -194,56 +194,56 @@ let UpdateComponent = () => {
         getSetting,
         save: true,
       });
-      saveLocalStorage(id);
+      saveStorage(id);
     } else if (getSetting?.selectedTemplate === 2) {
       TemplateTwo({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage(id);
+      saveStorage(id);
     } else if (getSetting?.selectedTemplate === 3) {
       TemplateThree({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage(id);
+      saveStorage(id);
     } else if (getSetting?.selectedTemplate === 4) {
       TemplateFour({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage(id);
+      saveStorage(id);
     } else if (getSetting?.selectedTemplate === 5) {
       TemplateFive({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage(id);
+      saveStorage(id);
     } else if (getSetting?.selectedTemplate === 6) {
       TemplateSix({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage(id);
+      saveStorage(id);
     } else if (getSetting?.selectedTemplate === 7) {
       TemplateSeven({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage(id);
+      saveStorage(id);
     } else if (getSetting?.selectedTemplate === 8) {
       TemplateEight({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage(id);
+      saveStorage(id);
     }
   };
   let viewPdf = async () => {
@@ -312,56 +312,56 @@ let UpdateComponent = () => {
         getSetting,
         print: true,
       });
-      saveLocalStorage(id);
+      saveStorage(id);
     } else if (getSetting?.selectedTemplate === 2) {
       TemplateTwo({
         templateData,
         getSetting,
         print: true,
       });
-      saveLocalStorage(id);
+      saveStorage(id);
     } else if (getSetting?.selectedTemplate === 3) {
       TemplateThree({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage(id);
+      saveStorage(id);
     } else if (getSetting?.selectedTemplate === 4) {
       TemplateFour({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage(id);
+      saveStorage(id);
     } else if (getSetting?.selectedTemplate === 5) {
       TemplateFive({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage(id);
+      saveStorage(id);
     } else if (getSetting?.selectedTemplate === 6) {
       TemplateSix({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage(id);
+      saveStorage(id);
     } else if (getSetting?.selectedTemplate === 7) {
       TemplateSeven({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage(id);
+      saveStorage(id);
     } else if (getSetting?.selectedTemplate === 8) {
       TemplateEight({
         templateData,
         getSetting,
         save: true,
       });
-      saveLocalStorage(id);
+      saveStorage(id);
     }
   };
 

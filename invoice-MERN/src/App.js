@@ -21,8 +21,8 @@ function App() {
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/registration" element={<Registration />} />
         <Route exact path="/forgot-password" element={<ForgotPassword />} />
-        <Route exact path="/otp-code" element={<OTPCode />} />
-        <Route exact path="/change-password" element={<ChangePassword />} />
+        <Route exact path="/otp-code/:email" element={<OTPCode />} />
+        <Route exact path="/change-password/:email/:otp" element={<ChangePassword />} />
         <Route exact path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>

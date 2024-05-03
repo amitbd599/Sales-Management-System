@@ -8,6 +8,9 @@ const InvoiceController = require("../controllers/InvoiceController");
 //! User
 router.post("/register", UserController.register);
 router.post("/login", UserController.login);
+router.post("/forgot-password/:email", UserController.RecoverVerifyEmail);
+router.post("/otp-verify/:email/:otp", UserController.RecoverVerifyOTP);
+router.post("/reset-password/:email/:otp", UserController.ResetPassword);
 
 //! Settings
 router.post("/setting", AuthVerification, SettingController.setting);
