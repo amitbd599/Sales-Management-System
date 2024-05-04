@@ -289,26 +289,25 @@ const AllInvoiceComponent = () => {
 
     {
       name: "Paid",
-      selector: (row) => (
-        <div>
-          <span className="bg-[#ecfdf5] text-[#10b981] px-[10px] py-[6px] rounded-full">
-            {row?.payment}
-          </span>
-        </div>
-      ),
+      selector: (row) => row?.payment,
 
       width: "10%",
+      sortable: true,
+      style: {
+        fontSize: '14px',
+        color: '#10b981',
+      }
+
     },
     {
       name: "Due",
-      selector: (row) => (
-        <div>
-          <span className="bg-[#fff1f2] text-[#f43f5e] px-[10px] py-[6px] rounded-full">
-            {row?.due}
-          </span>
-        </div>
-      ),
 
+      selector: (row) => row?.due,
+      sortable: true,
+      style: {
+        fontSize: '14px',
+        color: '#f43f5e',
+      },
       width: "10%",
     },
 

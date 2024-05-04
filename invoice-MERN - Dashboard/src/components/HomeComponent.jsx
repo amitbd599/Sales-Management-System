@@ -536,7 +536,7 @@ const HomeComponent = () => {
                         <h3 className="font-semibold">Item table</h3>
                       </div>
                       <div className="p-3">
-                        <div className="overflow-x-auto">
+                        <div className="overflow-x-auto item-table">
                           <table className=" w-full">
                             <thead className="text-xs font-semibold uppercase rounded-md text-gray-800 bg-gray-100">
                               <tr>

@@ -12,12 +12,14 @@ import OTPCode from "./pages/OTPCode";
 import ChangePassword from "./pages/ChangePassword";
 import PrivateRoute from "./components/PrivateRoute";
 import Profile from "./pages/Profile";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
 
   return (
     <BrowserRouter>
       <Routes>
+        <Route exact path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
         <Route exact path="/create-invoice" element={<PrivateRoute><Home /></PrivateRoute>} />
         <Route exact path="/all-invoice" element={<PrivateRoute><AllInvoice /></PrivateRoute>} />
         <Route exact path="/setting" element={<PrivateRoute><Setting /></PrivateRoute>} />

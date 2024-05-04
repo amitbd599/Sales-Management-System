@@ -51,22 +51,21 @@
 .react-pdf__Page__canvas {
   border: 1px solid #333;
 }
-
-table {
+.item-table table {
   width: 100%;
   border-collapse: collapse;
 }
 /* Zebra striping */
-tr:nth-of-type(odd) {
+.item-table tr:nth-of-type(odd) {
   background: #eee;
 }
-th {
+.item-table th {
   background: #845adf;
   color: white;
   font-weight: bold;
 }
-td,
-th {
+.item-table td,
+.item-table th {
   padding: 6px;
   border: 1px solid #ccc;
   text-align: left;
