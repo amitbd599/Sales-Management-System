@@ -392,6 +392,7 @@ const HomeComponent = () => {
 
                       <span className="input_box">
                         <DatePicker
+                          disabled
                           selected={startDate}
                           onChange={(date) => setStartDate(date)}
                           className="focus-visible:outline-none w-full block"

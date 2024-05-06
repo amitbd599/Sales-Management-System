@@ -36,5 +36,6 @@ router.delete(
   InvoiceController.delete_single
 );
 router.delete("/delete_all", AuthVerification, InvoiceController.delete_all);
+router.get("/get-dashboard-data", AuthVerification, InvoiceController.getDashboard);
 
 module.exports = router;

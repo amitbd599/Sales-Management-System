@@ -273,3 +273,28 @@ export const invoice_update__Request__API = async (id, postBody) => {
     return false;
   }
 };
+
+export const dashboard__Request__API = async () => {
+  let URL = BaseURL + `/get-dashboard-data`;
+
+  try {
+    const result = await axios.get(URL, { withCredentials: true });
+    if (result.status === 200) {
+      if (
+        result.data["status"] === "success"
+      ) {
+
+        return result.data["data"];
+      } else {
+
+        return false;
+      }
+    } else {
+
+      return false;
+    }
+  } catch (err) {
+    ErrorToast("Something went wrong!");
+    return false;
+  }
+};
