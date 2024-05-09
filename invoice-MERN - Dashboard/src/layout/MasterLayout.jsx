@@ -5,17 +5,24 @@ import {
   MenuHandler,
   MenuList,
   MenuItem,
-  Avatar,
   Typography,
 } from "@material-tailwind/react";
-import { FaBuffer, FaEnvelopeOpenText, FaGear, FaHouseChimneyUser, FaRegPenToSquare, FaUser, FaXmark } from "react-icons/fa6";
-import { BiMenuAltRight } from "react-icons/bi";
-import { FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
+import { FaBuffer, FaGear, FaHouseChimneyUser, FaRegPenToSquare, FaUser } from "react-icons/fa6";
+
+import { logout__Request__API } from "../api/Api";
 const MasterLayout = (props) => {
+
   const [sidebar, setSidebar] = useState(false);
   const sidebarControl = () => {
     setSidebar(!sidebar);
   };
+  const deleteAllCookies = () => {
+    logout__Request__API().then((result) => {
+      if (result) {
+        window.location.href = "/login";
+      }
+    })
+  }
   return (
     <>
       <section className="bg-bg_primary w-full min-h-screen">
@@ -123,7 +130,8 @@ const MasterLayout = (props) => {
                   </svg>
 
                   <Typography variant="small" className="font-medium">
-                    My Profile
+                    <Link to="/profile">My Profile</Link>
+
                   </Typography>
                 </MenuItem>
                 <MenuItem className="flex items-center gap-2">
@@ -143,7 +151,7 @@ const MasterLayout = (props) => {
                   </svg>
 
                   <Typography variant="small" className="font-medium">
-                    Edit Setting
+                    <Link to="/setting">Edit Setting</Link>
                   </Typography>
                 </MenuItem>
 
@@ -163,7 +171,7 @@ const MasterLayout = (props) => {
                       fill="#90A4AE"
                     />
                   </svg>
-                  <Typography variant="small" className="font-medium">
+                  <Typography variant="small" className="font-medium" onClick={deleteAllCookies}>
                     Sign Out
                   </Typography>
                 </MenuItem>

@@ -6,7 +6,7 @@ const PrivateRoute = ({ children }) => {
     const location = useLocation();
 
     useEffect(() => {
-        if (location.pathname === '/' || location.pathname === '/setting' || location.pathname === '/all-invoice') {
+        if (location.pathname === '/' || location.pathname === '/setting' || location.pathname === '/all-invoice' || location.pathname === '/profile') {
             verify__Request__API().then((result) => {
 
                 if (result === true) {

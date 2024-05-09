@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { FaXmark } from 'react-icons/fa6'
-import { ErrorToast, getBase64 } from '../helper/helper';
+import { ErrorToast, IsEmpty, getBase64 } from '../helper/helper';
+import { profile_update__Request__API } from '../api/Api';
 
 const ProfileComponent = () => {
     let [bgImg, setBgImg] = useState("");
+    let emailRef,
+        passwordRef, confirm_passwordRef, firstNameRef, lastNameRef, phoneRef = useRef();
     const bgHandel = (event) => {
         const file = event.target.files[0];
         if (file.size > 100 * 1024) {
@@ -14,6 +17,39 @@ const ProfileComponent = () => {
             });
         }
     };
+
+
+    const profileUpdate = () => {
+        let email = emailRef.value;
+        let password = passwordRef.value;
+        let confirm_password = confirm_passwordRef.value;
+        let firstName = firstNameRef.value;
+        let lastName = lastNameRef.value;
+        let phone = phoneRef.value;
+        if (IsEmpty(email)) {
+            ErrorToast("Email required!");
+        } else if (IsEmpty(password)) {
+            ErrorToast("Password required!");
+        } else if (IsEmpty(confirm_password)) {
+            ErrorToast("Password required!");
+        } else if (IsEmpty(password)) {
+            ErrorToast("Password required!");
+        } else if (IsEmpty(firstName)) {
+            ErrorToast("First name required!");
+        } else if (IsEmpty(lastName)) {
+            ErrorToast("Last name required!");
+        } else if (IsEmpty(phone)) {
+            ErrorToast("Phone number required!");
+        } else {
+            profile_update__Request__API({ email, password }).then((result) => {
+
+                if (result === true) {
+                    window.location.href = "/login";
+                }
+            });
+        }
+    };
+
     return (
         <section>
             {/* {loading === true && <Loading />} */}
@@ -88,6 +124,7 @@ const ProfileComponent = () => {
                                 <div className="grid gap-1">
                                     <label>First Name:</label>
                                     <input
+                                        ref={(input) => (firstNameRef = input)}
                                         type="text"
                                         className="input_box"
 
@@ -98,6 +135,7 @@ const ProfileComponent = () => {
                                 <div className="grid gap-1">
                                     <label>Last Name:</label>
                                     <input
+                                        ref={(input) => (lastNameRef = input)}
                                         type="text"
                                         className="input_box"
 
@@ -118,6 +156,7 @@ const ProfileComponent = () => {
                                 <div className="grid gap-1">
                                     <label>Current Password:</label>
                                     <input
+                                        ref={(input) => (phoneRef = input)}
                                         type="text"
                                         className="input_box"
 
@@ -128,6 +167,7 @@ const ProfileComponent = () => {
                                 <div className="grid gap-1">
                                     <label>New Password:</label>
                                     <input
+                                        ref={(input) => (passwordRef = input)}
                                         type="text"
                                         className="input_box"
 
@@ -138,6 +178,7 @@ const ProfileComponent = () => {
                                 <div className="grid gap-1">
                                     <label>Confirm Password:</label>
                                     <input
+                                        ref={(input) => (confirm_passwordRef = input)}
                                         type="text"
                                         className="input_box"
 
@@ -149,7 +190,7 @@ const ProfileComponent = () => {
                     <div className="mt-5 block">
                         <button
                             className="px-[20px] py-[8px]  rounded-md bg-primary text-white"
-                        //   onClick={saveData}
+                            onClick={profileUpdate}
                         >
                             Update profile
                         </button>

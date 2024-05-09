@@ -3,6 +3,7 @@ const UserModel = require("../models/UserModel");
 const { EncodeToken } = require("../utility/TokenHelper");
 const OTPModel = require("../models/OTPModel");
 const EmailSend = require("../utility/EmailSend");
+
 //! Create new Admin
 exports.register = async (req, res) => {
   try {
@@ -11,7 +12,53 @@ exports.register = async (req, res) => {
     let data = await UserModel.create(reqBody);
     res.status(200).json({ status: "success", data: data });
   } catch (e) {
-    res.status(500).json({ status: "error", error: e });
+    res.status(200).json({ status: "error", error: e });
+  }
+};
+
+//! Create new Admin
+exports.profile = async (req, res) => {
+  // req.headers.email = 'amitbd@gmail.com';
+  console.log(req);
+  let email = req.body.email;
+  let password = md5(req.body.password);
+  let confirm_password = md5(req.body.confirm_password);
+  let phone = req.body.phone;
+  let firstName = req.body.firstName;
+  let lastName = req.body.lastName;
+  try {
+    let UserCount = await UserModel.aggregate([
+      { $match: { email, password } },
+
+    ]);
+
+
+
+    if (UserCount.length > 0) {
+      //Create OTP
+      let data = await UserModel.updateOne(
+        { email: email },
+        {
+          $set: {
+            password: confirm_password,
+            confirm_password: confirm_password,
+            firstName: firstName,
+            lastName: lastName,
+            phone: phone,
+          }
+
+        }
+
+
+      );
+
+
+      res.status(200).json({ status: "success", data: data });
+    } else {
+      res.status(200).json({ status: "error", data: "Email / password not match!" });
+    }
+  } catch (e) {
+    res.status(200).json({ status: "error", data: e.toString() });
   }
 };
 
@@ -45,6 +92,16 @@ exports.login = async (req, res) => {
     res.status(200).json({ status: "error", error: e.toString() });
   }
 };
+
+//! Logout 
+exports.logout = async (req, res) => {
+  try {
+    res.clearCookie('Token');
+    res.status(200).json({ status: "success" });
+  } catch (e) {
+    res.status(200).json({ status: "error", error: e.toString() });
+  }
+}
 
 exports.EmailVerifyData = async (req, res) => {
   try {

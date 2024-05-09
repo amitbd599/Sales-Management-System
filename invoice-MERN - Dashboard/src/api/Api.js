@@ -45,6 +45,47 @@ export const login__Request__API = async (postBody) => {
     return false;
   }
 };
+export const profile_update__Request__API = async (postBody) => {
+  let URL = BaseURL + "/profile";
+
+  try {
+    const result = await axios.post(URL, postBody, { withCredentials: true });
+    if (result.status === 200) {
+      if (result.data["status"] === "success") {
+
+        return true;
+      } else if (result.data["status"] === "error") {
+        ErrorToast("Email or password not match!");
+        return false;
+      }
+    } else {
+      console.log("profile update fail!-2");
+      return false;
+    }
+  } catch (err) {
+    ErrorToast("profile update fail!");
+    return false;
+  }
+};
+export const logout__Request__API = async () => {
+  let URL = BaseURL + "/logout";
+
+  try {
+    const result = await axios.get(URL, { withCredentials: true, credentials: "include", });
+    if (result.status === 200) {
+      if (result.data["status"] === "success") {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } catch (err) {
+    ErrorToast("Something went wrong!");
+    return false;
+  }
+};
 
 export const forgot_password__Request__API = async (email) => {
   let URL = BaseURL + `/forgot-password/${email}`;
@@ -294,7 +335,6 @@ export const dashboard__Request__API = async () => {
       return false;
     }
   } catch (err) {
-    ErrorToast("Something went wrong!");
     return false;
   }
 };

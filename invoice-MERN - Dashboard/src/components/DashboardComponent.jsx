@@ -19,18 +19,13 @@ const DashboardComponent = () => {
                 setTable_data(result?.table_data)
                 setBar_chat_monthly_report(result?.bar_chat_monthly_report)
                 setBar_chat_monthly_sales(result?.bar_chat_monthly_sales)
-                setToday_total_sale(result?.today_total_sale[0]['items'])
-                setToday_total_sales_amount(result?.today_total_sales_amount[0]['amount'])
-                setToday_total_due_amount(result?.today_total_due_amount[0]['amount'])
-                setToday_total_paid_amount(result?.today_total_paid_amount[0]['amount'])
+                setToday_total_sale(result?.today_total_sale[0]?.items)
+                setToday_total_sales_amount(result?.today_total_sales_amount[0]?.amount)
+                setToday_total_due_amount(result?.today_total_due_amount[0]?.amount)
+                setToday_total_paid_amount(result?.today_total_paid_amount[0]?.amount)
             }
         })
     }, [])
-
-
-    // console.log(data_flow);
-    console.log(table_data);
-
 
     const months_report = [
         "January", "February", "March", "April", "May", "June",
@@ -223,9 +218,9 @@ const DashboardComponent = () => {
                                     <p className='text-sm'>Total invoice</p>
 
                                     <div className='flex gap-1 items-center pt-[6px]'>
-                                        <p className='font-semibold text-gray-900 text-[20px]'>{data_flow?.totalCustomerCount}</p><p className='text-sm'>(Items)</p>
+                                        <p className='font-semibold text-gray-900 text-[20px]'>{!!data_flow?.totalCustomerCount === false ? 0 : data_flow?.totalCustomerCount}</p><p className='text-sm'>(Items)</p>
                                     </div>
-                                    <p className='text-sm'>Today add <span className='bg-green-50 text-green-600 px-[5px] rounded-xl font-medium '>{today_total_sale}</span> new items</p>
+                                    <p className='text-sm'>Today add <span className='bg-green-50 text-green-600 px-[5px] rounded-xl font-medium '>{!!today_total_sale === false ? 0 : today_total_sale}</span> new items</p>
                                 </div>
                             </div>
                         </div>
@@ -238,9 +233,9 @@ const DashboardComponent = () => {
                                     <p className='text-sm'>Total sale amount</p>
 
                                     <div className='flex gap-1 items-center pt-[6px]'>
-                                        <p className='font-semibold text-gray-900 text-[20px]'>{data_flow?.totalSalesAmount}</p><p className='text-sm'>(Amount)</p>
+                                        <p className='font-semibold text-gray-900 text-[20px]'>{!!data_flow?.totalSalesAmount === false ? 0 : data_flow?.totalSalesAmount}</p><p className='text-sm'>(Amount)</p>
                                     </div>
-                                    <p className='text-sm '>Today sale amount <span className='bg-green-50 text-green-600 px-[5px] rounded-xl font-medium'>{today_total_sales_amount}</span></p>
+                                    <p className='text-sm '>Today sale amount <span className='bg-green-50 text-green-600 px-[5px] rounded-xl font-medium'>{!!today_total_sales_amount === false ? 0 : today_total_sales_amount}</span></p>
                                 </div>
                             </div>
                         </div>
@@ -253,9 +248,9 @@ const DashboardComponent = () => {
                                     <p className='text-sm'>Total due customer</p>
 
                                     <div className='flex gap-1 items-center pt-[6px]'>
-                                        <p className='font-semibold text-gray-900 text-[20px]'>{data_flow?.totalDueCustomer}</p><p className='text-sm'>(Person)</p>
+                                        <p className='font-semibold text-gray-900 text-[20px]'>{!!data_flow?.totalDueCustomer === false ? 0 : data_flow?.totalDueCustomer}</p><p className='text-sm'>(Person)</p>
                                     </div>
-                                    <p className='text-sm'>Today due amount <span className='bg-red-50 text-red-600 px-[5px] rounded-xl '>{today_total_due_amount}</span></p>
+                                    <p className='text-sm'>Today due amount <span className='bg-red-50 text-red-600 px-[5px] rounded-xl '>{!!today_total_due_amount === false ? 0 : today_total_due_amount}</span></p>
                                 </div>
                             </div>
                         </div>
@@ -267,9 +262,9 @@ const DashboardComponent = () => {
                                 <div>
                                     <p className='text-sm'>Total full paid customer</p>
                                     <div className='flex gap-1 items-center pt-[6px]'>
-                                        <p className='font-semibold text-gray-900 text-[20px]'>{data_flow?.totalFullPaidCustomer}</p><p className='text-sm'>(Person)</p>
+                                        <p className='font-semibold text-gray-900 text-[20px]'>{!!data_flow?.totalFullPaidCustomer === false ? 0 : data_flow?.totalFullPaidCustomer}</p><p className='text-sm'>(Person)</p>
                                     </div>
-                                    <p className='text-sm'>Today paid amount <span className='bg-green-50 text-green-600 px-[5px] rounded-xl '>{today_total_paid_amount}</span></p>
+                                    <p className='text-sm'>Today paid amount <span className='bg-green-50 text-green-600 px-[5px] rounded-xl '>{!!today_total_paid_amount === false ? 0 : today_total_paid_amount}</span></p>
                                 </div>
                             </div>
                         </div>
