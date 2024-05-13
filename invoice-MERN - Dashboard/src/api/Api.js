@@ -45,8 +45,33 @@ export const login__Request__API = async (postBody) => {
     return false;
   }
 };
+
+
+export const profile__get__Request__API = async () => {
+  let URL = BaseURL + "/profile-read";
+
+  try {
+    const result = await axios.get(URL, { withCredentials: true });
+    if (result.status === 200) {
+      if (result.data["status"] === "success") {
+        return result.data;
+      } else {
+        console.log("profile get fail!-1");
+        return false;
+      }
+    } else {
+      console.log("profile get fail!-2");
+      return false;
+    }
+  } catch (err) {
+    console.log("profile get fail!");
+    return false;
+  }
+};
+
+
 export const profile_update__Request__API = async (postBody) => {
-  let URL = BaseURL + "/profile";
+  let URL = BaseURL + "/profile-update";
 
   try {
     const result = await axios.post(URL, postBody, { withCredentials: true });
@@ -55,7 +80,7 @@ export const profile_update__Request__API = async (postBody) => {
 
         return true;
       } else if (result.data["status"] === "error") {
-        ErrorToast("Email or password not match!");
+        ErrorToast("Current password not match!");
         return false;
       }
     } else {

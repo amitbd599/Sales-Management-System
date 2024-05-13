@@ -1,39 +1,54 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { FaXmark } from 'react-icons/fa6'
 import { ErrorToast, IsEmpty, getBase64 } from '../helper/helper';
-import { profile_update__Request__API } from '../api/Api';
+import { profile__get__Request__API, profile_update__Request__API } from '../api/Api';
 
 const ProfileComponent = () => {
-    let [bgImg, setBgImg] = useState("");
-    let emailRef,
-        passwordRef, confirm_passwordRef, firstNameRef, lastNameRef, phoneRef = useRef();
+
+    let [profileData, setProfileData] = useState([])
+
+
+    useEffect(() => {
+        profile__get__Request__API().then((result) => {
+            if (result.status === "success") {
+                setProfileData(result?.data)
+                setImg(result?.data?.img)
+            }
+        })
+    }, [])
+
+    console.log(profileData);
+
+    let [img, setImg] = useState("");
+    let
+        currentPasswordRef, passwordRef, confirm_passwordRef, firstNameRef, lastNameRef, phoneRef = useRef();
     const bgHandel = (event) => {
         const file = event.target.files[0];
         if (file.size > 100 * 1024) {
             ErrorToast("File size exceeds 100KB.");
         } else {
             getBase64(event.target.files[0]).then((base64Img) => {
-                setBgImg(base64Img);
+                setImg(base64Img);
             });
         }
     };
 
 
     const profileUpdate = () => {
-        let email = emailRef.value;
+        let currentPassword = currentPasswordRef.value;
         let password = passwordRef.value;
         let confirm_password = confirm_passwordRef.value;
         let firstName = firstNameRef.value;
         let lastName = lastNameRef.value;
         let phone = phoneRef.value;
-        if (IsEmpty(email)) {
-            ErrorToast("Email required!");
+        if (IsEmpty(currentPassword)) {
+            ErrorToast("Current password required!");
         } else if (IsEmpty(password)) {
             ErrorToast("Password required!");
         } else if (IsEmpty(confirm_password)) {
             ErrorToast("Password required!");
-        } else if (IsEmpty(password)) {
-            ErrorToast("Password required!");
+        } else if (password !== confirm_password) {
+            ErrorToast("New password & confirm password not match!");
         } else if (IsEmpty(firstName)) {
             ErrorToast("First name required!");
         } else if (IsEmpty(lastName)) {
@@ -41,7 +56,14 @@ const ProfileComponent = () => {
         } else if (IsEmpty(phone)) {
             ErrorToast("Phone number required!");
         } else {
-            profile_update__Request__API({ email, password }).then((result) => {
+
+            let body = {
+                password: currentPassword,
+                confirm_password: password,
+                firstName, lastName, phone, img
+            }
+            console.log(body);
+            profile_update__Request__API(body).then((result) => {
 
                 if (result === true) {
                     window.location.href = "/login";
@@ -66,10 +88,10 @@ const ProfileComponent = () => {
                                     className=" cursor-pointer flex w-full   flex-col items-center rounded-xl border-2 border-dashed border-primary bg-white p-6 text-center"
                                 >
                                     <div>
-                                        {bgImg ? (
+                                        {img ? (
                                             <div>
                                                 <img
-                                                    src={bgImg}
+                                                    src={img}
                                                     alt="Selected"
                                                     className="w-[100px] rounded-xl"
                                                 />
@@ -105,10 +127,10 @@ const ProfileComponent = () => {
                                         onChange={(event) => bgHandel(event)}
                                     />
                                 </label>
-                                {bgImg && (
+                                {img && (
                                     <div>
                                         <FaXmark
-                                            onClick={() => setBgImg("")}
+                                            onClick={() => setImg("")}
                                             className="absolute cursor-pointer right-[-22px] z-[999] top-[-10px] p-2 text-[50px] text-red-600"
                                         />
                                     </div>
@@ -127,6 +149,7 @@ const ProfileComponent = () => {
                                         ref={(input) => (firstNameRef = input)}
                                         type="text"
                                         className="input_box"
+                                        defaultValue={profileData?.firstName}
 
                                     />
                                 </div>
@@ -138,6 +161,7 @@ const ProfileComponent = () => {
                                         ref={(input) => (lastNameRef = input)}
                                         type="text"
                                         className="input_box"
+                                        defaultValue={profileData?.lastName}
 
                                     />
                                 </div>
@@ -146,8 +170,10 @@ const ProfileComponent = () => {
                                 <div className="grid gap-1">
                                     <label>Phone number:</label>
                                     <input
+                                        ref={(input) => (phoneRef = input)}
                                         type="text"
                                         className="input_box"
+                                        defaultValue={profileData?.phone}
 
                                     />
                                 </div>
@@ -156,8 +182,8 @@ const ProfileComponent = () => {
                                 <div className="grid gap-1">
                                     <label>Current Password:</label>
                                     <input
-                                        ref={(input) => (phoneRef = input)}
-                                        type="text"
+                                        ref={(input) => (currentPasswordRef = input)}
+                                        type="password"
                                         className="input_box"
 
                                     />
@@ -168,7 +194,7 @@ const ProfileComponent = () => {
                                     <label>New Password:</label>
                                     <input
                                         ref={(input) => (passwordRef = input)}
-                                        type="text"
+                                        type="password"
                                         className="input_box"
 
                                     />
@@ -179,7 +205,7 @@ const ProfileComponent = () => {
                                     <label>Confirm Password:</label>
                                     <input
                                         ref={(input) => (confirm_passwordRef = input)}
-                                        type="text"
+                                        type="password"
                                         className="input_box"
 
                                     />

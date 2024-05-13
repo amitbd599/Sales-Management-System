@@ -7,6 +7,7 @@ const DataSchema = mongoose.Schema(
     firstName: { type: String },
     lastName: { type: String },
     phone: { type: String },
+    img: { type: String },
   },
   {
     timestamps: true,
