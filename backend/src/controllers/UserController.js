@@ -100,9 +100,19 @@ exports.profile_read = async (req, res) => {
     let MatchStage = {
       $match: {
         email,
-      },
+      }
     };
-    let data = await UserModel.aggregate([MatchStage]);
+
+    let project = {
+      $project: {
+        email: 1,
+        firstName: 1,
+        lastName: 1,
+        img: 1,
+        phone: 1,
+      }
+    }
+    let data = await UserModel.aggregate([MatchStage, project]);
     res.status(200).json({ status: "success", data: data[0] });
   } catch (e) {
     res.status(200).json({ status: "error", error: e.toString() });

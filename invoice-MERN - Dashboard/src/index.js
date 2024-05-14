@@ -4,16 +4,32 @@ import { ThemeProvider } from "@material-tailwind/react";
 import App from "./App";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
+import 'react-toastify/dist/ReactToastify.min.css';
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import InitLoadingData from "./helper/InitLoadingData";
-import { Toaster } from "react-hot-toast";
+import { ToastContainer } from "react-toastify";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <>
     <ThemeProvider>
-      <Toaster position="bottom-center" reverseOrder={false} />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition="Bounce"
+
+      />
+
+      <ToastContainer />
       <App />
       <InitLoadingData />
     </ThemeProvider>

@@ -20,10 +20,8 @@ import {
   create__invoice__Request__API,
   setting__get__Request__API,
 } from "../api/Api";
-import Loading from "./Loading";
 
-const HomeComponent = () => {
-  let [loading, setLoading] = useState(false);
+const CreateInvoiceComponent = () => {
   let [getSetting, getSetSetting] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   const [deliveryDate, setDeliveryDate] = useState(new Date());
@@ -136,7 +134,7 @@ const HomeComponent = () => {
     currency,
   };
   let saveStorage = () => {
-    setLoading(true);
+
     create__invoice__Request__API(templateData).then((result) => {
       if (result) {
         // After save action
@@ -152,7 +150,6 @@ const HomeComponent = () => {
         setBranchName("");
         setInvoiceItems([]);
         setPayment(0);
-        setLoading(false);
       }
     });
   };
@@ -360,7 +357,6 @@ const HomeComponent = () => {
 
   return (
     <>
-      {loading === true && <Loading />}
       <section>
         <div className=" py-[60px] px-[40px]">
           <div className="grid grid-cols-12 gap-[20px]">
@@ -821,4 +817,4 @@ const HomeComponent = () => {
   );
 };
 
-export default HomeComponent;
+export default CreateInvoiceComponent;

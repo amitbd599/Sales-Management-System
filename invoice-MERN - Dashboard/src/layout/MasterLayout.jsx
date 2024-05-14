@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import {
   Menu,
@@ -9,10 +9,28 @@ import {
 } from "@material-tailwind/react";
 import { FaBuffer, FaGear, FaHouseChimneyUser, FaRegPenToSquare, FaUser } from "react-icons/fa6";
 
-import { logout__Request__API } from "../api/Api";
+import { logout__Request__API, profile__get__Request__API } from "../api/Api";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import { ToastContainer } from "react-toastify";
 const MasterLayout = (props) => {
-
+  let [loading, setLoading] = useState(false)
   const [sidebar, setSidebar] = useState(false);
+
+  let [profileData, setProfileData] = useState([])
+
+
+  useEffect(() => {
+    setLoading(true)
+    profile__get__Request__API().then((result) => {
+      if (result.status === "success") {
+        setProfileData(result?.data)
+        setLoading(false)
+      }
+    })
+  }, [])
+
+
+
   const sidebarControl = () => {
     setSidebar(!sidebar);
   };
@@ -25,6 +43,9 @@ const MasterLayout = (props) => {
   }
   return (
     <>
+
+
+
       <section className="bg-bg_primary w-full min-h-screen">
 
         {/* sidebar */}
@@ -99,18 +120,30 @@ const MasterLayout = (props) => {
         {/* main body */}
         <main className="min-h-[calc(100vh-300px)] ps-[250px]">
           {/* top bar */}
-          <div className="bg-white px-[20px] py-[10px] flex justify-end pe-[40px]">
+          <div className="bg-white px-[20px] py-[16px] flex justify-end pe-[40px]">
+
             <Menu>
               <MenuHandler>
-                <div className="flex gap-[10px] justify-center items-center cursor-pointer">
-                  <span>
-                    <img className="w-[50px] rounded-full" src="https://nextjs.spruko.com/ynex-ts-tailwind/preview/assets/images/faces/9.jpg" alt="" />
-                  </span>
-                  <span className=" grid gap-[1px] ">
-                    <span className="font-bold">Alex Johan</span>
-                    <span className="text-[14px]">Shop Name</span>
-                  </span>
-                </div>
+                {
+                  loading === true ? (<SkeletonTheme
+                    baseColor="#ebebeb"
+                    highlightColor="#f5f5f5"
+                    className="w-100vw"
+                  >
+                    <div className="w-[250px] block ">
+                      <Skeleton count={3} height={12} />
+                    </div>
+                  </SkeletonTheme>) : (<div className="flex gap-[10px] justify-center items-center cursor-pointer">
+                    <span>
+                      <img className="w-[50px] rounded-full" src={profileData?.img} alt="" />
+                    </span>
+                    <span className=" grid gap-[1px] ">
+                      <span className="font-bold">{profileData?.firstName} {profileData?.lastName}</span>
+                      <span className="text-[14px]">{profileData?.email}</span>
+                    </span>
+                  </div>)
+                }
+
               </MenuHandler>
               <MenuList>
                 <MenuItem className="flex items-center gap-2">

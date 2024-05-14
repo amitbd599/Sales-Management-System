@@ -55,19 +55,16 @@
   width: 100%;
   border-collapse: collapse;
 }
-/* Zebra striping */
-.item-table tr:nth-of-type(odd) {
-  background: #eee;
-}
+
 .item-table th {
-  background: #845adf;
-  color: white;
+  background: #d1d5db;
+  color: #374151;
   font-weight: bold;
 }
 .item-table td,
 .item-table th {
   padding: 6px;
-  border: 1px solid #ccc;
+  border: 1px solid #e5e7eb;
   text-align: left;
 }
 .loading {

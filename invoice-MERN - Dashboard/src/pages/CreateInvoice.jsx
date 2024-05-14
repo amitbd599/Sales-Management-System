@@ -1,17 +1,17 @@
 import React, { Fragment, Suspense } from "react";
 import MasterLayout from "../layout/MasterLayout";
-import HomeComponent from "../components/HomeComponent";
+import CreateInvoiceComponent from "../components/CreateInvoiceComponent";
 
-const Home = () => {
+const CreateInvoice = () => {
   return (
     <Fragment>
       <Suspense fallback={""}>
         <MasterLayout>
-          <HomeComponent />
+          <CreateInvoiceComponent />
         </MasterLayout>
       </Suspense>
     </Fragment>
   );
 };
 
-export default Home;
+export default CreateInvoice;

@@ -1,4 +1,5 @@
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
+
 let EmailRegx = /\S+@\S+\.\S+/;
 
 class FormHelper {
@@ -10,10 +11,14 @@ class FormHelper {
     return !EmailRegx.test(value);
   }
   ErrorToast(msg) {
-    toast.error(msg);
+    toast.error(msg, {
+      position: "bottom-right"
+    });
   }
   SuccessToast(msg) {
-    toast.success(msg);
+    toast.success(msg, {
+      position: "bottom-right"
+    });
   }
   toNumber(value) {
     return parseFloat(value);

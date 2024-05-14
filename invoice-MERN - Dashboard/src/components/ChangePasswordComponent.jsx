@@ -2,11 +2,6 @@ import React, { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ErrorToast, IsEmpty } from "../helper/helper";
 import { reset_password__Request__API } from "../api/Api";
-import Loading from "./Loading";
-
-
-
-
 const ChangePasswordComponent = () => {
   const { email, otp } = useParams();
   let [loading, setLoading] = useState(false);
@@ -42,7 +37,7 @@ const ChangePasswordComponent = () => {
   };
   return (
     <>
-      {loading === true && <Loading />}
+
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
         <div
           className="
@@ -156,9 +151,30 @@ const ChangePasswordComponent = () => {
                 </div>
               </div>
               <div className="flex w-full">
-                <button onClick={reset_RequestAPI__Fun}
-                  type="submit"
-                  className="
+
+
+                {
+                  loading === true ? (<button onClick={reset_RequestAPI__Fun} disabled
+                    type="submit"
+                    className="flex cursor-not-allowed mt-2 items-center justify-center focus:outline-non text-white text-sm sm:text-base bg-blue-500 hover:bg-blue-600 rounded-2xl py-2 w-full transition duration-150 ease-in"
+                  >
+                    <span className="mr-2 uppercase">Request pending...</span>
+                    <span>
+                      <svg
+                        className="h-6 w-6"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </span>
+                  </button>) : (<button onClick={reset_RequestAPI__Fun}
+                    type="submit"
+                    className="
               flex
               mt-2
               items-center
@@ -175,22 +191,26 @@ const ChangePasswordComponent = () => {
               duration-150
               ease-in
             "
-                >
-                  <span className="mr-2 uppercase">Change Password</span>
-                  <span>
-                    <svg
-                      className="h-6 w-6"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </span>
-                </button>
+                  >
+                    <span className="mr-2 uppercase">Change Password</span>
+                    <span>
+                      <svg
+                        className="h-6 w-6"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </span>
+                  </button>)
+                }
+
+
+
               </div>
             </div>
           </div>

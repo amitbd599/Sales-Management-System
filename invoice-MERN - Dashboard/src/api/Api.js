@@ -122,7 +122,7 @@ export const forgot_password__Request__API = async (email) => {
         SuccessToast("OTP send success!");
         return true;
       } else {
-        ErrorToast("OTP send fail!");
+        ErrorToast("No user found!");
         return false;
       }
     } else {
