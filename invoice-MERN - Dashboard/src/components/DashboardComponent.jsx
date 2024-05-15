@@ -212,7 +212,7 @@ const DashboardComponent = () => {
             <div className="px-[40px] py-[40px]">
                 <div className=''>
                     <div className='grid grid-cols-12 gap-[30px]'>
-                        <div className='col-span-3 bg-white rounded-md  p-[20px]'>
+                        <div className='col-span-12 md:col-span-6 2xl:col-span-3 bg-white rounded-md  p-[20px]'>
 
 
                             {
@@ -241,7 +241,7 @@ const DashboardComponent = () => {
 
 
                         </div>
-                        <div className='col-span-3 bg-white rounded-md  p-[20px]'>
+                        <div className='col-span-12 md:col-span-6 2xl:col-span-3 bg-white rounded-md  p-[20px]'>
                             {
                                 loading === true ? (<SkeletonTheme
                                     baseColor="#ebebeb"
@@ -267,7 +267,7 @@ const DashboardComponent = () => {
                             }
 
                         </div>
-                        <div className='col-span-3 bg-white rounded-md  p-[20px]'>
+                        <div className='col-span-12 md:col-span-6 2xl:col-span-3 bg-white rounded-md  p-[20px]'>
 
                             {
                                 loading === true ? (<SkeletonTheme
@@ -295,7 +295,7 @@ const DashboardComponent = () => {
 
 
                         </div>
-                        <div className='col-span-3 bg-white rounded-md  p-[20px]'>
+                        <div className='col-span-12 md:col-span-6 2xl:col-span-3 bg-white rounded-md  p-[20px]'>
                             {
                                 loading === true ? (<SkeletonTheme
                                     baseColor="#ebebeb"
@@ -323,7 +323,7 @@ const DashboardComponent = () => {
                     </div>
                 </div>
                 <div className='grid grid-cols-12 gap-[30px]'>
-                    <div className='col-span-6 bg-white rounded-md  p-[20px] mt-[30px]'>
+                    <div className='col-span-12 xl:col-span-6 bg-white rounded-md  p-[20px] mt-[30px]'>
                         <h2 className='font-semibold text-gray-700 text-[18px]'>Monthly payment & due report</h2>
 
                         {
@@ -342,7 +342,7 @@ const DashboardComponent = () => {
 
 
                     </div>
-                    <div className='col-span-6 bg-white rounded-md  p-[20px] mt-[30px]'>
+                    <div className='col-span-12 xl:col-span-6 bg-white rounded-md  p-[20px] mt-[30px]'>
                         <h2 className='font-semibold text-gray-700 text-[18px]'>Monthly sales report</h2>
 
                         {

@@ -35,6 +35,14 @@
   .navNotActive {
     @apply mx-[10px] px-[10px] py-[14px] block rounded-lg hover:bg-[#1D284D] hover:text-white transition-all duration-300  text-[15px] text-[#a3aed1];
   }
+
+  .sidebar_active {
+    @apply w-[250px] transition-all duration-300;
+  }
+
+  .sidebar_not_active {
+    @apply w-[0px] opacity-0 hidden transition-all duration-300;
+  }
 }
 
 .react-datepicker-wrapper {
