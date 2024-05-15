@@ -1,8 +1,8 @@
 import axios from "axios";
 import { ErrorToast, SuccessToast } from "../helper/helper";
 
-const BaseURL = "http://localhost:5000/api/v1";
-// const BaseURL = "https://invoice-mern.vercel.app/api/v1";
+// const BaseURL = "http://localhost:5000/api/v1";
+const BaseURL = "https://invoice-mern.vercel.app/api/v1";
 
 export const verify__Request__API = async () => {
   let URL = BaseURL + "/verify";
@@ -23,6 +23,33 @@ export const verify__Request__API = async () => {
     return false;
   }
 };
+
+export const reg__Request__API = async (postBody) => {
+  let URL = BaseURL + "/register";
+
+  try {
+    const result = await axios.post(URL, postBody, { withCredentials: true });
+    if (result.status === 200) {
+      if (result.data["status"] === "success") {
+        SuccessToast("User create success!");
+        return true;
+      } else if (result.data["status"] === "error" && result.data["msg"] === "have account") {
+        ErrorToast("Already have an account registered. No more accounts can be added!");
+        return false;
+      } else if (result.data["status"] === "error" && result.data["error"]["keyPattern"]["email"] === 1) {
+        ErrorToast("Email already registered!");
+        return false;
+      }
+    } else {
+      console.log("Login fail!-2");
+      return false;
+    }
+  } catch (err) {
+    ErrorToast("Login fail!");
+    return false;
+  }
+};
+
 export const login__Request__API = async (postBody) => {
   let URL = BaseURL + "/login";
 

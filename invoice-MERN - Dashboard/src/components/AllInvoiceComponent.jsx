@@ -259,7 +259,7 @@ const AllInvoiceComponent = () => {
         </div>
       ),
 
-      width: "15%",
+      width: "250px",
     },
     {
       name: "Customer Name",
@@ -267,7 +267,7 @@ const AllInvoiceComponent = () => {
 
       wrap: true,
 
-      width: "25%",
+      width: "350px",
     },
 
     {
@@ -275,7 +275,7 @@ const AllInvoiceComponent = () => {
 
       selector: (row) => row?.startDate?.slice(0, 10),
 
-      width: "10%",
+      width: "150px",
       sortable: true,
     },
     {
@@ -283,7 +283,7 @@ const AllInvoiceComponent = () => {
 
       selector: (row) => row?.deliveryDate?.slice(0, 10),
 
-      width: "10%",
+      width: "150px",
       sortable: true,
     },
 
@@ -291,7 +291,7 @@ const AllInvoiceComponent = () => {
       name: "Paid",
       selector: (row) => row?.payment,
 
-      width: "10%",
+      width: "120px",
       sortable: true,
       style: {
         fontSize: '14px',
@@ -308,36 +308,46 @@ const AllInvoiceComponent = () => {
         fontSize: '14px',
         color: '#f43f5e',
       },
-      width: "10%",
+      width: "120px",
     },
 
     {
       name: "Action",
-
-      width: "20%",
+      width: "300px",
 
       selector: (row) => (
         <div className="flex gap-4 ">
-          <FaDownload
-            className="p-1 cursor-pointer text-[25px] text-gray-700"
-            onClick={() => downloadPdf(row?._id)}
-          />
+          <span>
+            <FaDownload
+              className="p-1 cursor-pointer text-[25px] text-gray-700"
+              onClick={() => downloadPdf(row?._id)}
+            />
+          </span>
+
+
           <Link to={`/update?id=${row?._id}`}>
             <FaPenToSquare className="p-1 cursor-pointer text-[25px] text-gray-700" />
           </Link>
 
-          <FaExpand
-            className="p-1 cursor-pointer text-[25px] text-gray-700"
-            onClick={() => viewPdf(row?._id)}
-          />
-          <FaPrint
-            className="p-1 cursor-pointer text-[25px] text-gray-700"
-            onClick={() => printPdf(row?._id)}
-          />
-          <FaTrashCan
-            className="p-1 cursor-pointer text-[25px] text-gray-700"
-            onClick={() => deleteItem(row?._id)}
-          />
+          <span>
+            <FaExpand
+              className="p-1 cursor-pointer text-[25px] text-gray-700"
+              onClick={() => viewPdf(row?._id)}
+            />
+          </span>
+          <span>
+            <FaPrint
+              className="p-1 cursor-pointer text-[25px] text-gray-700"
+              onClick={() => printPdf(row?._id)}
+            />
+          </span>
+          <span>
+            <FaTrashCan
+              className="p-1 cursor-pointer text-[25px] text-gray-700"
+              onClick={() => deleteItem(row?._id)}
+            />
+          </span>
+
         </div>
       ),
     },

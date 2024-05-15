@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ErrorToast, IsEmpty } from "../helper/helper";
 import { reset_password__Request__API } from "../api/Api";
+import { FaLock } from "react-icons/fa6";
 const ChangePasswordComponent = () => {
   const { email, otp } = useParams();
   let [loading, setLoading] = useState(false);
@@ -54,13 +55,13 @@ const ChangePasswordComponent = () => {
       max-w-md
     "
         >
-          <div className="font-medium self-center text-xl sm:text-3xl text-gray-800">
+          <div className="text-start font-semibold text-xl sm:text-lg text-slate-700">
             Change your password
           </div>
-          <div className="mt-4 self-center text-xl sm:text-sm text-gray-800">
+          <div className="mt-4 text-start text-xl sm:text-sm text-slate-500">
             Please enter your new password
           </div>
-          <div className="mt-10">
+          <div className="mt-6">
             <div>
               <div className="flex flex-col mb-6">
                 <label
@@ -84,7 +85,7 @@ const ChangePasswordComponent = () => {
               "
                   >
                     <span>
-                      <i className="fas fa-lock text-blue-500" />
+                      <FaLock />
                     </span>
                   </div>
                   <input
@@ -128,7 +129,7 @@ const ChangePasswordComponent = () => {
               "
                   >
                     <span>
-                      <i className="fas fa-lock text-blue-500" />
+                      <FaLock />
                     </span>
                   </div>
                   <input

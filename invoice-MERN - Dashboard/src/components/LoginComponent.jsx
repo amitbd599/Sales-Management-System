@@ -37,13 +37,13 @@ const LoginComponent = () => {
 
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-3">
         <div className="flex flex-col bg-white shadow-md px-4 sm:px-6 md:px-8 lg:px-10  py-8 rounded-3xl w-50 max-w-md">
-          <div className="self-center font-semibold text-xl sm:text-lg text-slate-700">
-            Welcome To Buy and Sell Web Application
+          <div className="text-start font-semibold text-xl sm:text-lg text-slate-700">
+            Welcome to Invoice management Web Application
           </div>
-          <div className="mt-4 self-center text-xl sm:text-sm text-slate-500">
+          <p className="mt-4 text-start text-xl sm:text-sm text-slate-500">
             Enter your credentials to access your account
-          </div>
-          <div className="mt-10">
+          </p>
+          <div className="mt-6">
             <div>
               <div className="flex flex-col mb-5">
                 <label
@@ -127,7 +127,7 @@ const LoginComponent = () => {
                   loading === true ? (<button disabled
                     onClick={loginRequestAPI__Fun}
                     type="submit"
-                    className=" flex mt-2 cursor-not-allowed items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-[#a855f7] hover:bg-[#9333ea] rounded-2xl py-2 w-full transition duration-150 ease-in"
+                    className=" flex mt-2 cursor-not-allowed items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-theme hover:bg-theme/90  rounded-2xl py-2 w-full transition duration-150 ease-in"
                   >
                     <span className="mr-2 uppercase">Request pending...</span>
                     <span>
@@ -146,7 +146,7 @@ const LoginComponent = () => {
                   </button>) : (<button
                     onClick={loginRequestAPI__Fun}
                     type="submit"
-                    className=" flex mt-2 items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-[#a855f7] hover:bg-[#9333ea] rounded-2xl py-2 w-full transition duration-150 ease-in"
+                    className=" flex mt-2 items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-theme hover:bg-theme/90  rounded-2xl py-2 w-full transition duration-150 ease-in"
                   >
                     <span className="mr-2 uppercase">Sign In</span>
                     <span>

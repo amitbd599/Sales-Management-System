@@ -11,12 +11,24 @@ import { FaAlignLeft, FaBuffer, FaGear, FaHouseChimneyUser, FaRegPenToSquare, Fa
 
 import { logout__Request__API, profile__get__Request__API } from "../api/Api";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import { ToastContainer } from "react-toastify";
 const MasterLayout = (props) => {
   let [loading, setLoading] = useState(false)
   const [sidebar, setSidebar] = useState(true);
-
   let [profileData, setProfileData] = useState([])
+
+  useEffect(() => {
+    let handleResize = () => {
+      if (window.innerWidth < 1536) {
+        setSidebar(false);
+      } else {
+        setSidebar(true);
+      }
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
 
   useEffect(() => {
@@ -117,18 +129,18 @@ const MasterLayout = (props) => {
           </nav>
 
           {/* sidebar menu toggle icon */}
-          <div className="absolute top-[18px] right-[-60px]">
-            <button onClick={sidebarControl} className="p-[10px]">
+          <div className="absolute top-[18px] right-[-55px]">
+            <button onClick={sidebarControl} className="p-[12px]">
               <FaAlignLeft className="text-[22px]" />
             </button>
           </div>
         </aside>
 
         {/* main body */}
-        <main className={`min-h-[calc(100vh-300px)] transition-all duration-300 ${sidebar ? "2xl:ps-[250px]" : "ps-[0px]"} `}>
+        <main className={`min-h-[calc(100vh-300px)]  transition-all duration-300 ${sidebar ? "2xl:ps-[250px]" : "ps-[0px]"} `}>
           {/* top bar */}
-          <div className="bg-white px-[20px] py-[16px]  pe-[40px] z-[99] fixed w-full">
-            <div className={`flex  items-center transition-all duration-300 justify-end ${sidebar ? "w-[calc(100vw-300px)]" : "w-full"} `}>
+          <div className="bg-white left-0 top-0 h-[80px]  pe-[40px] z-[99] fixed flex justify-end items-center w-full">
+            <div >
               <Menu>
                 <MenuHandler>
                   {
@@ -140,15 +152,17 @@ const MasterLayout = (props) => {
                       <div className="w-[250px] block ">
                         <Skeleton count={3} height={12} />
                       </div>
-                    </SkeletonTheme>) : (<div className="flex gap-[10px] justify-center items-center cursor-pointer">
-                      <span>
-                        <img className="w-[50px] rounded-full" src={profileData?.img} alt="" />
-                      </span>
-                      <span className=" grid gap-[1px] ">
-                        <span className="font-bold">{profileData?.firstName} {profileData?.lastName}</span>
-                        <span className="text-[14px]">{profileData?.email}</span>
-                      </span>
-                    </div>)
+                    </SkeletonTheme>) : (
+                      <div className="flex gap-[10px] justify-center items-center cursor-pointer">
+                        <span>
+                          <img className="w-[50px] rounded-full" src={profileData?.img} alt="" />
+                        </span>
+                        <span className="  gap-[1px] hidden md:grid">
+                          <span className="font-bold">{profileData?.firstName} {profileData?.lastName}</span>
+                          <span className="text-[14px]">{profileData?.email}</span>
+                        </span>
+                      </div>
+                    )
                   }
 
                 </MenuHandler>

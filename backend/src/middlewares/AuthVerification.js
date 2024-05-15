@@ -12,7 +12,6 @@ module.exports = (req, res, next) => {
     });
   } else {
     let email = decoded["email"];
-    console.log(email);
     req.headers.email = email;
     next();
   }

@@ -65,14 +65,16 @@
 }
 
 .item-table th {
-  background: #d1d5db;
+  background: #f3f4f6;
   color: #374151;
   font-weight: bold;
+}
+.item-table tr {
+  margin-top: 20px;
 }
 .item-table td,
 .item-table th {
   padding: 6px;
-  border: 1px solid #e5e7eb;
   text-align: left;
 }
 .loading {

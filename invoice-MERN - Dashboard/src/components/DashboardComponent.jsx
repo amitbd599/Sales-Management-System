@@ -31,8 +31,8 @@ const DashboardComponent = () => {
     }, [])
 
     const months_report = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     ].map(month => ({
         totalDueAmount: 0,
         totalPaymentAmount: 0,
@@ -142,8 +142,8 @@ const DashboardComponent = () => {
     }
 
     const months_sales = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     ].map(month => ({
         totalSalesAmount: 0,
         _id: month
@@ -382,7 +382,7 @@ const DashboardComponent = () => {
                                 <div className="p-3">
                                     <div className="overflow-x-auto">
                                         <table className="table-auto w-full">
-                                            <thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+                                            <thead className="text-xs font-semibold uppercase text-gray-700 bg-gray-50">
                                                 <tr>
                                                     <th className="p-2 whitespace-nowrap">
                                                         <div className="font-semibold text-left">Invoice ID</div>

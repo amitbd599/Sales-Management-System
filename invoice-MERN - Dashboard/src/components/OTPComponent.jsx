@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import ReactCodeInput from "react-code-input";
 import { ErrorToast, IsEmpty } from "../helper/helper";
 import { otp__Request__API } from "../api/Api";
-import Loading from "./Loading";
 import { Link, useParams } from "react-router-dom";
 
 
@@ -35,14 +34,14 @@ const OTPComponent = () => {
         <div
           className="flex flex-col bg-white shadow-md px-4 sm:px-6 md:px-8  lg:px-10 py-8 rounded-3xl w-50 max-w-md"
         >
-          <div className="font-medium self-center text-xl sm:text-3xl text-gray-800">
+          <div className="text-start font-semibold text-xl sm:text-lg text-slate-700">
             Enter OTP Code
           </div>
-          <div className="mt-4 self-center text-xl sm:text-sm text-gray-800">
-            Please check your email <strong>demo@gmail.com</strong> <br />{" "}
+          <div className="mt-4 text-start text-xl sm:text-sm text-slate-500">
+            Please check your email <strong>{email}</strong> & <br />{" "}
             please submit 6 digit code here.
           </div>
-          <div className="mt-10">
+          <div className="mt-6">
             <div>
               <div className="flex flex-col mb-5">
                 <ReactCodeInput type="text" fields={6} onChange={(e) => setOTP(e)} />
@@ -53,7 +52,7 @@ const OTPComponent = () => {
                   loading === true ? (<button disabled
                     onClick={otp_RequestAPI__Fun}
                     type="submit"
-                    className="flex mt-2 cursor-not-allowed items-center  justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-500 hover:bg-blue-600 rounded-2xl py-2 w-full transition duration-150 ease-in"
+                    className="flex mt-2 cursor-not-allowed items-center  justify-center focus:outline-none text-white text-sm sm:text-base bg-theme hover:bg-theme/90 rounded-2xl py-2 w-full transition duration-150 ease-in"
                   >
                     <span className="mr-2 uppercase">Request pending...</span>
                     <span>
@@ -73,7 +72,7 @@ const OTPComponent = () => {
                     <button
                       onClick={otp_RequestAPI__Fun}
                       type="submit"
-                      className="flex mt-2 items-center  justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-500 hover:bg-blue-600 rounded-2xl py-2 w-full transition duration-150 ease-in"
+                      className="flex mt-2 items-center  justify-center focus:outline-none text-white text-sm sm:text-base bg-theme hover:bg-theme/90 rounded-2xl py-2 w-full transition duration-150 ease-in"
                     >
                       <span className="mr-2 uppercase">Submit OTP</span>
                       <span>

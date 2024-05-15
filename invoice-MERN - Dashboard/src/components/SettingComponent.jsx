@@ -159,7 +159,27 @@ const SettingComponent = () => {
 
     setting__update__Request__API(setting).then((result) => {
       if (result === true) {
-        setLoading(false);
+        setting__get__Request__API().then((result) => {
+          setLoading(true);
+          if (result.status === "success") {
+            let response = result["data"];
+            getSetSetting(response);
+            setLogo(response?.logo);
+            setBgImg(response?.bgImg);
+            setCurrency(response?.currency);
+            setTaxationName(response?.taxationName);
+            setInvoiceType(response?.invoiceType);
+            setQrCode(response?.qrCode);
+            setPageSize(response?.pageSize);
+            setPageOrientation(response?.pageOrientation);
+            setTemplateImage(response?.selectedTemplate);
+            setThemeColor(response?.themeColor[0]);
+            setThemeTextColor(response?.themeTextColor[0]);
+            setLoading(false);
+          }
+        });
+
+
       }
     });
   };
@@ -503,124 +523,125 @@ const SettingComponent = () => {
                     </div>
                   </SkeletonTheme>
                 </div>
-              ) : (<div className="p-[20px] bg-white rounded-md flex gap-[50px]">
-                <div className="flex w-full gap-[30px]">
-                  <div className="relative w-full">
-                    <h2 className="font-semibold pb-2">Upload logo</h2>
-                    <label
-                      htmlFor="logo"
-                      className=" cursor-pointer flex w-full   flex-col items-center rounded-xl border-2 border-dashed border-blue-400 bg-white p-6 text-center "
-                    >
-                      <div>
-                        {logo ? (
-                          <div>
-                            <img
-                              src={logo}
-                              alt="Selected"
-                              className="w-[100px] rounded-xl"
-                            />
+              ) : (
+                <div className="p-[20px] bg-white rounded-md grid md:flex gap-[50px]">
+                  <div className="flex w-full gap-[30px]">
+                    <div className="relative w-full">
+                      <h2 className="font-semibold pb-2">Upload logo</h2>
+                      <label
+                        htmlFor="logo"
+                        className=" cursor-pointer flex w-full   flex-col items-center rounded-xl border-2 border-dashed border-blue-400 bg-white p-6 text-center "
+                      >
+                        <div>
+                          {logo ? (
+                            <div>
+                              <img
+                                src={logo}
+                                alt="Selected"
+                                className="w-[100px] rounded-xl"
+                              />
 
-                          </div>
-                        ) : (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-10 w-10 text-blue-500"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                            />
-                          </svg>
-                        )}
-                      </div>
-                      <h2 className="mt-4 text-xl font-medium text-gray-700 tracking-wide">
-                        Change logo
-                      </h2>
-                      <p className="mt-2 text-gray-500 tracking-wide">
-                        Upload file PNG only.
-                      </p>
-                      <p className="text-red-500">Max 50kb</p>
-                      <input
-                        id="logo"
-                        type="file"
-                        className="hidden"
-                        onChange={(event) => logoHandel(event)}
-                      />
-                    </label>
-                    {logo && (
-                      <div>
-                        <FaXmark
-                          onClick={() => setLogo("")}
-                          className="absolute cursor-pointer right-[-22px] z-[999] top-[-10px] p-2 text-[50px] text-red-600"
+                            </div>
+                          ) : (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-10 w-10 text-blue-500"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                              />
+                            </svg>
+                          )}
+                        </div>
+                        <h2 className="mt-4 text-xl font-medium text-gray-700 tracking-wide">
+                          Change logo
+                        </h2>
+                        <p className="mt-2 text-gray-500 tracking-wide">
+                          Upload file PNG only.
+                        </p>
+                        <p className="text-red-500">Max 50kb</p>
+                        <input
+                          id="logo"
+                          type="file"
+                          className="hidden"
+                          onChange={(event) => logoHandel(event)}
                         />
-                      </div>
-                    )}
+                      </label>
+                      {logo && (
+                        <div>
+                          <FaXmark
+                            onClick={() => setLogo("")}
+                            className="absolute cursor-pointer right-[-22px] z-[999] top-[-10px] p-2 text-[50px] text-red-600"
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-                <div className="flex w-full gap-[30px] ">
-                  <div className=" relative w-full">
-                    <h2 className="font-semibold pb-2">Background image</h2>
-                    <label
-                      htmlFor="bg"
-                      className=" cursor-pointer flex w-full   flex-col items-center rounded-xl border-2 border-dashed border-blue-400 bg-white p-6 text-center"
-                    >
-                      <div>
-                        {bgImg ? (
-                          <div>
-                            <img
-                              src={bgImg}
-                              alt="Selected"
-                              className="w-[100px] rounded-xl"
-                            />
-                          </div>
-                        ) : (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-10 w-10 text-blue-500"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                            />
-                          </svg>
-                        )}
-                      </div>
-                      <h2 className="mt-4 text-xl font-medium text-gray-700 tracking-wide">
-                        Change image
-                      </h2>
-                      <p className="mt-2 text-gray-500 tracking-wide">
-                        Upload file PNG only.
-                      </p>
-                      <p className="text-red-500">Max 100kb</p>
-                      <input
-                        id="bg"
-                        type="file"
-                        className="hidden"
-                        onChange={(event) => bgHandel(event)}
-                      />
-                    </label>
-                    {bgImg && (
-                      <div>
-                        <FaXmark
-                          onClick={() => setBgImg("")}
-                          className="absolute cursor-pointer right-[-22px] z-[999] top-[-10px] p-2 text-[50px] text-red-600"
+                  <div className="flex w-full gap-[30px] ">
+                    <div className=" relative w-full">
+                      <h2 className="font-semibold pb-2">Background image</h2>
+                      <label
+                        htmlFor="bg"
+                        className=" cursor-pointer flex w-full   flex-col items-center rounded-xl border-2 border-dashed border-blue-400 bg-white p-6 text-center"
+                      >
+                        <div>
+                          {bgImg ? (
+                            <div>
+                              <img
+                                src={bgImg}
+                                alt="Selected"
+                                className="w-[100px] rounded-xl"
+                              />
+                            </div>
+                          ) : (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-10 w-10 text-blue-500"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                              />
+                            </svg>
+                          )}
+                        </div>
+                        <h2 className="mt-4 text-xl font-medium text-gray-700 tracking-wide">
+                          Change image
+                        </h2>
+                        <p className="mt-2 text-gray-500 tracking-wide">
+                          Upload file PNG only.
+                        </p>
+                        <p className="text-red-500">Max 100kb</p>
+                        <input
+                          id="bg"
+                          type="file"
+                          className="hidden"
+                          onChange={(event) => bgHandel(event)}
                         />
-                      </div>
-                    )}
+                      </label>
+                      {bgImg && (
+                        <div>
+                          <FaXmark
+                            onClick={() => setBgImg("")}
+                            className="absolute cursor-pointer right-[-22px] z-[999] top-[-10px] p-2 text-[50px] text-red-600"
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-              </div>)
+                </div>)
             }
 
           </div>
