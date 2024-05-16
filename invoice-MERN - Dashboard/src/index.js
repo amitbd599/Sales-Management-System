@@ -7,7 +7,6 @@ import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import 'react-toastify/dist/ReactToastify.min.css';
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import InitLoadingData from "./helper/InitLoadingData";
 import { ToastContainer } from "react-toastify";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -24,14 +23,13 @@ root.render(
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="dark"
+        theme="light"
         transition="Bounce"
 
       />
 
       <ToastContainer />
       <App />
-      <InitLoadingData />
     </ThemeProvider>
   </>
 );

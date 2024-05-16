@@ -85,7 +85,7 @@ const ProfileComponent = () => {
     return (
         <section>
 
-            <div className="px-[40px] py-[40px]">
+            <div className="px-[15px] py-[30px] md:px-[40px] md:py-[40px]">
                 <div className='bg-white rounded-md  p-[20px]'>
                     {/* info section */}
 
@@ -243,7 +243,7 @@ const ProfileComponent = () => {
 
                     <div className="mt-5 block">
                         <button
-                            className="px-[20px] py-[8px]  rounded-md bg-primary text-white"
+                            className="px-[20px] py-[8px]  rounded-md bg-primary/90 hover:bg-primary transition-all duration-300 text-white"
                             onClick={profileUpdate}
                         >
                             Update profile

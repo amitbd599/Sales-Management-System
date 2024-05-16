@@ -209,7 +209,7 @@ const DashboardComponent = () => {
     }
     return (
         <div>
-            <div className="px-[40px] py-[40px]">
+            <div className="px-[15px] py-[30px] md:px-[40px] md:py-[40px]">
                 <div className=''>
                     <div className='grid grid-cols-12 gap-[30px]'>
                         <div className='col-span-12 md:col-span-6 2xl:col-span-3 bg-white rounded-md  p-[20px]'>

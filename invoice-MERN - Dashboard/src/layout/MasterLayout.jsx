@@ -139,7 +139,7 @@ const MasterLayout = (props) => {
         {/* main body */}
         <main className={`min-h-[calc(100vh-300px)]  transition-all duration-300 ${sidebar ? "2xl:ps-[250px]" : "ps-[0px]"} `}>
           {/* top bar */}
-          <div className="bg-white left-0 top-0 h-[80px]  pe-[40px] z-[99] fixed flex justify-end items-center w-full">
+          <div className="bg-white left-0 top-0 h-[80px]  pe-[40px] z-[99] fixed flex justify-end items-center w-full border-b border-gray-200">
             <div >
               <Menu>
                 <MenuHandler>

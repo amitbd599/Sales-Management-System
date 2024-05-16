@@ -25,7 +25,6 @@ import {
   invoice_single_delete__Request__API,
   setting__get__Request__API,
 } from "../api/Api";
-import Loading from "./Loading";
 const AllInvoiceComponent = () => {
   let [loading, setLoading] = useState(true);
   let [invoices, setInvoices] = useState([]);
@@ -427,8 +426,8 @@ const AllInvoiceComponent = () => {
   };
   return (
     <>
-      {/* {loading === true && <Loading />} */}
-      <section className=" px-[40px] mx-auto py-[60px]">
+
+      <section className="px-[15px] py-[30px] md:px-[40px] md:py-[40px]  mx-auto ">
         <div className="bg-white shadow-lg p-[20px] rounded-lg">
           <div className="rounded-xl bg-white md:m-[30px]">
             <h2 className="text-slate-700 text-2xl font-semibold mb-2">

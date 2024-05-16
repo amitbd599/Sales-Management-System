@@ -157,7 +157,7 @@ const ChangePasswordComponent = () => {
                 {
                   loading === true ? (<button onClick={reset_RequestAPI__Fun} disabled
                     type="submit"
-                    className="flex cursor-not-allowed mt-2 items-center justify-center focus:outline-non text-white text-sm sm:text-base bg-blue-500 hover:bg-blue-600 rounded-2xl py-2 w-full transition duration-150 ease-in"
+                    className="flex mt-2 cursor-not-allowed items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-theme hover:bg-theme/90  rounded-2xl py-2 w-full transition duration-150 ease-in"
                   >
                     <span className="mr-2 uppercase">Request pending...</span>
                     <span>
@@ -175,23 +175,7 @@ const ChangePasswordComponent = () => {
                     </span>
                   </button>) : (<button onClick={reset_RequestAPI__Fun}
                     type="submit"
-                    className="
-              flex
-              mt-2
-              items-center
-              justify-center
-              focus:outline-none
-              text-white text-sm
-              sm:text-base
-              bg-blue-500
-              hover:bg-blue-600
-              rounded-2xl
-              py-2
-              w-full
-              transition
-              duration-150
-              ease-in
-            "
+                    className="flex mt-2 items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-theme hover:bg-theme/90  rounded-2xl py-2 w-full transition duration-150 ease-in"
                   >
                     <span className="mr-2 uppercase">Change Password</span>
                     <span>

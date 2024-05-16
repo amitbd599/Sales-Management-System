@@ -358,7 +358,7 @@ const CreateInvoiceComponent = () => {
   return (
     <>
       <section>
-        <div className=" py-[60px] px-[40px]">
+        <div className=" px-[15px] py-[30px] md:px-[40px] md:py-[40px]">
           <div className="grid grid-cols-12 gap-[20px]">
             <div className="col-span-12 xl:col-span-9 bg-white rounded-md p-[20px]">
               <div>
@@ -638,7 +638,7 @@ const CreateInvoiceComponent = () => {
                         </div>
                         <div className="mt-4">
                           <button
-                            className="px-[20px] py-[8px] rounded-md bg-primary text-white"
+                            className="px-[20px] py-[8px] rounded-md bg-primary/90 hover:bg-primary transition-all duration-300 text-white"
                             onClick={handleAddItem}
                           >
                             Add item
@@ -753,7 +753,7 @@ const CreateInvoiceComponent = () => {
                     <div className="w-full mt-[30px]">
                       <button
                         onClick={saveInvoice}
-                        className="px-[20px] w-full py-[8px] rounded-md bg-primary text-white"
+                        className="px-[20px] w-full py-[8px] rounded-md bg-primary/90 hover:bg-primary transition-all duration-300 text-white"
                       >
                         Save Invoice
                       </button>

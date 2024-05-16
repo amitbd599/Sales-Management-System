@@ -33,8 +33,8 @@ const SettingComponent = () => {
   let [themeColor, setThemeColor] = useState([]);
   let [themeTextColor, setThemeTextColor] = useState([]);
   useEffect(() => {
+    setLoading(true);
     setting__get__Request__API().then((result) => {
-      setLoading(true);
       if (result.status === "success") {
         let response = result["data"];
         getSetSetting(response);
@@ -186,8 +186,7 @@ const SettingComponent = () => {
 
   return (
     <section>
-      {/* {loading === true && <Loading />} */}
-      <div className="px-[40px] py-[40px]">
+      <div className="px-[15px] py-[30px] md:px-[40px] md:py-[40px]">
         <div className="grid gap-[20px] ">
           {
             loading === true ? (
@@ -690,7 +689,7 @@ const SettingComponent = () => {
                   </div>
                   <div className="mt-5 block">
                     <button
-                      className="px-[20px] py-[8px]  rounded-md bg-primary text-white"
+                      className="px-[20px] py-[8px]  rounded-md bg-primary/90 hover:bg-primary transition-all duration-300 text-white"
                       onClick={saveData}
                     >
                       Save setting
