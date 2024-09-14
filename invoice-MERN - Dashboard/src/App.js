@@ -18,6 +18,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+
         <Route exact path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
         <Route exact path="/create-invoice" element={<PrivateRoute><CreateInvoice /></PrivateRoute>} />
         <Route exact path="/all-invoice" element={<PrivateRoute><AllInvoice /></PrivateRoute>} />

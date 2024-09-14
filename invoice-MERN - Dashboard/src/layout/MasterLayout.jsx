@@ -64,7 +64,7 @@ const MasterLayout = (props) => {
         <aside className={` ${sidebar ? "left-0" : "left-[-250px]"}  w-[250px] transition-all duration-300 bg-bg_secondary h-full fixed z-[999]  top-0`}>
           <div className="logo flex justify-center py-[15px]  border-b border-gray-700">
             <Link to="/">
-              <img className="w-[100px]" src="https://nextjs.spruko.com/ynex-ts-tailwind/preview/assets/images/brand-logos/desktop-dark.png" alt="" />
+              <img className="w-[100px]" src="/image/logo-dark.png" alt="" />
             </Link>
           </div>
           {/* Inner link */}

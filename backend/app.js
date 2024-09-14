@@ -15,11 +15,12 @@ const dotENV = require("dotenv");
 dotENV.config();
 
 let URL =
-  "mongodb+srv://<username>:<password>@cluster0.fsp0qs4.mongodb.net/invoice-mern?retryWrites=true&w=majority";
+  "mongodb+srv://amitbd591:<password>@cluster0.4kz14t4.mongodb.net/invoice?retryWrites=true&w=majority&appName=Cluster0";
 let option = {
   user: process.env.DB_USER,
   pass: process.env.DB_PASS,
   autoIndex: true,
+   serverSelectionTimeoutMS: 50000
 };
 mongoose
   .connect(URL, option)
@@ -29,6 +30,9 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+
+  mongoose.set('bufferCommands', false);
+
 
 app.use(cookieParser());
 app.use(
