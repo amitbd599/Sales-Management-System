@@ -3,13 +3,14 @@ import ReactApexChart from 'react-apexcharts';
 import { FaChartBar, FaChartSimple, FaDollarSign, FaSeedling } from 'react-icons/fa6'
 import { dashboard__Request__API } from '../api/Api';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import CurrencyFormat from 'react-currency-format';
 const DashboardComponent = () => {
     let [loading, setLoading] = useState(false)
     let [data_flow, setData_flow] = useState([])
     let [today_total_sale, setToday_total_sale] = useState([])
-    let [today_total_sales_amount, setToday_total_sales_amount] = useState([])
-    let [today_total_due_amount, setToday_total_due_amount] = useState([])
-    let [today_total_paid_amount, setToday_total_paid_amount] = useState([])
+    let [today_total_sales_amount, setToday_total_sales_amount] = useState(0)
+    let [today_total_due_amount, setToday_total_due_amount] = useState(0)
+    let [today_total_paid_amount, setToday_total_paid_amount] = useState(0)
     let [table_data, setTable_data] = useState([])
     let [bar_chat_monthly_report, setBar_chat_monthly_report] = useState([])
     let [bar_chat_monthly_sales, setBar_chat_monthly_sales] = useState([])
@@ -39,15 +40,14 @@ const DashboardComponent = () => {
         _id: month
     }));
 
-    console.log(months_report);
-    console.log(bar_chat_monthly_report);
-    
+
+
 
     // Update months array with values from originalData
     bar_chat_monthly_report.forEach(data => {
         const monthIndex = months_report.findIndex(month => month._id === data._id);
-        console.log(monthIndex);
-        
+
+
         if (monthIndex !== -1) {
             months_report[monthIndex].totalDueAmount = data.totalDueAmount;
             months_report[monthIndex].totalPaymentAmount = data.totalPaymentAmount;
@@ -132,7 +132,7 @@ const DashboardComponent = () => {
         },
         yaxis: {
             title: {
-                text: '$ (Sales View)'
+                text: 'Sales View'
             }
         },
         fill: {
@@ -141,14 +141,15 @@ const DashboardComponent = () => {
         tooltip: {
             y: {
                 formatter: function (val) {
-                    return "$ " + val + " thousands"
+
+                    return val
                 }
             }
         }
     }
 
 
-    
+
 
     const months_sales = [
         "January", "February", "March", "April", "May", "June",
@@ -166,7 +167,7 @@ const DashboardComponent = () => {
     });
 
     let bar_chat_monthly_sales_series = [{
-        name: 'series1',
+        name: 'Total Sales',
         data: [months_sales[0]['totalSalesAmount'],
         months_sales[1]['totalSalesAmount'],
         months_sales[2]['totalSalesAmount'],
@@ -211,11 +212,14 @@ const DashboardComponent = () => {
         tooltip: {
             y: {
                 formatter: function (val) {
-                    return "$ " + val + " thousands"
+                    return val
                 }
             }
         }
     }
+
+
+
     return (
         <div>
             <div className="px-[15px] py-[30px] md:px-[40px] md:py-[40px]">
@@ -268,9 +272,15 @@ const DashboardComponent = () => {
                                         <p className='text-sm'>Total sale amount</p>
 
                                         <div className='flex gap-1 items-center pt-[6px]'>
-                                            <p className='font-semibold text-gray-900 text-[20px]'>{!!data_flow?.totalSalesAmount === false ? 0 : data_flow?.totalSalesAmount}</p><p className='text-sm'>(Amount)</p>
+                                            <p className='font-semibold text-gray-900 text-[20px]'>
+                                                <CurrencyFormat value={!!data_flow?.totalSalesAmount === false ? 0 : data_flow?.totalSalesAmount} displayType={'text'} thousandSeparator={true} />
+                                            </p>
+                                            <p className='text-sm'>(Amount)</p>
                                         </div>
-                                        <p className='text-sm '>Today sale amount <span className='bg-green-50 text-green-600 px-[5px] rounded-xl font-medium'>{!!today_total_sales_amount === false ? 0 : today_total_sales_amount}</span></p>
+                                        <p className='text-sm '>Today sale amount <span className='bg-green-50 text-green-600 px-[5px] rounded-xl font-medium'>
+                                            <CurrencyFormat value={!!today_total_sales_amount === false ? 0 : today_total_sales_amount} displayType={'text'} thousandSeparator={true} />
+
+                                        </span></p>
                                     </div>
                                 </div>)
                             }
@@ -297,7 +307,11 @@ const DashboardComponent = () => {
                                         <div className='flex gap-1 items-center pt-[6px]'>
                                             <p className='font-semibold text-gray-900 text-[20px]'>{!!data_flow?.totalDueCustomer === false ? 0 : data_flow?.totalDueCustomer}</p><p className='text-sm'>(Person)</p>
                                         </div>
-                                        <p className='text-sm'>Today due amount <span className='bg-red-50 text-red-600 px-[5px] rounded-xl '>{!!today_total_due_amount === false ? 0 : today_total_due_amount}</span></p>
+                                        <p className='text-sm'>Today due amount <span className='bg-red-50 text-red-600 px-[5px] rounded-xl '>
+
+                                            <CurrencyFormat value={!!today_total_due_amount === false ? 0 : today_total_due_amount} displayType={'text'} thousandSeparator={true} />
+
+                                        </span></p>
                                     </div>
                                 </div>)
                             }
@@ -323,7 +337,10 @@ const DashboardComponent = () => {
                                         <div className='flex gap-1 items-center pt-[6px]'>
                                             <p className='font-semibold text-gray-900 text-[20px]'>{!!data_flow?.totalFullPaidCustomer === false ? 0 : data_flow?.totalFullPaidCustomer}</p><p className='text-sm'>(Person)</p>
                                         </div>
-                                        <p className='text-sm'>Today paid amount <span className='bg-green-50 text-green-600 px-[5px] rounded-xl '>{!!today_total_paid_amount === false ? 0 : today_total_paid_amount}</span></p>
+                                        <p className='text-sm'>Today paid amount <span className='bg-green-50 text-green-600 px-[5px] rounded-xl '>
+                                            <CurrencyFormat value={!!today_total_paid_amount === false ? 0 : today_total_paid_amount} displayType={'text'} thousandSeparator={true} />
+
+                                        </span></p>
                                     </div>
                                 </div>)
                             }
@@ -434,17 +451,19 @@ const DashboardComponent = () => {
                                                             </td>
                                                             <td className="p-2 whitespace-nowrap">
                                                                 <div className="text-left font-medium text-green-500">
-                                                                    {item?.payment}
+                                                                    <CurrencyFormat value={item?.payment} displayType={'text'} thousandSeparator={true} />
                                                                 </div>
                                                             </td>
                                                             <td className="p-2 whitespace-nowrap">
                                                                 <div className="text-left font-medium text-red-500">
-                                                                    {item?.due}
+
+                                                                    <CurrencyFormat value={item?.due} displayType={'text'} thousandSeparator={true} />
                                                                 </div>
                                                             </td>
                                                             <td className="p-2 whitespace-nowrap">
                                                                 <div className="text-left font-bold text-gray-800">
-                                                                    {item?.total}
+
+                                                                    <CurrencyFormat value={item?.total} displayType={'text'} thousandSeparator={true} />
                                                                 </div>
                                                             </td>
 

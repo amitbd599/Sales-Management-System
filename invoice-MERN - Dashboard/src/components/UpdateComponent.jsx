@@ -24,6 +24,7 @@ import {
   setting__get__Request__API,
 } from "../api/Api.js";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import CurrencyFormat from "react-currency-format";
 
 let UpdateComponent = () => {
   let [loading, setLoading] = useState(false);
@@ -645,7 +646,9 @@ let UpdateComponent = () => {
                                       />
                                     </td>
                                     <td className="py-2 pr-2 w-[100px] text-center">
-                                      <span>{item.quantity * item.rate}</span>
+                                      <span>
+                                        <CurrencyFormat value={item.quantity * item.rate} displayType={'text'} thousandSeparator={true} />
+                                      </span>
                                     </td>
                                     <td className="py-2 pr-2 w-[100px]">
                                       <button className="flex justify-center w-full">
@@ -718,7 +721,7 @@ let UpdateComponent = () => {
                     <div className="mt-[20px] grid gap-[16px]">
                       <p className="flex justify-between">
                         Subtotal:{" "}
-                        <span className="pl-3">{calculateSubtotal()}</span>
+                        <span className="pl-3"><CurrencyFormat value={calculateSubtotal()} displayType={'text'} thousandSeparator={true} /></span>
                       </p>
                       <p className="flex justify-between">
                         {taxationName} :{" "}
@@ -759,7 +762,7 @@ let UpdateComponent = () => {
                       <p className="font-semibold flex justify-between">
                         Total:{" "}
                         <span className="pl-8">
-                          {calculateTotal()} {getSetting?.currency}
+                        <CurrencyFormat value={calculateTotal()} displayType={'text'} thousandSeparator={true} /> {getSetting?.currency}
                         </span>
                       </p>
                       <div className=" flex gap-2 items-center justify-between ">
@@ -780,7 +783,7 @@ let UpdateComponent = () => {
                       <p className="font-semibold flex justify-between">
                         Due:{" "}
                         <span className="pl-8">
-                          {calculateDue()} {getSetting?.currency}
+                        <CurrencyFormat value={calculateDue()} displayType={'text'} thousandSeparator={true} />  {getSetting?.currency}
                         </span>
                       </p>
                     </div>

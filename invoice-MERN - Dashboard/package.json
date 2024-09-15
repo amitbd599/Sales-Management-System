@@ -17,6 +17,7 @@
     "react-code-input": "^3.10.1",
     "react-color": "^2.19.3",
     "react-cookie": "^7.1.4",
+    "react-currency-format": "^1.1.0",
     "react-data-table-component": "^7.5.4",
     "react-datepicker": "^4.21.0",
     "react-dom": "^18.2.0",

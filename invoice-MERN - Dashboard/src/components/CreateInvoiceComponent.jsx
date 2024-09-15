@@ -6,6 +6,7 @@ import {
   FaDownload,
 } from "react-icons/fa6";
 import DatePicker from "react-datepicker";
+import CurrencyFormat from 'react-currency-format';
 import { ErrorToast, IsEmpty, fixNumber, toNumber } from "../helper/helper";
 import { Option, Select, Tooltip } from "@material-tailwind/react";
 import TemplateOne from "../pdf-templates/TemplateOne";
@@ -621,7 +622,7 @@ const CreateInvoiceComponent = () => {
                                     />
                                   </td>
                                   <td className="py-2 pr-2 w-[100px] text-center">
-                                    <span>{item.quantity * item.rate}</span>
+                                    <span><CurrencyFormat value={item.quantity * item.rate} displayType={'text'} thousandSeparator={true} /></span>
                                   </td>
                                   <td className="py-2 pr-2 w-[100px]">
                                     <button className="flex justify-center w-full">
@@ -678,7 +679,7 @@ const CreateInvoiceComponent = () => {
                   <div className="mt-[20px] grid gap-[16px]">
                     <p className="flex justify-between">
                       Subtotal:{" "}
-                      <span className="pl-3">{calculateSubtotal()}</span>
+                      <span className="pl-3"><CurrencyFormat value={calculateSubtotal()} displayType={'text'} thousandSeparator={true} /></span>
                     </p>
 
                     <p className="flex justify-between">
@@ -720,7 +721,7 @@ const CreateInvoiceComponent = () => {
                     <p className="font-semibold flex justify-between">
                       Total:{" "}
                       <span className="pl-8">
-                        {calculateTotal()} {getSetting?.currency}
+                      <CurrencyFormat value={calculateTotal()} displayType={'text'} thousandSeparator={true} /> {getSetting?.currency}
                       </span>
                     </p>
                     <div className=" flex gap-2 items-center justify-between ">
@@ -741,7 +742,7 @@ const CreateInvoiceComponent = () => {
                     <p className="font-semibold flex justify-between">
                       Due:{" "}
                       <span className="pl-8">
-                        {calculateDue()} {getSetting?.currency}
+                      <CurrencyFormat value={calculateDue()} displayType={'text'} thousandSeparator={true} />  {getSetting?.currency}
                       </span>
                     </p>
                   </div>

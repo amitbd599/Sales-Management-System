@@ -11,6 +11,7 @@ import TemplateSeven from "../pdf-templates/TemplateSeven";
 import TemplateEight from "../pdf-templates/TemplateEight";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
+import CurrencyFormat from 'react-currency-format';
 import {
   FaDownload,
   FaExpand,
@@ -245,9 +246,26 @@ const AllInvoiceComponent = () => {
     });
   };
 
+  const caseInsensitiveSort = (rowA, rowB) => {
+    const a = rowA?.due;
+    const b = rowB?.due;
+  
+    if (a > b) {
+      return 1;
+    }
+  
+    if (b > a) {
+      return -1;
+    }
+  
+    return 0;
+
+    
+  };
+
   const columns = [
     {
-      name: "Invoice ID",
+      name: "Invoice ID || Sort - Paid/Due",
 
       selector: (row) => (
         <div className="flex gap-[10px] justify-center items-center">
@@ -257,7 +275,8 @@ const AllInvoiceComponent = () => {
           <span>{row?.invoiceID}</span>
         </div>
       ),
-
+      sortable: true,
+      sortFunction: caseInsensitiveSort,
       width: "250px",
     },
     {
@@ -288,10 +307,10 @@ const AllInvoiceComponent = () => {
 
     {
       name: "Paid",
-      selector: (row) => row?.payment,
+      selector: (row) => <CurrencyFormat value={row?.payment} displayType={'text'} thousandSeparator={true} /> ,
 
       width: "120px",
-      sortable: true,
+   
       style: {
         fontSize: '14px',
         color: '#10b981',
@@ -301,8 +320,7 @@ const AllInvoiceComponent = () => {
     {
       name: "Due",
 
-      selector: (row) => row?.due,
-      sortable: true,
+      selector: (row) => <CurrencyFormat value={row?.due} displayType={'text'} thousandSeparator={true} /> ,
       style: {
         fontSize: '14px',
         color: '#f43f5e',
