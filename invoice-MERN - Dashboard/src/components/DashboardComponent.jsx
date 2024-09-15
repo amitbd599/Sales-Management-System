@@ -31,17 +31,23 @@ const DashboardComponent = () => {
     }, [])
 
     const months_report = [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
     ].map(month => ({
         totalDueAmount: 0,
         totalPaymentAmount: 0,
         _id: month
     }));
 
+    console.log(months_report);
+    console.log(bar_chat_monthly_report);
+    
+
     // Update months array with values from originalData
     bar_chat_monthly_report.forEach(data => {
         const monthIndex = months_report.findIndex(month => month._id === data._id);
+        console.log(monthIndex);
+        
         if (monthIndex !== -1) {
             months_report[monthIndex].totalDueAmount = data.totalDueAmount;
             months_report[monthIndex].totalPaymentAmount = data.totalPaymentAmount;
@@ -141,9 +147,12 @@ const DashboardComponent = () => {
         }
     }
 
+
+    
+
     const months_sales = [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
     ].map(month => ({
         totalSalesAmount: 0,
         _id: month

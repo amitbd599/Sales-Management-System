@@ -8,7 +8,11 @@ const PrivateRoute = ({ children }) => {
     const location = useLocation();
 
     useEffect(() => {
-        if (location.pathname === '/' || location.pathname === '/setting' || location.pathname === '/all-invoice' || location.pathname === '/profile') {
+        if (location.pathname === '/' ||
+             location.pathname === '/create-invoice' ||
+             location.pathname === '/setting' ||
+              location.pathname === '/all-invoice' ||
+               location.pathname === '/profile') {
             verify__Request__API().then((result) => {
                 setLoader(true)
                 if (result === true) {
