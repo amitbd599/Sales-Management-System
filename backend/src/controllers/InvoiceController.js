@@ -306,6 +306,10 @@ exports.getDashboard = async (req, res) => {
       ]
     )
 
+    console.log(startOfDay.local().format('h:mm A dddd, MMMM D, YYYY'));
+    console.log(endOfDay.local().format('h:mm A dddd, MMMM D, YYYY'));
+
+
 
 
     res.status(200).json({ status: "success", data: { data_flow, table_data, bar_chat_monthly_sales, bar_chat_monthly_report, today_total_sale, today_total_sales_amount, today_total_due_amount, today_total_paid_amount } });
