@@ -30,7 +30,7 @@ mongoose
     console.log(err);
   });
 
-mongoose.set('bufferCommands', false);
+// mongoose.set('bufferCommands', false);
 
 
 app.use(cookieParser());
