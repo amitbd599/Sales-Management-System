@@ -69,28 +69,6 @@ app.use(DefaultErrorHandler);
 
 
 
-// Function to restart the server
-function restartServer() {
-  console.log('Restarting server...');
 
-  // Spawn a new instance of the server
-  const subprocess = spawn('node', ['index.js'], {
-    detached: true,
-    stdio: 'inherit'
-  });
-
-  // Exit the current server
-  subprocess.unref();
-  process.exit();
-}
-
-// Schedule a task to restart the server at 23:59 BD time
-cron.schedule('59 23 * * *', () => {
-  const now = moment().tz('Asia/Dhaka').format('HH:mm');
-  console.log(`Scheduled restart at BD time: ${now}`);
-  restartServer();
-}, {
-  timezone: "Asia/Dhaka"
-});
 
 module.exports = app;
