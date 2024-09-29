@@ -11,10 +11,6 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const dotENV = require("dotenv");
-const {
-  DefaultErrorHandler,
-  NotFoundError,
-} = require("./src/utility/ErrorHandler");
 dotENV.config();
 
 let URL =
@@ -58,11 +54,6 @@ app.use(limiter);
 app.use("/api/v1", router);
 
 
-//Not Found Error Handler
-app.use(NotFoundError);
-
-// Default Error Handler
-app.use(DefaultErrorHandler);
 
 
 
