@@ -2,7 +2,7 @@ import axios from "axios";
 import { ErrorToast, SuccessToast } from "../helper/helper";
 
 // const BaseURL = "http://localhost:5000/api/v1";
-const BaseURL = "https://sales-api.amitjs.com/api/v1";
+const BaseURL = "https://bye-sell.vercel.app/api/v1";
 
 export const verify__Request__API = async () => {
   let URL = BaseURL + "/verify";

@@ -1,9 +1,6 @@
 const express = require("express");
 const router = require("./src/routes/api");
 const app = new express();
-const cron = require('node-cron');
-const moment = require('moment-timezone');
-
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
